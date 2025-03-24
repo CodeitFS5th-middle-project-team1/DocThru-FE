@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "build-storybook": "storybook build",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "storybook": "storybook dev -p 6006"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx,json,css,md}": "prettier --write"
@@ -28,9 +29,10 @@
     "@storybook/addon-essentials": "^8.6.8",
     "@storybook/addon-onboarding": "^8.6.8",
     "@storybook/blocks": "^8.6.8",
-    "@storybook/experimental-addon-test": "^8.6.8",
-    "@storybook/experimental-nextjs-vite": "^8.6.8",
+    "@storybook/experimental-addon-test": "8.6.8",
+    "@storybook/experimental-nextjs-vite": "8.6.8",
     "@storybook/react": "^8.6.8",
+    "@storybook/test": "8.6.8",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

@@ -9,10 +9,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <ReactQueryProvider>
-        <body>{children}</body>
-      </ReactQueryProvider>
+    <html lang="kor">
+      {/* <ReactQueryProvider> */}
+      <body>{children}</body>
+      {/* </ReactQueryProvider> */}
     </html>
   );
 }

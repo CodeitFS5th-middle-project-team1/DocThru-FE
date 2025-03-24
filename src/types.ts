@@ -111,3 +111,7 @@ export interface Comment {
   updatedAt: Date;
   deletedAt?: Date;
 }
+
+export interface ChipType {
+  label: 'Next.js' | 'Modern JS' | 'API' | 'Web' | 'Career' | null;
+}
