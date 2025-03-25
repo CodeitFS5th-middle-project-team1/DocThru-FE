@@ -22,8 +22,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@shared/*": ["shared/*"],
-      "@images/*": ["shared/Img/*"]
+      "@shared/*": ["src/shared/*"],
+      "@images/*": ["src/shared/Img/*"]
     }
   },
 
