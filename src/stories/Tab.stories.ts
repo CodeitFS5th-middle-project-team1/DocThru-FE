@@ -1,8 +1,4 @@
-import {
-  Tab,
-  TabActive,
-  TextPosition,
-} from '@/shared/components/tab/TabTopBtn';
+import { Tab, TabActive, TextPosition } from '@/shared/components/tab/Tab';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
