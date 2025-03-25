@@ -1,8 +1,8 @@
-import { Chip } from '@/shared/components/chip';
+import { Chip } from '@/shared/components/chip/chip';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'chip',
+  title: 'Components/chip',
   component: Chip,
   parameters: {
     layout: 'centered',
@@ -16,7 +16,6 @@ type Story = StoryObj<typeof meta>;
 
 export const chip: Story = {
   args: {
-    label: 'chip',
-    onClick: () => {},
+    label: 'Next.js',
   },
 };
