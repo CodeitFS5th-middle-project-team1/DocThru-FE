@@ -8,6 +8,7 @@ import Button, {
 } from '@/shared/components/button/Button';
 import Link from 'next/link';
 
+
 const SignUp: NextPage = () => {
   return (
     <div className="flex flex-col justify-center items-center px-4 md:px-28   gap-10 ">

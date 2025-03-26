@@ -99,7 +99,7 @@ export default function Button({
   closeIcon = false,
   ...props
 }: ButtonProps) {
-  const baseStyle = 'w-full px-30 py-2 md:py-2.5 cursor-pointer';
+  const baseStyle = 'w-full px-30 py-3 md:py-3.5 justify-center cursor-pointer';
   const bgColorStyle = buttonColorStyle[bgColor];
   const borderStyle = ButtonBorderStyle[border];
   const iconChoice = icon ? ButtonIconChoice[icon] : null;
