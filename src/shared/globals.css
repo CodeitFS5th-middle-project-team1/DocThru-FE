@@ -18,6 +18,10 @@
 
 @theme {
   --color-custom-black: #000000;
+
+  --color-custom-red: #f24744;
+  --color-custom-red-brand: #ffe7e7;
+
   --color-custom-yellow-brand: #ffc107;
   --color-custom-white: #ffffff;
   --color-custom-white-brand: #f1f2f5;

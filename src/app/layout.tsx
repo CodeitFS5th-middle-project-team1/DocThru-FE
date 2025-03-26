@@ -11,7 +11,9 @@ export default function RootLayout({
   return (
     <html lang="kor">
       {/* <ReactQueryProvider> */}
-      <body>{children}</body>
+
+      <body className="bg-custom-gray-50">{children}</body>
+
       {/* </ReactQueryProvider> */}
     </html>
   );
