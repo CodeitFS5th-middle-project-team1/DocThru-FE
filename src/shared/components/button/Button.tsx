@@ -57,17 +57,17 @@ const ButtonBorderStyle = {
 };
 
 const buttonColorStyle = {
-  [BGColor.RED]: 'text-custom-red bg-custom-red-brand',
+  [BGColor.RED]: 'text-custom-red bg-custom-red-brand py-3 md:py-3.5',
   [BGColor.YELLOW]:
-    'text-sm md:text-base font-semibold  text-custom-gray-800 bg-custom-yellow-brand',
+    'text-sm md:text-base font-semibold  text-custom-gray-800 bg-custom-yellow-brand py-2 md:py-2.5',
   [BGColor.WHITE]:
-    'text-sm md:text-base font-semibold  text-custom-gray-800 bg-custom-white ',
+    'text-sm md:text-base font-semibold  text-custom-gray-800 bg-custom-white py-3 md:py-3.5 ',
   [BGColor.GRAY]:
-    'text-sm md:text-base font-semibold  text-custom-gray-500 bg-custom-gray-200',
+    'text-sm md:text-base font-semibold  text-custom-gray-500 bg-custom-gray-200 py-3 md:py-3.5',
   [BGColor.DARK_GRAY]:
-    'text-sm md:text-base font-bold text-custom-gray-700 bg-custom-gray-400',
+    'text-sm md:text-base font-bold text-custom-gray-700 bg-custom-gray-400 py-3 md:py-3.5',
   [BGColor.BLACK]:
-    'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800',
+    'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 py-3 md:py-3.5',
 };
 
 const ButtonIconChoice = {
@@ -99,7 +99,7 @@ export default function Button({
   closeIcon = false,
   ...props
 }: ButtonProps) {
-  const baseStyle = 'w-full px-30 py-3 md:py-3.5 justify-center cursor-pointer';
+  const baseStyle = 'w-full  justify-center cursor-pointer';
   const bgColorStyle = buttonColorStyle[bgColor];
   const borderStyle = ButtonBorderStyle[border];
   const iconChoice = icon ? ButtonIconChoice[icon] : null;
@@ -111,7 +111,7 @@ export default function Button({
         className={`flex gap-2  justify-center items-center ${baseStyle} ${bgColorStyle} ${borderStyle}`}
       >
         {children}
-        <Image src={iconChoice} alt="button Icon" width={16} />
+        {icon ? <Image src={iconChoice} alt="button Icon" width={16} /> : ''}
       </Link>
     );
   }
