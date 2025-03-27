@@ -23,8 +23,12 @@ const Password: FC<PasswordInputProps> = ({ name, placeholder }) => {
         {...register(name, {
           required: '비밀번호는 필수입니다.',
           minLength: {
-            value: 6,
-            message: '비밀번호는 최소 6자 이상이어야 합니다.',
+            value: 8,
+            message: '비밀번호는 최소 8자 이상이어야 합니다.',
+          },
+          maxLength: {
+            value: 12,
+            message: '비밀번호는 최대 12자 이상이어야 합니다.',
           },
         })}
         placeholder={placeholder}

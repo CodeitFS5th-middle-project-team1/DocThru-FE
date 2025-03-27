@@ -18,5 +18,8 @@ export const emailInput: Story = {
   args: {
     name: 'email',
     placeholder: '이메일을 입력하세요',
+    onEmailChange: (value: string, isValid: boolean) => {
+      console.log('Email:', value, 'Valid:', isValid);
+    },
   },
 };

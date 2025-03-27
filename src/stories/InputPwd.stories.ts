@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>;
 
 export const dateInput: Story = {
   args: {
-    name: '비밀인번호',
+    name: '비밀번호',
     placeholder: '비밀번호를 입력하시오',
   },
 };
