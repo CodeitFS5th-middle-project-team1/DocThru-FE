@@ -51,9 +51,9 @@ const ButtonBorderStyle = {
   [ButtonBorder.LITTLE_RECTANGLE_BORDER]:
     'rounded-lg border-2 border-custom-gray-800 ',
   [ButtonBorder.RECTANGLE]: 'rounded-xl ',
-  [ButtonBorder.RECTANGLE_BORDER]: 'rounded-xl border-2 border-custom-gray-800',
+  [ButtonBorder.RECTANGLE_BORDER]: 'rounded-xl border-1 border-custom-gray-800',
   [ButtonBorder.ROUND]: 'rounded-4xl',
-  [ButtonBorder.ROUND_BORDER]: 'rounded-4xl border-2 border-custom-gray-800',
+  [ButtonBorder.ROUND_BORDER]: 'rounded-4xl border-1 border-custom-gray-800',
 };
 
 const buttonColorStyle = {
@@ -61,7 +61,7 @@ const buttonColorStyle = {
   [BGColor.YELLOW]:
     'text-sm md:text-base font-semibold  text-custom-gray-800 bg-custom-yellow-brand py-2 md:py-2.5',
   [BGColor.WHITE]:
-    'text-sm md:text-base font-semibold  text-custom-gray-800 bg-custom-white py-3 md:py-3.5 ',
+    'text-sm  font-semibold text-nowrap text-custom-gray-800 bg-custom-white px-4 py-2 md:py-2.5 ',
   [BGColor.GRAY]:
     'text-sm md:text-base font-semibold  text-custom-gray-500 bg-custom-gray-200 py-3 md:py-3.5',
   [BGColor.DARK_GRAY]:
@@ -108,7 +108,7 @@ export default function Button({
     return (
       <Link
         href={href}
-        className={`flex gap-2  justify-center items-center ${baseStyle} ${bgColorStyle} ${borderStyle}`}
+        className={`flex gap-2 justify-center items-center ${baseStyle} ${bgColorStyle} ${borderStyle}`}
       >
         {children}
         {icon ? <Image src={iconChoice} alt="button Icon" width={16} /> : ''}

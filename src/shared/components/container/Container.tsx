@@ -3,21 +3,25 @@ import personIcon from '@images/person-icon/small.svg';
 import Image from 'next/image';
 import Button, { BGColor, ButtonBorder } from '../button/Button';
 import dayjs from '@/lib/utill';
+import { ButtonHTMLAttributes } from 'react';
 
-export interface Container {
-  href: string;
+export interface ContainerProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  originUrl: string;
   deadLine: string;
   currentParticipants: number;
   maxParticipants: number;
 }
 
 export const Container = ({
-  href,
+  originUrl,
   deadLine,
   currentParticipants,
   maxParticipants,
-}: Container) => {
+  ...props
+}: ContainerProps) => {
   const overDeadLine = dayjs(deadLine).isBefore(dayjs());
+  const maxParticipant = maxParticipants === currentParticipants;
 
   return (
     <div className="flex flex-col justify-center items-center rounded-2xl border-2 border-custom-gray-100 gap-4 px-4 py-6 w-96 md:w-64 xl:w-72 ">
@@ -37,7 +41,7 @@ export const Container = ({
           <Button
             border={ButtonBorder.RECTANGLE_BORDER}
             bgColor={BGColor.YELLOW}
-            href={href}
+            href={originUrl}
           >
             원본 보기
           </Button>
@@ -45,7 +49,10 @@ export const Container = ({
         <div className="flex w-40 md:w-56 xl:w-60">
           <Button
             border={ButtonBorder.RECTANGLE}
-            bgColor={overDeadLine ? BGColor.GRAY : BGColor.BLACK}
+            bgColor={
+              maxParticipant || overDeadLine ? BGColor.GRAY : BGColor.BLACK
+            }
+            {...props}
           >
             작업 도전하기
           </Button>
