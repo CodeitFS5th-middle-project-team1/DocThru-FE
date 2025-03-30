@@ -1,7 +1,5 @@
 'use client';
 import toast from 'react-hot-toast';
-('use client');
-import toast from 'react-hot-toast';
 
 export default function Home() {
   return (

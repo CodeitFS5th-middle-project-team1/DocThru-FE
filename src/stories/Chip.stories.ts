@@ -2,7 +2,7 @@ import { Chip } from '@/shared/components/chip/chip';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Components/Chip',
+  title: 'Components/chip',
   component: Chip,
   parameters: {
     layout: 'centered',
