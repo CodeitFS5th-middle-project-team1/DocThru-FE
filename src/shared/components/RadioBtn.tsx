@@ -1,8 +1,10 @@
 interface RadioBtnProps {
   id: string;
   groupName: string;
-  value: string | number;
+  value: string;
   name: string;
+  onClick: (e) => void;
+  checked: boolean;
 }
 
 export const RadioBtn: React.FC<RadioBtnProps> = ({
@@ -10,10 +12,19 @@ export const RadioBtn: React.FC<RadioBtnProps> = ({
   value,
   id,
   groupName,
+  onClick,
+  checked,
 }) => {
   return (
-    <div>
-      <input type="radio" id={id} name={groupName} value={value} />
+    <div className="gap-1">
+      <input
+        type="radio"
+        id={id}
+        name={groupName}
+        value={value}
+        onClick={onClick}
+        checked={checked}
+      />
       <label>{name}</label>
     </div>
   );
