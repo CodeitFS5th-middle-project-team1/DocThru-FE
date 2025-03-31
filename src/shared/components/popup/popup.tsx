@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import check from '@images/close-icon/close.svg';
+import close from '@images/close-icon/close.svg';
 
 interface Notification {
   message: string;
@@ -23,11 +23,8 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, notifications }) => {
       <div className="relative bg-white rounded shadow-lg p-4 m-4 w-80 max-h-116">
         <div className="flex justify-between items-center border-b pb-2 mb-4">
           <h3 className="text-lg font-bold">알림</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-600 hover:text-gray-800"
-          >
-            <Image src={check} alt="팝업 닫기 이미지"></Image>
+          <button onClick={onClose} className="hover:bg-custom-gray-100">
+            <Image src={close} alt="모달 닫기 이미지"></Image>
           </button>
         </div>
         <div className="max-h-60 overflow-y-auto">
