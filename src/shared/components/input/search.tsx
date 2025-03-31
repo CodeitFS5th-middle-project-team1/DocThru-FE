@@ -6,9 +6,17 @@ interface SearchInputProps {
   name: string;
   placeholder?: string;
   onSearch: (value: string) => void;
+  size?: string;
+  width?: string;
+  height?: string;
 }
 
-const Search: FC<SearchInputProps> = ({ name, placeholder, onSearch }) => {
+const Search: FC<SearchInputProps> = ({
+  name,
+  placeholder,
+  onSearch,
+  size = 'w-86 md:w-147.5 h-12',
+}) => {
   const [value, setValue] = useState('');
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -38,19 +46,19 @@ const Search: FC<SearchInputProps> = ({ name, placeholder, onSearch }) => {
   };
 
   return (
-    <div className="mb-4 relative">
+    <div className="inline-block relative">
       <input
         type="search"
         name={name}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full pl-9 rounded-3xl pr-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+        className={`pl-9 rounded-3xl pr-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-custom-gray-300 ${size}`}
         onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
       />
       <button
         type="button"
-        className="absolute inset-y-0 left-2 pr-2 h-10.5 hover:opacity-40"
+        className="absolute inset-y-0 left-2 pr-2 h-full hover:opacity-40"
         onClick={handleSearch}
       >
         <Image src={search} alt="search Img" width={24} height={24} />

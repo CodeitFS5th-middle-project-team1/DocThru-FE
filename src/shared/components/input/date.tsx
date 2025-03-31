@@ -1,21 +1,26 @@
 import { FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { UseFormRegister } from 'react-hook-form';
 
 interface DateInputProps {
   name: string;
   placeholder?: string;
+  size?: string;
+  register: UseFormRegister<{ [key: string]: string }>;
 }
 
-const Date: FC<DateInputProps> = ({ name, placeholder }) => {
-  const { register } = useFormContext();
-
+const Date: FC<DateInputProps> = ({
+  name,
+  placeholder,
+  size = 'w-86 md:w-147.5 h-12',
+  register,
+}) => {
   return (
-    <div className="mb-4">
+    <div>
       <input
         type="date"
         {...register(name)}
         placeholder={placeholder}
-        className="w-full px-4 rounded-xl py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+        className={`mb-3 h-12 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 ${size}`}
       />
     </div>
   );
