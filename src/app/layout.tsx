@@ -1,8 +1,6 @@
-import ReactQueryProvider from '@/core/contexts/ReactQueryProvider';
-import Link from 'next/link';
-import Image from 'next/image';
 import '@shared/globals.css';
 import ToastProvider from '@/core/contexts/ToastProvider';
+import Layout from '@/shared/components/layout/Layout';
 
 export default function RootLayout({
   children,
@@ -14,8 +12,7 @@ export default function RootLayout({
       <body>
         <ToastProvider />
         {/* <ReactQueryProvider> */}
-
-        {children}
+        <Layout>{children}</Layout>
         {/* </ReactQueryProvider> */}
       </body>
     </html>

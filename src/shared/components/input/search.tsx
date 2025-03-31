@@ -46,7 +46,7 @@ const Search: FC<SearchInputProps> = ({
   };
 
   return (
-    <div className="inline-block relative">
+    <div className=" relative">
       <input
         type="search"
         name={name}

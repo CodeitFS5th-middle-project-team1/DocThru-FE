@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
-import mainLogo from '@images/logo-icon/mainLogo.svg';
-import textLogo from '@images/logo-icon/textLogo.svg';
+import mainLogo from '@images/img_logo .svg';
+
 import Image from 'next/image';
 import Button, {
   BGColor,
@@ -16,8 +16,7 @@ const Login: NextPage = () => {
           href={'/'}
           className="flex justify-center items-center pt-32 gap-3.5"
         >
-          <Image src={mainLogo} alt="main logo" width={46} height={54} />
-          <Image src={textLogo} alt="text logo" width={229} height={82} />
+          <Image src={mainLogo} alt="main logo" />
         </Link>
       </section>
 
