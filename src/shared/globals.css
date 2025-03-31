@@ -1,6 +1,21 @@
 @import 'tailwindcss';
 
 /*여기에 폰트 넣으시면 됩니다.*/
+@font-face {
+  font-family: 'pretendard';
+  font-style: normal;
+  src: url('./fonts/PretendardVariable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'quantico';
+  font-style: normal;
+  src: url('./fonts/Quantico/Quantico-Bold.woff2') format('woff2');
+  src: url('./fonts/Quantico/Quantico-BoldItalic.woff2') format('woff2');
+  src: url('./fonts/Quantico/Quantico-Italic.woff2') format('woff2');
+  src: url('./fonts/Quantico/Quantico-Regular.woff2') format('woff2');
+  unicode-range: U+0061-007A, U+0041-005A;
+}
+
 @theme {
   --color-custom-black: #000000;
 
@@ -8,10 +23,8 @@
   --color-custom-red-brand: #ffe7e7;
 
   --color-custom-yellow-brand: #ffc107;
-
   --color-custom-white: #ffffff;
   --color-custom-white-brand: #f1f2f5;
-
   --color-custom-gray-900: #171717;
   --color-custom-gray-800: #262626;
   --color-custom-gray-700: #404040;
@@ -25,6 +38,9 @@
 }
 
 @layer base {
+  body {
+    font-family: 'pretendard', 'quantico';
+  }
   *,
   ::after,
   ::before,
@@ -32,4 +48,187 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+}
+
+/**font 설정 
+  * B: Bold  = weight: 700
+  * SB: SemiBold = weight: 600
+  * M: Medium = weight: 500
+  * R: Regular = weight: 400
+  * 가운데 숫자는 font-size
+  * 마지막 숫자는 line-height
+*/
+.B-22-0 {
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-22-0 {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-20-0 {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-20-0 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-20-0 {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-18-0 {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-18-0 {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-18-0 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-18-0 {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-16-0 {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-16-0 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-16-0 {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-16-0 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-14-0 {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-14-0 {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-14-0 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-14-0 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-13-0 {
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-13-0 {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-13-0 {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-13-0 {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-12-0 {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-12-0 {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-12-0 {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-12-0 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-16-160 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: 0%;
+}
+.R-16-130 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  letter-spacing: 0%;
+}
+.R-14-160 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 160%;
+  letter-spacing: 0%;
+}
+.R-14-130 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0%;
 }
