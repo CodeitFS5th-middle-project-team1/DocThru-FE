@@ -38,7 +38,7 @@ const Search: FC<SearchInputProps> = ({ name, placeholder, onSearch }) => {
   };
 
   return (
-    <div className="mb-4 relative">
+    <div className=" relative">
       <input
         type="search"
         name={name}

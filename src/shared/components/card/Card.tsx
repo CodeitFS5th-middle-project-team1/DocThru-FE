@@ -29,9 +29,9 @@ export const Card = ({
   const maxParticipant = maxParticipants === currentParticipants;
 
   return (
-    <div className="flex flex-col justify-center items-center rounded-2xl border-2 border-custom-gray-800 gap-4 p-6 ">
-      <section className="flex justify-between relative">
-        <div className="flex flex-col gap-4 w-4xl">
+    <div className="flex flex-col w-full justify-center items-center rounded-2xl border-2 border-custom-gray-800 gap-4 p-6 ">
+      <section className="flex w-full justify-between relative">
+        <div className="flex flex-col gap-4 ">
           {maxParticipant ? (
             <div className="flex">
               <Chip label={DocumentType} />

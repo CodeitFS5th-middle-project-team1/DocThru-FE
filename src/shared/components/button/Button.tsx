@@ -57,17 +57,17 @@ const ButtonBorderStyle = {
 };
 
 const buttonColorStyle = {
-  [BGColor.RED]: 'text-custom-red bg-custom-red-brand py-3 md:py-3.5',
+  [BGColor.RED]: 'text-custom-red bg-custom-red-brand py-2 md:py-2.5',
   [BGColor.YELLOW]:
     'text-sm md:text-base font-semibold  text-custom-gray-800 bg-custom-yellow-brand py-2 md:py-2.5',
   [BGColor.WHITE]:
     'text-sm  font-semibold text-nowrap text-custom-gray-800 bg-custom-white px-4 py-2 md:py-2.5 ',
   [BGColor.GRAY]:
-    'text-sm md:text-base font-semibold  text-custom-gray-500 bg-custom-gray-200 py-3 md:py-3.5',
+    'text-sm md:text-base font-semibold  text-custom-gray-500 bg-custom-gray-200 py-2 md:py-2.5',
   [BGColor.DARK_GRAY]:
     'text-sm md:text-base font-bold text-custom-gray-700 bg-custom-gray-400 py-3 md:py-3.5',
   [BGColor.BLACK]:
-    'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 py-3 md:py-3.5',
+    'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 py-2 md:py-2.5',
 };
 
 const ButtonIconChoice = {
@@ -108,10 +108,14 @@ export default function Button({
     return (
       <Link
         href={href}
-        className={`flex gap-2 justify-center items-center ${baseStyle} ${bgColorStyle} ${borderStyle}`}
+        className={`flex gap-2 justify-center items-center px-4 ${baseStyle} ${bgColorStyle} ${borderStyle}`}
       >
         {children}
-        {icon ? <Image src={iconChoice} alt="button Icon" width={16} /> : ''}
+        {icon ? (
+          <Image src={iconChoice} alt="button Icon" width={16} height={16} />
+        ) : (
+          ''
+        )}
       </Link>
     );
   }
@@ -119,7 +123,7 @@ export default function Button({
     <>
       {onlyIcon ? (
         <button {...props}>
-          <Image src={iconChoice} alt="feedback icon" width={40} />
+          <Image src={iconChoice} alt="feedback icon" width={40} height={40} />
         </button>
       ) : (
         <button
