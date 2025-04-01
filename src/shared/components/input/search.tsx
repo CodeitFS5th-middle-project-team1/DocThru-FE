@@ -7,8 +7,6 @@ interface SearchInputProps {
   placeholder?: string;
   onSearch: (value: string) => void;
   size?: string;
-  width?: string;
-  height?: string;
 }
 
 const Search: FC<SearchInputProps> = ({
