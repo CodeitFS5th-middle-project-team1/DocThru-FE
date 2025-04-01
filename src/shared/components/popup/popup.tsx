@@ -18,8 +18,6 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, notifications }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-end z-50">
-      {/* 배경 클릭 시 팝업 닫기 필요없는 것 같아서 일단은 주석처리 */}
-      {/* <div className="fixed inset-0 bg-black opacity-50" onClick={onClose} /> */}
       <div className="relative bg-white rounded shadow-lg p-4 m-4 w-80 max-h-116">
         <div className="flex justify-between items-center border-b pb-2 mb-4">
           <h3 className="text-lg font-bold">알림</h3>
