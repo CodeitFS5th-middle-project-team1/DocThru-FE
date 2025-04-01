@@ -13,7 +13,7 @@ const Search: FC<SearchInputProps> = ({
   name,
   placeholder,
   onSearch,
-  size = 'w-86 md:w-147.5 h-12',
+  size = 'w-full h-12', // 마이 챌린지 페이지에서 화면 꽉 차게 사용되기 때문에 수정했는데 문제되면 알려주세요 -은비
 }) => {
   const [value, setValue] = useState('');
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
