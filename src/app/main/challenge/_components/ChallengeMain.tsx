@@ -17,11 +17,12 @@ const ChallengeMain = () => {
   // const [approvalStatus, setApprovalStatus] = useState<string>();
 
   const { data, isPending } = useToastQuery(
-    ['challenges', page, limit],
+    ['challenges', page, limit, keyword],
     () =>
       fetchChallenges({
         page,
         limit: 10,
+        keyword,
       }),
     'challenge-toast',
     {
