@@ -81,6 +81,7 @@ const MyChallenge: NextPage = () => {
               name={'text'}
               placeholder="챌린지 이름을 검색해보세요"
               onSearch={handleSearch}
+              size="w-full h-12"
             />
           </div>
           <div className="flex items-center">
