@@ -1,12 +1,9 @@
+import { DocumentType, FieldType } from '@/types';
+
 interface ChipProps {
   label:
-    | 'Next.js'
-    | 'Modern JS'
-    | 'API'
-    | 'Web'
-    | 'Career'
-    | '공식문서'
-    | '블로그'
+    | DocumentType
+    | FieldType
     | '승인 대기'
     | '신청 거절'
     | '신청 승인'
