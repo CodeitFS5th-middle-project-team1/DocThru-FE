@@ -25,7 +25,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const chip: Story = {
+export const card: Story = {
   args: {
     title: 'Next.js - App Router: Routing Fundamentals',
     DocumentType: DocumentType.OFFICIAL,

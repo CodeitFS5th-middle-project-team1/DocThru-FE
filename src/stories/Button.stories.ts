@@ -28,7 +28,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const chip: Story = {
+export const button: Story = {
   args: {
     border: ButtonBorder.RECTANGLE,
     bgColor: BGColor.RED,

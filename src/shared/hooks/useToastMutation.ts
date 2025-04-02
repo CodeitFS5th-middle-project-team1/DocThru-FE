@@ -19,28 +19,40 @@ export function useToastMutation<
 >(
   mutationFn: (variables: TVariables) => Promise<TData>,
   toastMessages?: ToastMessages,
-  options?: UseMutationOptions<TData, TError, TVariables, TContext>
+  options?: UseMutationOptions<TData, TError, TVariables, TContext>,
+  toastId?: string
 ): UseMutationResult<TData, TError, TVariables, TContext> {
   return useMutation<TData, TError, TVariables, TContext>({
     mutationFn,
     ...options,
     onMutate: async (variables) => {
-      toast.dismiss();
-      if (toastMessages?.pending) toast.loading(toastMessages.pending);
+      if (toastId) toast.dismiss(toastId);
+      if (toastMessages?.pending)
+        toast.loading(toastMessages.pending, {
+          id: toastId,
+          duration: 3000,
+        });
       return options?.onMutate?.(variables);
     },
     onSuccess: (data, variables, context) => {
-      toast.dismiss();
-      if (toastMessages?.success) toast.success(toastMessages.success);
+      if (toastId) toast.dismiss(toastId);
+      if (toastMessages?.success)
+        toast.success(toastMessages.success, {
+          id: toastId,
+          duration: 3000,
+        });
       options?.onSuccess?.(data, variables, context);
     },
     onError: (error, variables, context) => {
-      toast.dismiss();
-      if (toastMessages?.error) toast.error(toastMessages.error);
+      if (toastId) toast.dismiss(toastId);
+      if (toastMessages?.error)
+        toast.error(toastMessages.error, {
+          id: toastId,
+          duration: 3000,
+        });
       options?.onError?.(error, variables, context);
     },
     onSettled: (data, error, variables, context) => {
-      toast.dismiss();
       options?.onSettled?.(data, error, variables, context);
     },
   });

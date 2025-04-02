@@ -49,7 +49,7 @@ export interface Challenge {
   title: string;
   originUrl: string;
   documentType: DocumentType;
-  deadline: Date;
+  deadline: string;
   maxParticipants: number;
   currentParticipants: number;
   description: string;
