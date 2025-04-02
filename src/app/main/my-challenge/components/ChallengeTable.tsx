@@ -5,7 +5,7 @@ const ChallengeTable = ({ data }) => {
     <div className="overflow-x-auto relative shadow-md ">
       <div className="flex justify-between gap-3 md:gap-0 whitespace-nowrap text-[15px] bg-gray-800 text-white py-2 px-3 rounded-lg">
         <span className="flex-1">No.</span>
-        <span className="flex-1 md:flex-[1.2]">분야</span>
+        <span className="flex-[1.2]">분야</span>
         <span className="flex-[1.3] ">카테고리</span>
         <span className="flex-5">챌린지 제목</span>
         <span className="flex-[1.2]">모집 인원</span>
