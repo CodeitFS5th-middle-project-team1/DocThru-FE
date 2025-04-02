@@ -4,7 +4,7 @@ import ChallengeMain from './_components/ChallengeMain';
 
 const ChallengeDetail: NextPage = () => {
   return (
-    <div className="flex gap-4 flex-col px-4 md:px-6 xl:px-[28.875rem] pt-20 pb-28">
+    <div className="">
       <ChallengeHead />
       <ChallengeMain />
     </div>
