@@ -18,11 +18,11 @@ export enum DocumentType {
 
 /** 챌린지 분야 */
 export enum FieldType {
-  NEXTJS = 'NEXTJS',
-  MODERNJS = 'MODERNJS',
+  NEXTJS = 'Next.js',
+  MODERNJS = 'Modern JS',
   API = 'API',
-  WEB = 'WEB',
-  CAREER = 'CAREER',
+  WEB = 'Web',
+  CAREER = 'Career',
 }
 
 /** 유저 타입 */
@@ -65,9 +65,10 @@ export interface Challenge {
 export interface Translation {
   id: string;
   challengeId: string;
-  userId: string;
+  user: { id: string; nickname: string };
   likeCount: number;
   title: string;
+  isLiked: boolean;
   content: string;
   createdAt: Date;
   updatedAt: Date;
