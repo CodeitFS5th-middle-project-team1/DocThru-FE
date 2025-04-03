@@ -8,9 +8,10 @@ interface ChipProps {
     | '신청 거절'
     | '신청 승인'
     | '챌린지 삭제';
+  className: string;
 }
 
-export const Chip: React.FC<ChipProps> = ({ label }) => {
+export const Chip: React.FC<ChipProps> = ({ label, className }) => {
   const chipTypeStyle = 'B-14-0 w-fit px-3 py-[3px] rounded-lg';
   const chipCategoryStyle =
     'R-13-0 w-fit px-[7px] py-[5px] bg-custom-gray-300 text-white rounded-lg boder-[1px] border-custom-gray-300';
@@ -32,5 +33,7 @@ export const Chip: React.FC<ChipProps> = ({ label }) => {
   const chipStyle =
     chipStyles[label] ||
     'px-3 py-[3px] bg-[#79E16A] text-custom-gray-600 rounded-lg';
-  return <div className={`disabled:true ${chipStyle}`}>{label}</div>;
+  return (
+    <div className={`disabled:true ${chipStyle} ${className}`}>{label}</div>
+  );
 };
