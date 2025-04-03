@@ -11,15 +11,14 @@ import Button, {
 import { useState } from 'react';
 import ConfirmCancel from '@/shared/components/modal/confirmCancel';
 import Navigate from '@/shared/components/modal/navigate';
-import Editor from './_components/Editor';
+import Editor from '../_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
 
 const TranslationWork: NextPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [isDrafted, setIsDrafted] = useState(true);
+  const [isDrafted, setIsDrafted] = useState(false);
   const [isDraftModal, setIsDraftModal] = useState(false);
-  const [isDraftQuestionModal, setIsDraftQuestionModal] = useState(false);
   const [isForgiveModal, setIsForgiveModal] = useState(false);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
   return (
@@ -66,7 +65,7 @@ const TranslationWork: NextPage = () => {
                 setIsSuccessModal(true);
               }}
             >
-              제출하기
+              수정하기
             </Button>
           </div>
         </div>
@@ -91,17 +90,6 @@ const TranslationWork: NextPage = () => {
         임시저장 되었습니다!
       </Confirm>
       <ConfirmCancel
-        isOpen={isDraftQuestionModal}
-        onClose={() => setIsDraftQuestionModal(false)}
-        onConfirm={() => {
-          setIsDraftQuestionModal(false);
-          setIsDraftModal(true);
-        }}
-        onCancel={() => setIsDraftQuestionModal(false)}
-      >
-        임시저장 하시겠습니까?
-      </ConfirmCancel>
-      <ConfirmCancel
         isOpen={isForgiveModal}
         onClose={() => setIsForgiveModal(false)}
         onConfirm={() => {
@@ -117,7 +105,7 @@ const TranslationWork: NextPage = () => {
         navigateUrl="/main"
         text="작업물 보기"
       >
-        제출되었습니다!
+        수정되었습니다!
       </Navigate>
       {isDrafted && (
         <div className="border border-[#262626] rounded-[8px] fixed left-1/2 top-[90%] transform -translate-x-1/2 z-30 max-w-[890px] w-full flex justify-between items-center px-5">
@@ -144,7 +132,7 @@ const TranslationWork: NextPage = () => {
               border={ButtonBorder.RECTANGLE}
               bgColor={BGColor.BLACK}
               onClick={() => {
-                setIsDraftQuestionModal(true);
+                setIsDraftModal(true);
               }}
             >
               불러오기
