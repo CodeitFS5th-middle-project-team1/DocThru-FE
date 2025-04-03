@@ -15,11 +15,10 @@ const Search: FC<SearchInputProps> = ({
   onSearch,
   size = 'w-86 md:w-147.5 h-12',
 }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<string>('');
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // 디바운스 처리
     timeoutRef.current = setTimeout(() => {
       onSearch(value);
     }, 500);
@@ -36,7 +35,6 @@ const Search: FC<SearchInputProps> = ({
   };
 
   const handleSearch = () => {
-    // 수동 검색 시 pending 상태의 타임아웃 제거
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -44,7 +42,7 @@ const Search: FC<SearchInputProps> = ({
   };
 
   return (
-    <div className=" relative">
+    <div className="relative">
       <input
         type="search"
         name={name}
@@ -52,7 +50,7 @@ const Search: FC<SearchInputProps> = ({
         onChange={handleChange}
         placeholder={placeholder}
         className={`pl-9 rounded-3xl pr-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-custom-gray-300 ${size}`}
-        onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
       />
       <button
         type="button"

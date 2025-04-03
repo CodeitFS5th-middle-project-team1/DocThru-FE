@@ -3,7 +3,7 @@ interface CheckBoxProps {
   value: string;
   checked?: boolean;
   className?: string;
-  hendleChange: (value: string) => void;
+  handleChange: (value: string) => void;
 }
 
 export const CheckBox: React.FC<CheckBoxProps> = ({
@@ -11,7 +11,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
   value,
   checked,
   className,
-  hendleChange,
+  handleChange,
 }) => {
   return (
     <div className={`flex gap-1 ${className} `}>
@@ -22,7 +22,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
         value={value}
         checked={checked}
         onChange={() => {
-          hendleChange(value);
+          handleChange(value);
         }}
       />
       <label htmlFor={name}>{name}</label>

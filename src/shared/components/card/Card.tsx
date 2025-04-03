@@ -4,7 +4,7 @@ import Image from 'next/image';
 import selectorIcon from '@images/menu-icon/Meatballs.svg';
 import dayjs from '@/lib/utill';
 import { DocumentType, FieldType } from '@/types';
-import { Chip, ChipProps } from '../chip/chip';
+import { Chip } from '../chip/chip';
 import Button, { BGColor, ButtonBorder, ButtonImg } from '../button/Button';
 import { ChipCardStatus } from '../chip/ChipCardStatus';
 
@@ -18,19 +18,6 @@ export interface CardProps {
   maxParticipants: number;
   href?: string;
 }
-
-const fieldTypeLabelMap: Record<FieldType, string> = {
-  NEXTJS: 'Next.js',
-  MODERNJS: 'Modern JS',
-  API: 'API',
-  WEB: 'Web',
-  CAREER: 'Career',
-};
-
-const documentTypeLabelMap: Record<DocumentType, string> = {
-  OFFICIAL: '공식문서',
-  BLOG: '블로그',
-};
 
 export const Card = ({
   category,
@@ -51,17 +38,18 @@ export const Card = ({
         <div className="flex flex-col gap-4 ">
           {maxParticipant || overDeadLine ? (
             <div className="flex">
-              <ChipCardStatus status={maxParticipant ? 'full' : 'done'} />
+              <ChipCardStatus
+                status={maxParticipant ? 'full' : 'done'}
+                className=""
+              />
             </div>
           ) : (
             ''
           )}
           <p className="text-xl text-custom-gray-700 font-bold">{title}</p>
           <div className="flex gap-1.5 ">
-            <Chip label={fieldTypeLabelMap[FieldType] as ChipProps['label']} />
-            <Chip
-              label={documentTypeLabelMap[DocumentType] as ChipProps['label']}
-            />
+            <Chip label={FieldType} customClass="" />
+            <Chip label={DocumentType} customClass="" />
           </div>
         </div>
         <Image

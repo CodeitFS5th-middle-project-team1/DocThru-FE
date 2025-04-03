@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
 import prevGray from '@images/arrow-icon/no-stick/gray.svg';
 import prevBlack from '@images/arrow-icon/no-stick/black.svg';
 

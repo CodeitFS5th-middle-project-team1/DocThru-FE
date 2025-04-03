@@ -10,11 +10,18 @@ import Email from '../input/email';
 import Password from '../input/password';
 import Text from '../input/text';
 import Link from 'next/link';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, SubmitHandler } from 'react-hook-form';
+
+interface AuthFormData {
+  email: string;
+  password: string;
+  passwordConfirm?: string;
+  nickName?: string;
+}
 
 interface AuthFormProps {
   category: 'login' | 'signup';
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: SubmitHandler<AuthFormData>;
   isPending?: boolean;
 }
 
@@ -24,7 +31,7 @@ const AuthForm = ({ category, onSubmit, isPending }: AuthFormProps) => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useFormContext();
+  } = useFormContext<AuthFormData>();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

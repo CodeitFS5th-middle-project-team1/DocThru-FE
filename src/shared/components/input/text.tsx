@@ -1,23 +1,27 @@
-import { FC } from 'react';
-import { UseFormRegister, RegisterOptions } from 'react-hook-form';
+import {
+  UseFormRegister,
+  RegisterOptions,
+  FieldValues,
+  Path,
+} from 'react-hook-form';
 
-interface TextInputProps {
-  name: string;
+interface TextInputProps<T extends FieldValues> {
+  name: Path<T>;
   placeholder?: string;
-  register: UseFormRegister<{ [key: string]: string }>;
+  register: UseFormRegister<T>;
   size?: string;
-  rules?: RegisterOptions;
+  rules?: RegisterOptions<T, Path<T>>;
   errorMessage?: string;
 }
 
-const Text: FC<TextInputProps> = ({
+const Text = <T extends FieldValues>({
   name,
   placeholder,
   register,
   size = 'w-86 md:w-147.5 h-12',
   rules,
   errorMessage,
-}) => {
+}: TextInputProps<T>) => {
   return (
     <div>
       <textarea
