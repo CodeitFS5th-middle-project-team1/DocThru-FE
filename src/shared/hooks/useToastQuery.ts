@@ -39,6 +39,7 @@ export function useToastQuery<
 >(
   queryKey: TQueryKey,
   queryFn: () => Promise<TQueryFnData>,
+  toastId?: string,
   toastMessages?: ToastMessages,
   options: ToastQueryOptions<TQueryFnData, TError, TData, TQueryKey> = {}
 ): UseQueryResult<TData, TError> {
@@ -54,12 +55,12 @@ export function useToastQuery<
     queryFn,
     ...restOptions,
     onSuccess: (data: TData) => {
-      toast.dismiss();
+      if (toastId) toast.dismiss(toastId);
       if (toastMessages?.success) toast.success(toastMessages.success);
       userOnSuccess?.(data);
     },
     onError: (error: TError, variables: TQueryKey, context: unknown) => {
-      toast.dismiss();
+      if (toastId) toast.dismiss(toastId);
       if (toastMessages?.error) toast.error(toastMessages.error);
       userOnError?.(error, variables, context);
     },
@@ -69,7 +70,7 @@ export function useToastQuery<
       variables: TQueryKey,
       context: unknown
     ) => {
-      toast.dismiss();
+      if (toastId) toast.dismiss(toastId);
       userOnSettled?.(data, error, variables, context);
     },
   } as UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>;

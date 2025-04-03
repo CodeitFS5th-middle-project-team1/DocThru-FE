@@ -13,7 +13,7 @@ export default function ChallengeHead() {
           border={ButtonBorder.ROUND}
           bgColor={BGColor.BLACK}
           icon={ButtonImg.NEWCHALLENGE}
-          href={'/auth/login'}
+          href={'/main/challenge/new'}
         >
           신규 챌린지 신청
         </Button>

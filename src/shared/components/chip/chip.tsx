@@ -1,4 +1,4 @@
-interface ChipProps {
+export interface ChipProps {
   label:
     | 'Next.js'
     | 'Modern JS'
