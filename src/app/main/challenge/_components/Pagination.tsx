@@ -7,13 +7,16 @@ import prevBlack from '@images/arrow-icon/no-stick/black.svg';
 
 type PaginationProps = {
   totalPages: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 };
-
 const blockSize = 5;
 
-const Pagination = ({ totalPages }: PaginationProps) => {
-  const [currentPage, setCurrentPage] = useState(1);
-
+const Pagination = ({
+  totalPages,
+  currentPage,
+  onPageChange,
+}: PaginationProps) => {
   const currentBlock = Math.floor((currentPage - 1) / blockSize);
   const startPage = currentBlock * blockSize + 1;
   const endPage = Math.min(startPage + blockSize - 1, totalPages);
@@ -29,7 +32,7 @@ const Pagination = ({ totalPages }: PaginationProps) => {
   return (
     <div className="flex w-72 md:w-80 gap-3 items-center justify-center mt-4">
       <button
-        onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+        onClick={() => onPageChange(currentPage - 1)}
         disabled={isPrevDisabled}
       >
         <Image
@@ -46,7 +49,7 @@ const Pagination = ({ totalPages }: PaginationProps) => {
         {pageNumbers.map((page) => (
           <button
             key={page}
-            onClick={() => setCurrentPage(page)}
+            onClick={() => onPageChange(page)}
             className={`w-10 h-10 rounded-xl ${
               page === currentPage
                 ? 'bg-custom-gray-800 text-sm text-custom-yellow-brand font-medium'
@@ -59,7 +62,7 @@ const Pagination = ({ totalPages }: PaginationProps) => {
       </div>
 
       <button
-        onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+        onClick={() => onPageChange(currentPage + 1)}
         disabled={isNextDisabled}
       >
         <Image

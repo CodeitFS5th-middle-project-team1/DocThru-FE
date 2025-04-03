@@ -24,7 +24,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const chip: Story = {
+export const tab: Story = {
   args: {
     position: TextPosition.MIDDLE,
     isActive: TabActive.ON,

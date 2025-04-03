@@ -14,7 +14,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const chip: Story = {
+export const container: Story = {
   args: {
     originUrl: '/',
     deadLine: '2025-03-28',
