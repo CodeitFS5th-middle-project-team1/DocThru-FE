@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>;
 
 export const chip: Story = {
   args: {
-    label: 'Next.js',
+    label: '승인 대기',
   },
   argTypes: {
     label: {

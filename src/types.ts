@@ -11,19 +11,9 @@ export enum UserRank {
 }
 
 /** 문서 타입 */
-export enum DocumentType {
-  BLOG = 'BLOG',
-  OFFICIAL = 'OFFICIAL',
-}
+export type DocumentType = '블로그' | '공식문서'; // chip에서 허용하는 값에 맞춤
+export type FieldType = 'Next.js' | 'Modern JS' | 'API' | 'Web' | 'Career'; // 이미 chip에 맞음
 
-/** 챌린지 분야 */
-export enum FieldType {
-  NEXTJS = 'Next.js',
-  MODERNJS = 'Modern JS',
-  API = 'API',
-  WEB = 'Web',
-  CAREER = 'Career',
-}
 
 /** 유저 타입 */
 export interface User {
