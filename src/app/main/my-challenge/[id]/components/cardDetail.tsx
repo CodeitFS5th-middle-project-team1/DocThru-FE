@@ -32,7 +32,7 @@ export const MiniCard = ({ info }: MiniCardProps) => {
 
   return (
     <div className="w-[890px] flex flex-col border-b border-[#E5E5E5] mb-4 space-y-4">
-      <p className="">{title}</p>
+      <p className="text-2xl font-semibold">{title}</p>
       <div className="flex flex-col gap-4 ">
         {maxParticipant ? (
           <div className="flex">

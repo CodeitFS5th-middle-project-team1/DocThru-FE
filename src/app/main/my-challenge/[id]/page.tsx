@@ -2,12 +2,17 @@ import { getDetail } from './components/mock';
 import { MiniCard } from './components/cardDetail';
 import Status from './components/status';
 
-interface Props {
-  params: { id: string };
+interface Params {
+  id: string;
 }
 
-export default async function PostDetailPage({ params }: Props) {
-  const data = await getDetail(params.id);
+export default async function MyChallengeDetail({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { id } = await params;
+  const data = await getDetail(id);
 
   return (
     <div>
