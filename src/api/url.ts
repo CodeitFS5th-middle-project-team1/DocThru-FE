@@ -23,3 +23,24 @@ docThro.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
+docThro.interceptors.response.use(
+  (response) => {
+    const newAccessToken = response.headers['authorization']?.split(' ')[1];
+    if (newAccessToken) {
+      localStorage.setItem('accessToken', newAccessToken);
+    }
+    return response;
+  },
+
+  async (error) => {
+    if (error.response?.status === 401) {
+      console.error('Access Token 만료! 로그인 페이지로 이동합니다.');
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        window.location.href = '/main/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);

@@ -6,6 +6,6 @@ export default function ChallengeLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex flex-col pt-7 pb-28 gap-4">{children}</section>
+    <section className="flex gap-4 flex-col pt-6 pb-28">{children}</section>
   );
 }
