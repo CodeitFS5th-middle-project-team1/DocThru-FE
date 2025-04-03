@@ -17,8 +17,9 @@ import Confirm from '@/shared/components/modal/confirm';
 const TranslationWork: NextPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [isDrafted, setIsDrafted] = useState(false);
+  const [isDrafted, setIsDrafted] = useState(true);
   const [isDraftModal, setIsDraftModal] = useState(false);
+  const [isDraftQuestionModal, setIsDraftQuestionModal] = useState(false);
   const [isForgiveModal, setIsForgiveModal] = useState(false);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
   return (
@@ -90,6 +91,17 @@ const TranslationWork: NextPage = () => {
         임시저장 되었습니다!
       </Confirm>
       <ConfirmCancel
+        isOpen={isDraftQuestionModal}
+        onClose={() => setIsDraftQuestionModal(false)}
+        onConfirm={() => {
+          setIsDraftQuestionModal(false);
+          setIsDraftModal(true);
+        }}
+        onCancel={() => setIsDraftQuestionModal(false)}
+      >
+        임시저장 하시겠습니까?
+      </ConfirmCancel>
+      <ConfirmCancel
         isOpen={isForgiveModal}
         onClose={() => setIsForgiveModal(false)}
         onConfirm={() => {
@@ -132,7 +144,7 @@ const TranslationWork: NextPage = () => {
               border={ButtonBorder.RECTANGLE}
               bgColor={BGColor.BLACK}
               onClick={() => {
-                setIsDraftModal(true);
+                setIsDraftQuestionModal(true);
               }}
             >
               불러오기
