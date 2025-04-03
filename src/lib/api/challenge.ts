@@ -1,5 +1,6 @@
 import instance from '@/lib/api/axiosInstance';
 import { ChallengeFormData } from '@/shared/components/form/ChallengeForm';
+import { useAuthStore } from '@/stores/authStore';
 import { Challenge, DocumentType, FieldType } from '@/types';
 
 export interface FetchChallengeParams {
@@ -9,6 +10,7 @@ export interface FetchChallengeParams {
   fields?: string[];
   approvalStatus?: string;
   keyword?: string;
+  status?: string;
 }
 
 interface FetchChallengeResponse {
@@ -30,6 +32,15 @@ export const fetchChallenges = async (
   params: FetchChallengeParams
 ): Promise<FetchChallengeResponse> => {
   const res = await instance.get('/api/challenges', { params });
+  return res.data;
+};
+
+export const fetchChallengeByUser = async (
+  params: FetchChallengeParams
+): Promise<FetchChallengeResponse> => {
+  const res = await instance.get('/api/challenges/manage', {
+    params,
+  });
   return res.data;
 };
 

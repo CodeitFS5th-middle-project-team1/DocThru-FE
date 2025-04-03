@@ -1,9 +1,31 @@
 import { Chip } from '@/shared/components/chip/chip';
 
-const ChallengeTable = ({ data }) => {
+interface ChallengeTableRow {
+  no: number;
+  type: string;
+  category: string;
+  title: string;
+  people: string;
+  applyDate: string;
+  deadline: string;
+  approvalStatus?: string;
+}
+
+interface ChallengeTableProps {
+  data: ChallengeTableRow[];
+}
+
+const statusOptions = [
+  '승인 대기',
+  '신청 승인',
+  '신청 거절',
+  '챌린지 삭제',
+] as const;
+
+const ChallengeTable = ({ data }: ChallengeTableProps) => {
   return (
     <div className="overflow-x-auto relative shadow-md ">
-      <div className="flex justify-between gap-3 md:gap-0 whitespace-nowrap text-[15px] bg-gray-800 text-white py-2 px-3 rounded-lg">
+      <div className="flex justify-between gap-3 md:gap-0 whitespace-nowrap text-[15px] bg-custom-gray-800 text-white py-2 px-3 rounded-lg">
         <span className="flex-1">No.</span>
         <span className="flex-[1.2]">분야</span>
         <span className="flex-[1.3] ">카테고리</span>
@@ -31,7 +53,14 @@ const ChallengeTable = ({ data }) => {
               <td className="flex-[1.3]">{row.applyDate}</td>
               <td className="flex-[1.3]">{row.deadline}</td>
               <td className="flex-[1.5] ">
-                <Chip label={row.status} />
+                <Chip
+                  label={
+                    statusOptions[
+                      Math.floor(Math.random() * statusOptions.length)
+                    ]
+                  }
+                  className="flex"
+                />
               </td>
             </tr>
           ))}
