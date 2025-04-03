@@ -58,6 +58,12 @@
   * 가운데 숫자는 font-size
   * 마지막 숫자는 line-height
 */
+.SB-24-0 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
 .B-22-0 {
   font-weight: 700;
   font-size: 22px;

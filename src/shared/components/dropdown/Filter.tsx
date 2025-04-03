@@ -156,14 +156,12 @@ export const Filter: React.FC<FilterProps> = ({
                 bgColor={BGColor.WHITE}
                 border={ButtonBorder.LITTLE_RECTANGLE_BORDER}
                 onClick={handleReset}
-                className="w-full cursor-pointer"
               >
                 초기화
               </Button>
               <Button
                 bgColor={BGColor.BLACK}
                 border={ButtonBorder.LITTLE_RECTANGLE}
-                className="w-full cursor-pointer"
                 onClick={handleApply}
               >
                 적용하기

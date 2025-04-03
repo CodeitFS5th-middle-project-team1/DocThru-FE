@@ -9,7 +9,7 @@ interface SortProps {
   value?: string;
   defaultValue: string;
   handleChange: (value: string) => void;
-  textSize: 'sm' | 'lg';
+  className?: string;
 }
 
 export const Sort: React.FC<SortProps> = ({
@@ -18,7 +18,7 @@ export const Sort: React.FC<SortProps> = ({
   value,
   handleChange,
   defaultValue,
-  textSize,
+  className,
 }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -65,7 +65,9 @@ export const Sort: React.FC<SortProps> = ({
     'absolute left-0 right-0 min-w-max border-[1px] border-custom-gray-300 bg-white z-10 mt-2 rounded-[8px]';
   return (
     <div
-      className={`w-full relative min-w-[140px] min-h-[40px] ${textSize === 'lg' ? 'R-14-0' : 'R-13-0'}`}
+      className={
+        'w-auto relative min-w-[160px] min-h-[40px] text-R-13-0 md:text-R-15-0'
+      }
     >
       <div
         className={`${selectBoxStyle} p-2 pl-3 pr-2`}
@@ -81,7 +83,7 @@ export const Sort: React.FC<SortProps> = ({
           {options.map((d, idx) => (
             <div className="w-full" key={d.value}>
               <button
-                className="w-full text-center p-3 hover:bg-gray-100"
+                className={`w-full p-3 hover:bg-gray-100 ${className ?? ''}`}
                 onClick={() => {
                   handleChange(d.value);
                   setOpen(false);

@@ -1,5 +1,3 @@
-'use client';
-
 import Date from './date';
 import Email from './email';
 import Search from './search';
