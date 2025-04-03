@@ -14,6 +14,7 @@ export enum UserRank {
 export type DocumentType = '블로그' | '공식문서'; // chip에서 허용하는 값에 맞춤
 export type FieldType = 'Next.js' | 'Modern JS' | 'API' | 'Web' | 'Career'; // 이미 chip에 맞음
 
+
 /** 유저 타입 */
 export interface User {
   id: string;
@@ -54,9 +55,10 @@ export interface Challenge {
 export interface Translation {
   id: string;
   challengeId: string;
-  userId: string;
+  user: { id: string; nickname: string };
   likeCount: number;
   title: string;
+  isLiked: boolean;
   content: string;
   createdAt: Date;
   updatedAt: Date;
