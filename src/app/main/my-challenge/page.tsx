@@ -11,7 +11,7 @@ import { NextPage } from 'next';
 import { useState } from 'react';
 import Pagination from '../challenge/_components/Pagination';
 import ChallengeTable from './components/ChallengeTable';
-
+import { Sort } from '@/shared/components/dropdown/Sort';
 const data = [
   {
     no: 1023,
@@ -44,6 +44,20 @@ const MyChallenge: NextPage = () => {
   const [isActive, setIsActive] = useState('on');
   const handleSearch = (e: string) => {
     setSearch(e);
+  };
+  const options = [
+    { value: 'option1', name: '승인 대기' },
+    { value: 'option2', name: '신청 승인' },
+    { value: 'option3', name: '신청 거절' },
+    { value: 'option4', name: '신청 시간 빠른순' },
+    { value: 'option5', name: '신청 시간 느린순' },
+    { value: 'option6', name: '마감 기한 빠른순' },
+    { value: 'option7', name: '마감 기한 느린순' },
+  ];
+  const [sortValue, setSortValue] = useState('option1');
+  const handleSortChange = (value: string) => {
+    setSortValue(value);
+    console.log('Selected:', value);
   };
 
   return (
@@ -81,16 +95,18 @@ const MyChallenge: NextPage = () => {
               name={'text'}
               placeholder="챌린지 이름을 검색해보세요"
               onSearch={handleSearch}
-              size="w-full h-12"
+              size="w-full h-[40px]"
             />
           </div>
-          <div className="flex items-center">
-            <Button
-              border={ButtonBorder.RECTANGLE_BORDER}
-              bgColor={BGColor.WHITE}
-            >
-              필터 버튼 자리
-            </Button>
+          <div className="whitespace-nowrap text-gray-500 ">
+            <Sort
+              options={options}
+              placeholder="승인 대기"
+              value={sortValue}
+              defaultValue="option1"
+              handleChange={handleSortChange}
+              className="text-left"
+            />
           </div>
         </section>
         <ChallengeTable data={data} />
@@ -105,7 +121,13 @@ const MyChallenge: NextPage = () => {
         </section>
 
         <section className="flex justify-center mb-40">
-          <Pagination totalPages={20} />
+          <Pagination
+            totalPages={20}
+            currentPage={0}
+            onPageChange={function (page: number): void {
+              throw new Error('Function not implemented.');
+            }}
+          />
         </section>
       </div>
     </>
