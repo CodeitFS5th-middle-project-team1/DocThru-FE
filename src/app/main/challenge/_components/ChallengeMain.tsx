@@ -1,75 +1,66 @@
 'use client';
 
-import Button, {
-  BGColor,
-  ButtonBorder,
-} from '@/shared/components/button/Button';
-import { Card, CardProps } from '@/shared/components/card/Card';
+import { Card } from '@/shared/components/card/Card';
 import Search from '@/shared/components/input/search';
-import { DocumentType, FieldType } from '@/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Pagination from './Pagination';
-
-const seedData: CardProps[] = [
-  // {
-  //   title: 'Next.js로 블로그 만들기',
-  //   DocumentType: DocumentType.BLOG,
-  //   FieldType: FieldType.NEXTJS,
-  //   deadLine: '2025-04-15',
-  //   currentParticipants: 3,
-  //   maxParticipants: 5,
-  //   href: '/projects/nextjs-blog',
-  // },
-  // {
-  //   title: '모던 자바스크립트 완전 정복',
-  //   DocumentType: DocumentType.OFFICIAL,
-  //   FieldType: FieldType.MODERNJS,
-  //   deadLine: '2025-04-20',
-  //   currentParticipants: 5,
-  //   maxParticipants: 10,
-  //   href: '/projects/modernjs-master',
-  // },
-  // {
-  //   title: 'REST API 실전 프로젝트',
-  //   DocumentType: DocumentType.BLOG,
-  //   FieldType: FieldType.API,
-  //   deadLine: '2025-05-01',
-  //   currentParticipants: 2,
-  //   maxParticipants: 6,
-  //   href: '/projects/rest-api-practice',
-  // },
-];
+import { Filter } from '@/shared/components/dropdown/Filter';
+import { useToastQuery } from '@/shared/hooks/useToastQuery';
+import { fetchChallenges } from '@/lib/api/challenge';
 
 const ChallengeMain = () => {
-  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [keyword, setKeyword] = useState('');
+  // const [documentType, setDocumentType] = useState<string>();
+  // const [fields, setFields] = useState<string[]>();
+  // const [approvalStatus, setApprovalStatus] = useState<string>();
 
-  const handleSearch = (e: string) => {
-    setSearch(e);
-  };
+  const { data, isPending } = useToastQuery(
+    ['challenges', page, limit, keyword],
+    () =>
+      fetchChallenges({
+        page,
+        limit: 10,
+        keyword,
+      }),
+    'challenge-toast',
+    {
+      pending: '불러오는 중...',
+      success: '불러오기 완료!',
+      error: '불러오기 실패!',
+    }
+  );
+
+  const challenges = data?.challengesWithIsMax ?? [];
+  const totalPages = Math.ceil((data?.totalCount ?? 1) / limit);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [page]);
 
   return (
     <div className="flex flex-col gap-6 ">
       <section className="flex gap-3">
         <div className="flex items-center">
-          <Button
-            border={ButtonBorder.RECTANGLE_BORDER}
-            bgColor={BGColor.WHITE}
-          >
-            필터 버튼 자리
-          </Button>
+          <Filter />
         </div>
 
         <div className="w-full">
           <Search
             name={'text'}
             placeholder="챌린지 이름을 검색해보세요"
-            onSearch={handleSearch}
+            onSearch={(e) => {
+              setKeyword(e);
+              setPage(1);
+            }}
+            size="w-full"
           />
         </div>
       </section>
 
       <section className="flex flex-col gap-6 w-full">
-        {seedData.length === 0 ? (
+        {challenges.length === 0 ? (
           <div className="flex h-screen justify-center items-center">
             <p className="text-center text-gray-500">
               아직 챌린지가 없어요.
@@ -79,25 +70,29 @@ const ChallengeMain = () => {
           </div>
         ) : (
           <>
-            {seedData.map((data, index) => (
+            {challenges.map((data, index) => (
               <Card
+                category="base"
                 key={index}
                 title={data.title}
-                DocumentType={data.DocumentType}
-                FieldType={data.FieldType}
-                deadLine={data.deadLine}
+                DocumentType={data.documentType}
+                FieldType={data.field}
+                deadLine={data.deadline}
                 currentParticipants={data.currentParticipants}
                 maxParticipants={data.maxParticipants}
-                href={data.href}
               />
             ))}
           </>
         )}
       </section>
 
-      {seedData.length > 0 && (
+      {challenges.length > 0 && totalPages > 1 && (
         <section className="flex justify-center">
-          <Pagination totalPages={20} />
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={(newPage) => setPage(newPage)}
+          />
         </section>
       )}
     </div>

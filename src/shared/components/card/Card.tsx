@@ -4,20 +4,36 @@ import Image from 'next/image';
 import selectorIcon from '@images/menu-icon/Meatballs.svg';
 import dayjs from '@/lib/utill';
 import { DocumentType, FieldType } from '@/types';
-import { Chip } from '../chip/chip';
+import { Chip, ChipProps } from '../chip/chip';
 import Button, { BGColor, ButtonBorder, ButtonImg } from '../button/Button';
+import { ChipCardStatus } from '../chip/ChipCardStatus';
 
 export interface CardProps {
+  category: 'base' | 'my';
   title: string;
   DocumentType: DocumentType;
   FieldType: FieldType;
   deadLine: string;
   currentParticipants: number;
   maxParticipants: number;
-  href: string;
+  href?: string;
 }
 
+const fieldTypeLabelMap: Record<FieldType, string> = {
+  NEXTJS: 'Next.js',
+  MODERNJS: 'Modern JS',
+  API: 'API',
+  WEB: 'Web',
+  CAREER: 'Career',
+};
+
+const documentTypeLabelMap: Record<DocumentType, string> = {
+  OFFICIAL: '공식문서',
+  BLOG: '블로그',
+};
+
 export const Card = ({
+  category,
   title,
   DocumentType,
   FieldType,
@@ -27,22 +43,25 @@ export const Card = ({
   href,
 }: CardProps) => {
   const maxParticipant = maxParticipants === currentParticipants;
+  const overDeadLine = dayjs(deadLine).isBefore(dayjs());
 
   return (
     <div className="flex flex-col w-full justify-center items-center rounded-2xl border-2 border-custom-gray-800 gap-4 p-6 ">
       <section className="flex w-full justify-between relative">
         <div className="flex flex-col gap-4 ">
-          {maxParticipant ? (
+          {maxParticipant || overDeadLine ? (
             <div className="flex">
-              <Chip label={DocumentType} />
+              <ChipCardStatus status={maxParticipant ? 'full' : 'done'} />
             </div>
           ) : (
             ''
           )}
           <p className="text-xl text-custom-gray-700 font-bold">{title}</p>
           <div className="flex gap-1.5 ">
-            <Chip label={FieldType} />
-            <Chip label={DocumentType} />
+            <Chip label={fieldTypeLabelMap[FieldType] as ChipProps['label']} />
+            <Chip
+              label={documentTypeLabelMap[DocumentType] as ChipProps['label']}
+            />
           </div>
         </div>
         <Image
@@ -63,16 +82,21 @@ export const Card = ({
             {currentParticipants}/{maxParticipants}
           </p>
         </div>
-        <div className="flex w-40 ">
-          <Button
-            border={ButtonBorder.ROUND_BORDER}
-            bgColor={BGColor.WHITE}
-            icon={ButtonImg.CONTINUE}
-            href={href}
-          >
-            도전 계속하기
-          </Button>
-        </div>
+
+        {category === 'my' ? (
+          <div className="flex w-40 ">
+            <Button
+              border={ButtonBorder.ROUND_BORDER}
+              bgColor={BGColor.WHITE}
+              icon={ButtonImg.CONTINUE}
+              href={href}
+            >
+              도전 계속하기
+            </Button>
+          </div>
+        ) : (
+          ''
+        )}
       </section>
     </div>
   );

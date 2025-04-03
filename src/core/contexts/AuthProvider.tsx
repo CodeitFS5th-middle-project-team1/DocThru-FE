@@ -1,40 +1,70 @@
-"use client";
+'use client';
+import { redirectAfterAuth } from '@/lib/authRedirect';
+import { AuthState, SetUser, useAuthStore } from '@/stores/authStore';
+import { usePathname, useRouter } from 'next/navigation';
+import { createContext, useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
-import { createContext, useContext, useEffect, useState } from "react";
-
-interface User {
-  id: string;
+export interface LoginPayload {
   email: string;
-  nickname: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  user: SetUser;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface SignupPayload {
+  email: string;
+  password: string;
+  nickName: string;
 }
 
 interface AuthContextType {
-  user: User | null;
-  login: (userData: User) => void;
-  logout: () => void;
+  user: AuthState['user'];
+  isLoading: boolean;
+  isLoggedIn: boolean;
+  setAuth: AuthState['setAuth'];
+  clearAuth: AuthState['clearAuth'];
 }
+
+//로그인 정보 없이는 막고 싶은 경로
+// const protectedRoutes = ['/main/challenge/new', '/main/challenge/[id]/edit'];
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, accessToken, setAuth, clearAuth } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(true);
+  // const router = useRouter();
+  // const pathname = usePathname();
+  const isLoggedIn = !!accessToken;
 
-  // 로그인 유지 로직 넣어야함 (로컬스토리지, 쿠키 등)
+  // const isProtected = protectedRoutes.some((route) =>
+  //   pathname?.startsWith(route.replace('[id]', ''))
+  // );
+
+  // useEffect(() => {
+  //   if (isLoading) return;
+
+  //   if (isProtected && !isLoggedIn) {
+  //     toast.error('로그인이 필요합니다.');
+  //     setTimeout(() => {
+  //       redirectAfterAuth(router);
+  //     }, 1500);
+  //   }
+  // }, [isLoading, isProtected, isLoggedIn, router]);
+
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    setIsLoading(false);
   }, []);
 
-  const login = (userData: User) => {
-    setUser(userData);
-  };
-
-  const logout = () => {
-    setUser(null);
-  };
-
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, setAuth, clearAuth, isLoggedIn, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -42,6 +72,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw Error("헉! 유저 정보가 없다네?");
+  if (!context) throw Error('AuthProvider 안에서 사용해야 합니다!');
   return context;
 };

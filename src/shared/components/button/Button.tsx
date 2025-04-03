@@ -24,6 +24,7 @@ export enum ButtonBorder {
   LITTLE_RECTANGLE_BORDER = 'littleRectangleBorder',
   RECTANGLE = 'rectangle',
   RECTANGLE_BORDER = 'rectangleBorder',
+  RECTANGLE_BIG_BORDER = 'rectangleBigBorder',
   ROUND = 'round',
   ROUND_BORDER = 'roundBorder',
 }
@@ -52,6 +53,8 @@ const ButtonBorderStyle = {
     'rounded-lg border-2 border-custom-gray-800 ',
   [ButtonBorder.RECTANGLE]: 'rounded-xl ',
   [ButtonBorder.RECTANGLE_BORDER]: 'rounded-xl border-1 border-custom-gray-800',
+  [ButtonBorder.RECTANGLE_BIG_BORDER]:
+    'rounded-xl border-3 border-custom-gray-800',
   [ButtonBorder.ROUND]: 'rounded-4xl',
   [ButtonBorder.ROUND_BORDER]: 'rounded-4xl border-1 border-custom-gray-800',
 };

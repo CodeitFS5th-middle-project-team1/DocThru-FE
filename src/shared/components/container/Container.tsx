@@ -36,10 +36,10 @@ export const Container = ({
         </p>
       </section>
 
-      <section className="flex  md:flex-col md:items-center gap-1">
+      <section className="flex  md:flex-col md:items-center gap-3">
         <div className="flex w-40 md:w-56 xl:w-60 ">
           <Button
-            border={ButtonBorder.RECTANGLE_BORDER}
+            border={ButtonBorder.RECTANGLE_BIG_BORDER}
             bgColor={BGColor.YELLOW}
             href={originUrl}
           >
