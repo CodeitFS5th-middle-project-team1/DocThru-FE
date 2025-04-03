@@ -1,22 +1,34 @@
 'use client';
 
-import ChallengeForm from '@/shared/components/form/ChallengeForm';
+import { useCreateChallenge } from '@/core/hooks/challenge/useCreateChallenge';
+import ChallengeForm, {
+  ChallengeFormData,
+} from '@/shared/components/form/ChallengeForm';
+import { DocumentType, FieldType } from '@/types';
 import { NextPage } from 'next';
 import { useForm, FormProvider } from 'react-hook-form';
 
 const NewChallenge: NextPage = () => {
   const methods = useForm();
+  const { mutateAsync } = useCreateChallenge();
 
-  const handleSubmit = (data: any) => {
-    console.log('신규 데이터:', data);
+  const handleSubmit = async (data: ChallengeFormData) => {
+    const formattedData = {
+      ...data,
+      deadline: new Date(data.deadline),
+      maxParticipants: Number(data.maxParticipants),
+      documentType: data.documentType as DocumentType,
+      field: data.field as FieldType,
+    };
+    return await mutateAsync(formattedData);
   };
 
   return (
-    <div>
+    <>
       <FormProvider {...methods}>
         <ChallengeForm category="create" onSubmit={handleSubmit} />
       </FormProvider>
-    </div>
+    </>
   );
 };
 
