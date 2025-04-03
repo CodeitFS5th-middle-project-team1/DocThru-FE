@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 interface TitleProps {
   title?: string;
-  document?: DocumentType;
+  document: DocumentType;
   field: FieldType;
   content: string;
   nickname: string;

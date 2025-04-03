@@ -1,19 +1,18 @@
-import { FC } from 'react';
-import { UseFormRegister } from 'react-hook-form';
+import { UseFormRegister, FieldValues, Path } from 'react-hook-form';
 
-interface DateInputProps {
-  name: string;
+interface DateInputProps<T extends FieldValues> {
+  name: Path<T>;
   placeholder?: string;
   size?: string;
-  register: UseFormRegister<{ [key: string]: string }>;
+  register: UseFormRegister<T>;
 }
 
-const Date: FC<DateInputProps> = ({
+const Date = <T extends FieldValues>({
   name,
   placeholder,
   size = 'w-86 md:w-147.5 h-12',
   register,
-}) => {
+}: DateInputProps<T>) => {
   return (
     <div>
       <input

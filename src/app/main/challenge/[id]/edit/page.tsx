@@ -7,7 +7,7 @@ import ChallengeForm, {
 } from '@/shared/components/form/ChallengeForm';
 import { DocumentType, FieldType } from '@/types';
 import { NextPage } from 'next';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 

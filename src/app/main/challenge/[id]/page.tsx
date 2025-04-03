@@ -16,20 +16,24 @@ const ChallengeDetail: NextPage = () => {
   }, [id]);
 
   return (
-    <div className="w-full">
-      <Title
-        title={challenge?.title}
-        document={challenge?.documentType}
-        field={challenge?.field}
-        content={challenge?.description}
-        nickname="럽윈즈올"
-        currentParticipants={challenge?.currentParticipants}
-        deadLine={challenge?.deadline}
-        maxParticipants={challenge?.maxParticipants}
-        originUrl={challenge?.originUrl}
-      />
-      <Participation currentPage={1} tatalPage={3} />
-    </div>
+    <>
+      {challenge && (
+        <div className="w-full">
+          <Title
+            title={challenge?.title}
+            document={challenge?.documentType}
+            field={challenge?.field}
+            content={challenge?.description}
+            nickname="럽윈즈올"
+            currentParticipants={challenge?.currentParticipants}
+            deadLine={challenge?.deadline}
+            maxParticipants={challenge?.maxParticipants}
+            originUrl={challenge?.originURL}
+          />
+          <Participation currentPage={1} tatalPage={3} />
+        </div>
+      )}
+    </>
   );
 };
 

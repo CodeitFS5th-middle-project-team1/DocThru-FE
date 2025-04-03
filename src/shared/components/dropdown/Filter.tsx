@@ -21,7 +21,7 @@ export const Filter: React.FC<FilterProps> = ({
   const [open, setOpen] = useState(false);
   const [checkBoxList, setCheckBoxList] = useState<string[]>([]);
   const [documentType, setDocumentType] = useState<string>('');
-  const [staus, setStatus] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
   const [filterCount, setFilterCount] = useState<number>(0);
   const addCheckBoxList = (value: string) => {
     setCheckBoxList((prev) => {
@@ -51,7 +51,7 @@ export const Filter: React.FC<FilterProps> = ({
     if (documentType !== '') {
       setFilterCount(count + 1);
     }
-    if (staus !== '') {
+    if (status !== '') {
       setFilterCount(count + 1);
     }
     if (checkBoxList.length !== 0) {
@@ -94,25 +94,25 @@ export const Filter: React.FC<FilterProps> = ({
             <CheckBox
               name="Next.JS"
               value="Next.JS"
-              hendleChange={addCheckBoxList}
+              handleChange={addCheckBoxList}
               checked={checkBoxList.includes('Next.JS')}
             />
             <CheckBox
               name="Modern JS"
               value="Modern JS"
-              hendleChange={addCheckBoxList}
+              handleChange={addCheckBoxList}
               checked={checkBoxList.includes('Modern JS')}
             />
             <CheckBox
               name="Web"
               value="Web"
-              hendleChange={addCheckBoxList}
+              handleChange={addCheckBoxList}
               checked={checkBoxList.includes('Web')}
             />
             <CheckBox
               name="Career"
               value="Career"
-              hendleChange={addCheckBoxList}
+              handleChange={addCheckBoxList}
               checked={checkBoxList.includes('Career')}
             />
             <Divider />
@@ -122,7 +122,7 @@ export const Filter: React.FC<FilterProps> = ({
               groupName="문서타입"
               value={'official document'}
               name="공식문서"
-              onClick={(e) => setDocumentType(e.target.value)}
+              onChange={(e) => setDocumentType(e.target.value)}
               checked={documentType === 'official document'}
             />
             <RadioBtn
@@ -130,7 +130,7 @@ export const Filter: React.FC<FilterProps> = ({
               groupName="문서타입"
               value={'blog'}
               name="블로그"
-              onClick={(e) => setDocumentType(e.target.value)}
+              onChange={(e) => setDocumentType(e.target.value)}
               checked={documentType === 'blog'}
             />
             <Divider />
@@ -140,16 +140,16 @@ export const Filter: React.FC<FilterProps> = ({
               groupName="상태"
               value={'progress'}
               name="진행중"
-              onClick={(e) => setStatus(e.target.value)}
-              checked={staus === 'progress'}
+              onChange={(e) => setStatus(e.target.value)}
+              checked={status === 'progress'}
             />
             <RadioBtn
               id="마감"
               groupName="상태"
               value={'done'}
               name="마감"
-              onClick={(e) => setStatus(e.target.value)}
-              checked={staus === 'done'}
+              onChange={(e) => setStatus(e.target.value)}
+              checked={status === 'done'}
             />
             <div className="flex justify-between items-center mt-2 gap-2">
               <Button

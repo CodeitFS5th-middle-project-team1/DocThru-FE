@@ -10,13 +10,13 @@ interface ReplyProps {
 }
 
 export const Reply: React.FC<ReplyProps> = ({ user, create, content }) => {
-  const [isOpne, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>(content);
-  const onHandleCancle = () => {
+  const onHandleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     setFeedback(content);
     setIsOpen(false);
   };
-  const onHandleChange = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onHandleChange = () => {
     setFeedback(feedback);
     setIsOpen(false);
   };
@@ -32,7 +32,7 @@ export const Reply: React.FC<ReplyProps> = ({ user, create, content }) => {
             </div>
           </div>
         </div>
-        {!isOpne ? (
+        {!isOpen ? (
           <Image
             src={modify}
             onClick={() => setIsOpen(true)}
@@ -43,7 +43,7 @@ export const Reply: React.FC<ReplyProps> = ({ user, create, content }) => {
           <div className="flex gap-1 SB-14-0">
             <button
               className="px-5 py-2 text-custom-gray-500 rounded-[10px] cursor-pointer"
-              onClick={onHandleCancle}
+              onClick={onHandleCancel}
             >
               취소
             </button>
@@ -56,7 +56,7 @@ export const Reply: React.FC<ReplyProps> = ({ user, create, content }) => {
           </div>
         )}
       </div>
-      {!isOpne ? (
+      {!isOpen ? (
         <div className="text-custom-gray-700 break-words whitespace-pre-wrap">
           {feedback}
         </div>

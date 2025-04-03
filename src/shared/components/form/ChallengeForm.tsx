@@ -1,16 +1,15 @@
 'use client';
-
 import Text from '../input/text';
 import Date from '../input/date';
 import Button, { BGColor, ButtonBorder } from '../button/Button';
 import { DocumentType, FieldType } from '@/types';
 import { DropDown } from '../dropdown/DropDown';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, SubmitHandler } from 'react-hook-form';
 
 interface ChallengeFormProps {
   category: 'edit' | 'create';
   defaultValues?: ChallengeFormData;
-  onSubmit: (data: any) => Promise<unknown>;
+  onSubmit: SubmitHandler<ChallengeFormData>;
   isPending?: boolean;
 }
 
@@ -43,8 +42,8 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
-  } = useFormContext();
+    formState: { errors: _errors },
+  } = useFormContext<ChallengeFormData>();
 
   const documentType = watch('documentType');
   const field = watch('field');
@@ -91,7 +90,7 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           options={fieldTypeOptions}
           value={field}
           placeholder="분야 선택"
-          handleChange={(v) => setValue('field', v)}
+          handleChange={(v) => setValue('field', v as FieldType)}
         />
       </section>
 
@@ -101,7 +100,7 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           options={documentTypeOptions}
           value={documentType}
           placeholder="문서 타입 선택"
-          handleChange={(v) => setValue('documentType', v)}
+          handleChange={(v) => setValue('documentType', v as DocumentType)}
         />
       </section>
 

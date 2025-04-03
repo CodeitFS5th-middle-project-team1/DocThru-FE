@@ -3,7 +3,7 @@ interface RadioBtnProps {
   groupName: string;
   value: string;
   name: string;
-  onClick: (e) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   checked: boolean;
 }
 
@@ -12,7 +12,7 @@ export const RadioBtn: React.FC<RadioBtnProps> = ({
   value,
   id,
   groupName,
-  onClick,
+  onChange,
   checked,
 }) => {
   return (
@@ -22,7 +22,7 @@ export const RadioBtn: React.FC<RadioBtnProps> = ({
         id={id}
         name={groupName}
         value={value}
-        onClick={onClick}
+        onChange={onChange}
         checked={checked}
       />
       <label>{name}</label>
