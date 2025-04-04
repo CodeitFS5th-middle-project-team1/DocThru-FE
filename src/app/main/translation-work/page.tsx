@@ -13,6 +13,7 @@ import ConfirmCancel from '@/shared/components/modal/confirmCancel';
 import Navigate from '@/shared/components/modal/navigate';
 import Editor from './_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
+import { useRouter } from 'next/navigation';
 
 const TranslationWork: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -22,8 +23,9 @@ const TranslationWork: NextPage = () => {
   const [isDraftQuestionModal, setIsDraftQuestionModal] = useState(false);
   const [isForgiveModal, setIsForgiveModal] = useState(false);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
+  const router = useRouter();
   return (
-    <div className="w-screen h-screen flex flex-col items-center">
+    <div className="w-screen h-screen flex flex-col items-center p-2">
       <div className="max-w-[1000px] w-full h-full">
         <div className="mt-6 flex justify-between h-[80px] items-center">
           <div>
@@ -112,6 +114,7 @@ const TranslationWork: NextPage = () => {
           onClose={() => setIsForgiveModal(false)}
           onConfirm={() => {
             setIsForgiveModal(false);
+            router.push('/main/challenge')
           }}
           onCancel={() => setIsForgiveModal(false)}
         >
@@ -120,13 +123,13 @@ const TranslationWork: NextPage = () => {
         <Navigate
           isOpen={isSuccessModal}
           onClose={() => {}}
-          navigateUrl="/main"
+          navigateUrl="/main/challenge"
           text="작업물 보기"
         >
           제출되었습니다!
         </Navigate>
         {isDrafted && (
-          <div className="border border-[#262626] rounded-[8px] fixed left-1/2 top-[90%] transform -translate-x-1/2 z-30 max-w-[890px] w-full flex justify-between items-center px-5">
+          <div className="border border-[#262626] rounded-[8px] fixed left-1/2 top-[90%] transform -translate-x-1/2 z-30 max-w-[750px] w-full flex justify-between items-center px-5">
             <div className="flex gap-5 items-center">
               <div
                 onClick={() => {
