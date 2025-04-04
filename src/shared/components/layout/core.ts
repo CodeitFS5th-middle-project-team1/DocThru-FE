@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 
 const token = {
   accessToken: 'accessToken',
-  refreshToken: 'refreshToken',
   role: '',
 };
 export const useAuth = () => {
@@ -19,20 +18,10 @@ export const useAuth = () => {
     }
   }, []);
 
-  const devLogin = () => {
-    localStorage.setItem('accessToken', token.accessToken);
-    localStorage.setItem('refeshToken', token.refreshToken);
-    localStorage.setItem('roll', token.role);
-    setIsLogin(token.accessToken);
-    setRole(token.role);
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('refeshToken');
-    localStorage.removeItem('roll');
     setIsLogin(null);
     setRole(null);
   };
-  return { isLogin, role, devLogin, handleLogout };
+  return { isLogin, role, handleLogout };
 };
