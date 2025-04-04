@@ -52,6 +52,7 @@ export const Container = ({
             bgColor={
               maxParticipant || overDeadLine ? BGColor.GRAY : BGColor.BLACK
             }
+            href="/main/translation-work"
             {...props}
           >
             작업 도전하기

@@ -8,7 +8,7 @@ import Button, {
   BGColor,
   ButtonBorder,
 } from '@/shared/components/button/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ConfirmCancel from '@/shared/components/modal/confirmCancel';
 import Navigate from '@/shared/components/modal/navigate';
 import Editor from './_components/Editor';
@@ -16,6 +16,7 @@ import Confirm from '@/shared/components/modal/confirm';
 import { useRouter } from 'next/navigation';
 import { docThro } from '@/api/url';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
 const TranslationWork: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -25,36 +26,93 @@ const TranslationWork: NextPage = () => {
   const [isDraftQuestionModal, setIsDraftQuestionModal] = useState(false);
   const [isForgiveModal, setIsForgiveModal] = useState(false);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
+  const [isErrorModal, setIsErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const router = useRouter();
+  const [challengeId, setChallengeId] = useState<string | null>(null);
+  useEffect(() => {
+    setChallengeId(localStorage.getItem('challengeId'));
+  }, []);
+  console.log(challengeId);
 
-  const createTranslation = async ({ title, content }: { title: string; content: string }) => {
-    try {
-      const response = await docThro.post(`/challenges/689f6b36-0d42-451c-bf2c-5f4e6e176ff1/translations`,{
+  const createTranslation = async ({
+    title,
+    content,
+  }: {
+    title: string;
+    content: string;
+  }) => {
+    const response = await docThro.post(
+      `/challenges/${challengeId}/translations`,
+      {
         title,
         content,
-        userId: "a161269f-6cc8-4b52-a3fc-71e19b458f5c",
-      });
-      return response;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+      }
+    );
+    return response;
+  };
+  type ErrorMessage = {
+    formErrors?: string[]; // 배열임
+    fieldErrors?: Record<string, string[]>;
+  };
+
+  type ErrorResponse = {
+    code?: number;
+    message?: string | ErrorMessage;
   };
 
   const mutation = useMutation({
     mutationFn: createTranslation,
     onSuccess: (data) => {
+      setIsSuccessModal(true);
       console.log('성공', data);
     },
     onError: (error) => {
-      console.error('에러 발생!',error)
-    }
-  })
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const data = axiosError.response?.data;
+      let message = '알 수 없는 에러가 발생했어요.';
+
+      if (data && typeof data.message === 'string') {
+        // message가 그냥 string일 경우
+        message = data.message;
+      } else if (
+        data &&
+        typeof data.message === 'object' &&
+        data.message !== null
+      ) {
+        const messageObj = data.message as ErrorMessage;
+
+        // formErrors가 있는 경우
+        if (
+          Array.isArray(messageObj.formErrors) &&
+          messageObj.formErrors.length > 0
+        ) {
+          message = messageObj.formErrors.join('\n');
+        }
+
+        // fieldErrors가 있는 경우
+        else if (messageObj.fieldErrors) {
+          const fieldMessages = Object.entries(messageObj.fieldErrors)
+            .map(([field, errors]) => `${errors.join('\n')}`)
+            .join('\n');
+          message = fieldMessages;
+        }
+      }
+
+      setErrorMessage(message);
+      setIsErrorModal(true);
+    },
+  });
 
   return (
     <div className="w-screen h-screen flex flex-col items-center p-2">
       <div className="max-w-[1000px] w-full h-full">
         <div className="mt-6 flex justify-between h-[80px] items-center">
-          <div>
+          <div
+            onClick={() => {
+              router.push('/main/challenge');
+            }}
+          >
             <Image
               className={'cursor-pointer'}
               width={120}
@@ -92,8 +150,7 @@ const TranslationWork: NextPage = () => {
                 border={ButtonBorder.RECTANGLE}
                 bgColor={BGColor.BLACK}
                 onClick={() => {
-                  mutation.mutate({ title, content })
-                  setIsSuccessModal(true);
+                  mutation.mutate({ title, content });
                 }}
               >
                 제출하기
@@ -105,7 +162,7 @@ const TranslationWork: NextPage = () => {
           <div className="mb-5">
             <input
               className="text-[36px] w-full"
-              placeholder='제목을 입력하세요.'
+              placeholder="제목을 입력하세요."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -125,6 +182,15 @@ const TranslationWork: NextPage = () => {
         >
           임시저장 되었습니다!
         </Confirm>
+        <Confirm
+          isOpen={isErrorModal}
+          onClose={() => setIsErrorModal(false)}
+          onConfirm={() => {
+            setIsErrorModal(false);
+          }}
+        >
+          {errorMessage}
+        </Confirm>
         <ConfirmCancel
           isOpen={isDraftQuestionModal}
           onClose={() => setIsDraftQuestionModal(false)}
@@ -141,7 +207,7 @@ const TranslationWork: NextPage = () => {
           onClose={() => setIsForgiveModal(false)}
           onConfirm={() => {
             setIsForgiveModal(false);
-            router.push('/main/challenge')
+            router.push('/main/challenge');
           }}
           onCancel={() => setIsForgiveModal(false)}
         >
@@ -150,7 +216,7 @@ const TranslationWork: NextPage = () => {
         <Navigate
           isOpen={isSuccessModal}
           onClose={() => {}}
-          navigateUrl="/main/challenges"
+          navigateUrl={`/main/challenge/${challengeId}`}
           text="작업물 보기"
         >
           제출되었습니다!
