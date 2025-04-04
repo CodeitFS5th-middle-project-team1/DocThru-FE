@@ -14,6 +14,8 @@ import Navigate from '@/shared/components/modal/navigate';
 import Editor from './_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
 import { useRouter } from 'next/navigation';
+import { docThro } from '@/api/url';
+import { useMutation } from '@tanstack/react-query';
 
 const TranslationWork: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -24,6 +26,30 @@ const TranslationWork: NextPage = () => {
   const [isForgiveModal, setIsForgiveModal] = useState(false);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
   const router = useRouter();
+
+  const createTranslation = async ({ title, content }: { title: string; content: string }) => {
+    try {
+      const response = await docThro.post(`/challenges/689f6b36-0d42-451c-bf2c-5f4e6e176ff1/translations`,{
+        title,
+        content,
+        userId: "a161269f-6cc8-4b52-a3fc-71e19b458f5c",
+      });
+      return response;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const mutation = useMutation({
+    mutationFn: createTranslation,
+    onSuccess: (data) => {
+      console.log('성공', data);
+    },
+    onError: (error) => {
+      console.error('에러 발생!',error)
+    }
+  })
+
   return (
     <div className="w-screen h-screen flex flex-col items-center p-2">
       <div className="max-w-[1000px] w-full h-full">
@@ -66,6 +92,7 @@ const TranslationWork: NextPage = () => {
                 border={ButtonBorder.RECTANGLE}
                 bgColor={BGColor.BLACK}
                 onClick={() => {
+                  mutation.mutate({ title, content })
                   setIsSuccessModal(true);
                 }}
               >
@@ -123,7 +150,7 @@ const TranslationWork: NextPage = () => {
         <Navigate
           isOpen={isSuccessModal}
           onClose={() => {}}
-          navigateUrl="/main/challenge"
+          navigateUrl="/main/challenges"
           text="작업물 보기"
         >
           제출되었습니다!
