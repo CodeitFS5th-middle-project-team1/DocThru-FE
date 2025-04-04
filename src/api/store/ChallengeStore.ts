@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { Challenge } from '@/types';
-import getChallenge from '../ChallengeApi';
+import { Challenge, ChallengeList } from '@/types';
+import { getChallenge, getChallengeList } from '../ChallengeApi';
 
 interface ChallengeState {
   challenge: Challenge | null;
@@ -19,7 +19,35 @@ export const useChallengeStore = create<ChallengeState>((set) => ({
 
     try {
       const response = await getChallenge(challengeId);
-      set({ challenge: response, loading: false });
+      set({ challenge: response.challenge, loading: false });
+    } catch (error: any) {
+      set({
+        error:
+          error.response?.data?.message || '데이터를 불러오는 중 오류 발생',
+        loading: false,
+      });
+    }
+  },
+}));
+
+interface ChallengeListState {
+  challengeList: ChallengeList[] | null;
+  loading: boolean;
+  error: string | null;
+  fetchChallengeList: () => Promise<void>;
+}
+
+export const useChallengeListStore = create<ChallengeListState>((set) => ({
+  challengeList: null,
+  loading: false,
+  error: null,
+
+  fetchChallengeList: async () => {
+    set({ loading: true, error: null });
+
+    try {
+      const response = await getChallengeList();
+      set({ challengeList: response.challenges, loading: false });
     } catch (error: any) {
       set({
         error:

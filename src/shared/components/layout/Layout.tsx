@@ -1,17 +1,22 @@
 'use client';
+
+import { useRouter } from 'next/navigation';
 import { useAuth } from './core';
 import Header from './Header';
+import { PATH } from '@/constants';
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { devLogin, isLogin, role, handleLogout } = useAuth();
+  const router = useRouter();
+  const { isLogin, role, handleLogout } = useAuth();
+
   return (
     <div className="w-screen h-screen flex flex-col items-center">
       <Header
         isLogin={isLogin}
-        onLogin={devLogin}
+        onLogin={() => router.push(PATH.login)}
         onLogout={handleLogout}
         role={role}
       />

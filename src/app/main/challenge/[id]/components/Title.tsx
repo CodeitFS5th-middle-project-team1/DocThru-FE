@@ -7,26 +7,26 @@ import Image from 'next/image';
 
 interface TitleProps {
   title?: string;
-  document: DocumentType;
-  field: FieldType;
-  content: string;
-  nickname: string;
-  currentParticipants: number;
-  maxParticipants: number;
-  deadLine: string;
-  originUrl: string;
+  document?: DocumentType;
+  field?: FieldType;
+  content?: string;
+  nickname?: string;
+  currentParticipants?: number;
+  maxParticipants?: number;
+  deadLine?: string;
+  originUrl?: string;
 }
 
 export const Title: React.FC<TitleProps> = ({
-  title,
-  document,
-  field,
-  content,
+  title = '',
+  document = '',
+  field = '',
+  content = '',
   nickname = '',
-  currentParticipants,
-  maxParticipants,
-  deadLine,
-  originUrl,
+  currentParticipants = 0,
+  maxParticipants = 0,
+  deadLine = '',
+  originUrl = '',
 }) => {
   return (
     <div className="w-full py-6">

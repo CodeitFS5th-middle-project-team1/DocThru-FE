@@ -3,18 +3,19 @@ import {
   LoginResponse,
   SignupPayload,
 } from '@/core/contexts/AuthProvider';
-import instance from './axiosInstance';
+
+import { docThro } from '@/api/url';
 
 export const loginFn = async (
   payload: LoginPayload
 ): Promise<LoginResponse> => {
-  const res = await instance.post<LoginResponse>('/api/auth/login', payload);
+  const res = await docThro.post<LoginResponse>('/auth/login', payload);
   return res.data;
 };
 
 export const signupFn = async (
   payload: SignupPayload
 ): Promise<LoginResponse> => {
-  const res = await instance.post<LoginResponse>('/api/auth/signup', payload);
+  const res = await docThro.post<LoginResponse>('/auth/signup', payload);
   return res.data;
 };

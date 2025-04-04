@@ -1,16 +1,21 @@
 import Image from 'next/image';
 import prev from '@images/arrow-icon/no-stick/black.svg';
 import next from '@images/arrow-icon/no-stick/gray.svg';
+import { Translation } from '@/types';
 import { ListItems } from './ListItems';
+
 interface ParticipationProps {
+  List: Translation[] | null;
   currentPage: number;
   tatalPage: number;
 }
 
 export const Participation: React.FC<ParticipationProps> = ({
+  List,
   currentPage,
   tatalPage,
 }) => {
+  const max = List ? List.length / 5 : 0;
   return (
     <div className="flex flex-col border-2 border-custom-gray-800 px-6 py-4 rounded-2xl">
       <div className="flex justify-between items-center ">
@@ -29,11 +34,17 @@ export const Participation: React.FC<ParticipationProps> = ({
           </div>
         </div>
       </div>
-      <ListItems likeCount={12} rank="1" user={{ nickname: 'asd' }} />
-      <ListItems likeCount={12} rank="1" user={{ nickname: 'asd' }} />
-      <ListItems likeCount={12} rank="1" user={{ nickname: 'asd' }} />
-      <ListItems likeCount={12} rank="1" user={{ nickname: 'asd' }} />
-      <ListItems likeCount={12} rank="1" user={{ nickname: 'asd' }} />
+      {List?.map((d, index) => {
+        return (
+          <ListItems
+            key={index}
+            id={d.id}
+            likeCount={d.likeCount}
+            rank={index}
+            user={d.user}
+          />
+        );
+      })}
     </div>
   );
 };
