@@ -26,21 +26,30 @@ docThro.interceptors.request.use(
 
 docThro.interceptors.response.use(
   (response) => {
-    const newAccessToken = response.headers['authorization']?.split(' ')[1];
-    if (newAccessToken) {
-      localStorage.setItem('accessToken', newAccessToken);
+    const authHeader =
+      response.headers['authorization'] || response.headers['Authorization'];
+    if (authHeader) {
+      const token = authHeader.startsWith('Bearer ')
+        ? authHeader.split(' ')[1]
+        : authHeader;
+
+      localStorage.setItem('accessToken', token);
     }
     return response;
   },
 
   async (error) => {
+    console.error(error);
+
     if (error.response?.status === 401) {
       console.error('Access Token 만료! 로그인 페이지로 이동합니다.');
+
       if (typeof window !== 'undefined') {
         localStorage.removeItem('accessToken');
-        window.location.href = '/main/login';
+        window.location.href = '/auth/login';
       }
     }
+
     return Promise.reject(error);
   }
 );
