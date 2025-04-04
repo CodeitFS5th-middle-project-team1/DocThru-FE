@@ -2,7 +2,6 @@
 
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { challengeData } from '@/mock';
 import { useTranslationStore } from '@/api/store/translationStore';
 import { Title } from './_components/Title';
 import { Author } from './_components/Author';
@@ -24,11 +23,7 @@ const TranslationDetail = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Title
-        title={translation?.title}
-        document={challengeData.documentType}
-        field={challengeData.field}
-      />
+      <Title title={translation?.title} />
       <Author
         user={translation?.user}
         create={translation?.createdAt}
