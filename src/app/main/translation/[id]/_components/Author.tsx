@@ -8,7 +8,7 @@ interface AuthorProps {
   like?: boolean;
   likeCount?: number;
   user?: { id: string; nickname: string };
-  create?: string;
+  create?: Date | string;
 }
 
 export const Author: React.FC<AuthorProps> = ({
@@ -35,7 +35,7 @@ export const Author: React.FC<AuthorProps> = ({
           </div>
         </div>
         <div className="text-custom-gray-500">
-          <span>{create ? new Date(create).toLocaleDateString() : ''}</span>
+          <span>{create ? create : ''}</span>
         </div>
       </div>
       <Divider />
