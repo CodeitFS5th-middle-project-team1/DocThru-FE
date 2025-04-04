@@ -53,11 +53,12 @@ export interface User {
 /** 번역 저장 타입 */
 export interface Translation {
   id: string;
-  challengeId: string;
-  userId: string;
-  likeCount: number;
   title: string;
   content: string;
+  user: { id: string; nickname: string };
+  challengeId: string;
+  likeCount: number;
+  isLiked: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -93,6 +94,18 @@ export interface Feedback {
   content: string;
   createdAt: string;
   updatedAt: string;
+}
+/** 챌린지(목록) */
+export interface ChallengeList {
+  id: string;
+  title: string;
+  field: FieldType;
+  maxParticipants: number;
+  currentParticipants: number;
+  deadline: string;
+  documentType: DocumentType;
+  isParticipantsFull: boolean;
+  isDeadlineFull: boolean;
 }
 
 /** 챌린지(게시글) 타입 */
