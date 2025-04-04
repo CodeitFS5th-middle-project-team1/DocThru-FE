@@ -3,11 +3,10 @@ import { useAuthStore } from '@/stores/authStore';
 import { toast } from 'react-hot-toast';
 import { saveRedirectPath } from '../authRedirect';
 
-const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
+const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 const instance = axios.create({
   baseURL,
-  withCredentials: true,
 });
 
 interface CustomRequest extends AxiosRequestConfig {
@@ -46,7 +45,6 @@ instance.interceptors.response.use(
           refreshToken,
         });
         const { accessToken } = res.data;
-
         setAuth(user, accessToken, refreshToken);
         originalRequest.headers = originalRequest.headers || {};
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;

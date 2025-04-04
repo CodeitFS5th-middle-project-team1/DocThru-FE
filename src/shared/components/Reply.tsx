@@ -5,13 +5,20 @@ import { useState } from 'react';
 
 interface ReplyProps {
   user: { nickName: string; img?: string };
-  create: Date;
+  create: string;
   content: string;
+  userId?: string;
 }
 
-export const Reply: React.FC<ReplyProps> = ({ user, create, content }) => {
+export const Reply: React.FC<ReplyProps> = ({
+  user,
+  create,
+  content,
+  userId,
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>(content);
+
   const onHandleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     setFeedback(content);
     setIsOpen(false);
@@ -27,18 +34,18 @@ export const Reply: React.FC<ReplyProps> = ({ user, create, content }) => {
           <Image src={user.img ? user.img : profile} alt="profile" />
           <div className="flex flex-col gap-1">
             <div className="text-custom-gray-800 M-14-0">{user.nickName}</div>
-            <div className="text-custom-gray-400 M-12-0">
-              {create.toLocaleDateString()}
-            </div>
+            <div className="text-custom-gray-400 M-12-0">{create}</div>
           </div>
         </div>
         {!isOpen ? (
-          <Image
-            src={modify}
-            onClick={() => setIsOpen(true)}
-            alt="modify"
-            className="R-16-0 cursor-pointer"
-          />
+          userId !== undefined && (
+            <Image
+              src={modify}
+              onClick={() => setIsOpen(true)}
+              alt="modify"
+              className="R-16-0 cursor-pointer"
+            />
+          )
         ) : (
           <div className="flex gap-1 SB-14-0">
             <button
@@ -65,7 +72,7 @@ export const Reply: React.FC<ReplyProps> = ({ user, create, content }) => {
           className="w-full"
           value={feedback}
           onChange={(e) => setFeedback(e.target.value)}
-        ></textarea>
+        />
       )}
     </div>
   );

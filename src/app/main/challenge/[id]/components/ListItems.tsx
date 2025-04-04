@@ -4,18 +4,23 @@ import like from '@images/like-icon/small-active.svg';
 import profile from '@images/profile-icon/member.svg';
 import link from '@images/arrow-icon/no-stick/black.svg';
 import { Divider } from '@/shared/components/Divider';
+import { useRouter } from 'next/navigation';
+import { PATH } from '@/constants';
 
 interface ListItemsProps {
-  rank: string;
+  id: string;
+  rank: string | number;
   user: { nickname: string };
   likeCount: number;
 }
 
 export const ListItems: React.FC<ListItemsProps> = ({
+  id,
   rank,
   user,
   likeCount,
 }) => {
+  const router = useRouter();
   return (
     <div className="flex-col ">
       <div className="flex justify-between items-center ">
@@ -40,7 +45,10 @@ export const ListItems: React.FC<ListItemsProps> = ({
             <Image src={like} alt="like" />
             <div>{likeCount}</div>
           </div>
-          <div className="flex gap-0.5 justify-center items-center">
+          <div
+            onClick={() => router.push(`${PATH.translation}/${id}`)}
+            className="flex gap-0.5 justify-center items-center"
+          >
             <div>작업물 보기</div>
             <div className="w-4 h-4 justify-center items-center">
               <Image src={link} alt="link" />

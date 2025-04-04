@@ -1,6 +1,5 @@
-import instance from '@/lib/api/axiosInstance';
+import { docThro } from '@/api/url';
 import { ChallengeFormData } from '@/shared/components/form/ChallengeForm';
-import { useAuthStore } from '@/stores/authStore';
 import { Challenge, DocumentType, FieldType } from '@/types';
 
 export interface FetchChallengeParams {
@@ -10,7 +9,6 @@ export interface FetchChallengeParams {
   fields?: string[];
   approvalStatus?: string;
   keyword?: string;
-  status?: string;
 }
 
 interface FetchChallengeResponse {
@@ -31,34 +29,25 @@ export interface ChallengeFormRequest {
 export const fetchChallenges = async (
   params: FetchChallengeParams
 ): Promise<FetchChallengeResponse> => {
-  const res = await instance.get('/api/challenges', { params });
-  return res.data;
-};
-
-export const fetchChallengeByUser = async (
-  params: FetchChallengeParams
-): Promise<FetchChallengeResponse> => {
-  const res = await instance.get('/api/challenges/manage', {
-    params,
-  });
+  const res = await docThro.get('/challenges', { params });
   return res.data;
 };
 
 export const fetchChallengeById = async (
   id: string
 ): Promise<ChallengeFormData> => {
-  const response = await instance.get(`/api/challenges/${id}`);
+  const response = await docThro.get(`/challenges/${id}`);
   console.log('response', response);
   return response.data.challenge;
 };
 
 export const createChallenge = async (data: ChallengeFormRequest) => {
   console.log('data', data);
-  const res = await instance.post('/api/challenges', data);
+  const res = await docThro.post('/challenges', data);
   return res.data;
 };
 
 export const editChallenge = async (id: string, data: ChallengeFormRequest) => {
-  const res = await instance.patch(`/api/challenges/${id}`, data);
+  const res = await docThro.patch(`/challenges/${id}`, data);
   return res.data;
 };

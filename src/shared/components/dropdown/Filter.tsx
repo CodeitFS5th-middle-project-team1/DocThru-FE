@@ -13,11 +13,7 @@ interface FilterProps {
   textSize?: 'sm' | 'lg';
 }
 
-export const Filter: React.FC<FilterProps> = ({
-  options,
-  handleChange,
-  textSize,
-}) => {
+export const Filter: React.FC<FilterProps> = ({ textSize }) => {
   const [open, setOpen] = useState(false);
   const [checkBoxList, setCheckBoxList] = useState<string[]>([]);
   const [documentType, setDocumentType] = useState<string>('');
@@ -40,6 +36,8 @@ export const Filter: React.FC<FilterProps> = ({
     setCheckBoxList([]);
     setDocumentType('');
     setStatus('');
+    setFilterCount(0);
+    setOpen(false);
   };
   const selectBoxStyle =
     'flex flex-row justify-between items-center border-[1px] border-custom-gray-300 rounded-4xl cursor-pointer ';
@@ -47,16 +45,13 @@ export const Filter: React.FC<FilterProps> = ({
     'w-[343px] absolute border-[2px] border-custom-gray-200 bg-white z-10 mt-2 rounded-[8px] py-4 px-4';
 
   const handleApply = () => {
-    const count = 0;
-    if (documentType !== '') {
-      setFilterCount(count + 1);
-    }
-    if (status !== '') {
-      setFilterCount(count + 1);
-    }
-    if (checkBoxList.length !== 0) {
-      setFilterCount(count + checkBoxList.length + 1);
-    }
+    let count = 0;
+    if (documentType !== '') count += 1;
+    if (status !== '') count += 1;
+    if (checkBoxList.length !== 0) count += checkBoxList.length;
+
+    setFilterCount(count);
+
     setOpen(false);
   };
 

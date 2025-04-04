@@ -7,8 +7,11 @@ import { DocumentType, FieldType } from '@/types';
 import { Chip } from '../chip/chip';
 import Button, { BGColor, ButtonBorder, ButtonImg } from '../button/Button';
 import { ChipCardStatus } from '../chip/ChipCardStatus';
+import { useRouter } from 'next/navigation';
+import { PATH } from '@/constants';
 
 export interface CardProps {
+  id: string;
   category: 'base' | 'my';
   title: string;
   DocumentType: DocumentType;
@@ -20,6 +23,7 @@ export interface CardProps {
 }
 
 export const Card = ({
+  id,
   category,
   title,
   DocumentType,
@@ -31,9 +35,12 @@ export const Card = ({
 }: CardProps) => {
   const maxParticipant = maxParticipants === currentParticipants;
   const overDeadLine = dayjs(deadLine).isBefore(dayjs());
-
+  const router = useRouter();
   return (
-    <div className="flex flex-col w-full justify-center items-center rounded-2xl border-2 border-custom-gray-800 gap-4 p-6 ">
+    <div
+      onClick={() => router.push(`${PATH.challenge}/${id}`)}
+      className="flex flex-col w-full justify-center items-center rounded-2xl border-2 border-custom-gray-800 gap-4 p-6 "
+    >
       <section className="flex w-full justify-between relative">
         <div className="flex flex-col gap-4 ">
           {maxParticipant || overDeadLine ? (
@@ -48,8 +55,8 @@ export const Card = ({
           )}
           <p className="text-xl text-custom-gray-700 font-bold">{title}</p>
           <div className="flex gap-1.5 ">
-            <Chip label={FieldType} customClass="" />
-            <Chip label={DocumentType} customClass="" />
+            <Chip label={FieldType} />
+            <Chip label={DocumentType} />
           </div>
         </div>
         <Image
