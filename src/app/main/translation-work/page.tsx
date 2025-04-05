@@ -15,13 +15,14 @@ import Editor from './_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
 import { useRouter } from 'next/navigation';
 import { docThro } from '@/api/url';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { ErrorMessage, ErrorResponse } from '@/types';
 
 const TranslationWork: NextPage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [isDrafted, setIsDrafted] = useState(true);
+  const [isDrafted, setIsDrafted] = useState(false);
   const [isDraftModal, setIsDraftModal] = useState(false);
   const [isDraftQuestionModal, setIsDraftQuestionModal] = useState(false);
   const [isForgiveModal, setIsForgiveModal] = useState(false);
@@ -30,11 +31,13 @@ const TranslationWork: NextPage = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const router = useRouter();
   const [challengeId, setChallengeId] = useState<string | null>(null);
+
+  // 로컬 스토리지에서 저장되어 있는 Challenge Id를 불러옵니다.
   useEffect(() => {
     setChallengeId(localStorage.getItem('challengeId'));
   }, []);
-  console.log(challengeId);
 
+  // 번역물을 생성하는 API
   const createTranslation = async ({
     title,
     content,
@@ -51,17 +54,42 @@ const TranslationWork: NextPage = () => {
     );
     return response;
   };
-  type ErrorMessage = {
-    formErrors?: string[]; // 배열임
-    fieldErrors?: Record<string, string[]>;
+
+  // 임시 저장 생성 API
+  const createDraftTranslation = async ({
+    title,
+    content,
+  }: {
+    title: string;
+    content: string;
+  }) => {
+    const response = await docThro.post(`/challenges/${challengeId}/drafts`, {
+      title,
+      content,
+    });
+    return response;
   };
 
-  type ErrorResponse = {
-    code?: number;
-    message?: string | ErrorMessage;
+  // 임시 저장된 번역물을 가져오는 API
+  const getDraftTranslation = async () => {
+    const response = await docThro.get(`/challenges/${challengeId}/drafts`);
+    return response;
   };
 
-  const mutation = useMutation({
+  const { data: draftData } = useQuery({
+    queryKey: ['draft', challengeId],
+    queryFn: getDraftTranslation,
+  });
+
+  useEffect(() => {
+    if (draftData?.status === 200) {
+      setIsDrafted(true);
+    }
+    console.log(draftData, 'draftData');
+  }, [draftData]);
+
+  // 번역물 생성 Mutation
+  const createTranslationMutation = useMutation({
     mutationFn: createTranslation,
     onSuccess: (data) => {
       setIsSuccessModal(true);
@@ -88,7 +116,6 @@ const TranslationWork: NextPage = () => {
           messageObj.formErrors.length > 0
         ) {
           message = messageObj.formErrors.join('\n');
-          
         }
 
         // fieldErrors가 있는 경우
@@ -97,11 +124,27 @@ const TranslationWork: NextPage = () => {
             .map(([field, errors]) => `${errors.join('\n')}`)
             .join('\n');
           message = fieldMessages;
-          console.log("test")
         }
       }
-      if(message === "이미 이 챌린지에 번역물을 제출하셨습니다. 한 챌린지당 하나의 번역물만 제출할 수 있습니다.") message = "이미 참여한 챌린지입니다."
+      if (
+        message ===
+        '이미 이 챌린지에 번역물을 제출하셨습니다. 한 챌린지당 하나의 번역물만 제출할 수 있습니다.'
+      )
+        message = '이미 참여한 챌린지입니다.';
       setErrorMessage(message);
+      setIsErrorModal(true);
+    },
+  });
+
+  // 임시 저장 번역물 생성 Mutation
+  const createDraftMutation = useMutation({
+    mutationFn: createDraftTranslation,
+    onSuccess: (data) => {
+      setIsDraftModal(true);
+      console.log('성공', data);
+    },
+    onError: (error) => {
+      setErrorMessage('임시저장 중 에러 발생!');
       setIsErrorModal(true);
     },
   });
@@ -141,7 +184,7 @@ const TranslationWork: NextPage = () => {
                 border={ButtonBorder.RECTANGLE_BORDER}
                 bgColor={BGColor.WHITE}
                 onClick={() => {
-                  setIsDraftModal(true);
+                  createDraftMutation.mutate({ title, content });
                 }}
               >
                 임시저장
@@ -152,7 +195,7 @@ const TranslationWork: NextPage = () => {
                 border={ButtonBorder.RECTANGLE}
                 bgColor={BGColor.BLACK}
                 onClick={() => {
-                  mutation.mutate({ title, content });
+                  createTranslationMutation.mutate({ title, content });
                 }}
               >
                 제출하기
@@ -248,7 +291,9 @@ const TranslationWork: NextPage = () => {
                 border={ButtonBorder.RECTANGLE}
                 bgColor={BGColor.BLACK}
                 onClick={() => {
-                  setIsDraftQuestionModal(true);
+                  setTitle(draftData?.data.data.title);
+                  setContent(draftData?.data.data.content);
+                  setIsDrafted(false);
                 }}
               >
                 불러오기
