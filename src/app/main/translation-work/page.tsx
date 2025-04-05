@@ -88,6 +88,7 @@ const TranslationWork: NextPage = () => {
           messageObj.formErrors.length > 0
         ) {
           message = messageObj.formErrors.join('\n');
+          
         }
 
         // fieldErrors가 있는 경우
@@ -96,9 +97,10 @@ const TranslationWork: NextPage = () => {
             .map(([field, errors]) => `${errors.join('\n')}`)
             .join('\n');
           message = fieldMessages;
+          console.log("test")
         }
       }
-
+      if(message === "이미 이 챌린지에 번역물을 제출하셨습니다. 한 챌린지당 하나의 번역물만 제출할 수 있습니다.") message = "이미 참여한 챌린지입니다."
       setErrorMessage(message);
       setIsErrorModal(true);
     },
