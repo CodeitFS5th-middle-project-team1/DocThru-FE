@@ -28,7 +28,7 @@ const ChallengeTable = ({ data }) => {
                 {row.title}
               </td>
               <td className="flex-[1.2] pl-2">{row.people}</td>
-              <td className="flex-[1.3]">{row.applyDate}</td>
+              <td className="flex-[1.3]">{row.createdAt}</td>
               <td className="flex-[1.3]">{row.deadline}</td>
               <td className="flex-[1.5] ">
                 <Chip label={row.status} />

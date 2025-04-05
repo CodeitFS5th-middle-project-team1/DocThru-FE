@@ -27,10 +27,10 @@ const AdminChallenge: NextPage = () => {
       option1: { approvalStatus: 'PENDING' }, // 승인 대기
       option2: { approvalStatus: 'APPROVED' }, // 신청 승인
       option3: { approvalStatus: 'REJECTED' }, // 신청 거절
-      option4: { orderBy: ChallengeOrderBy.APPLY_FIRST }, // 신청 시간 빠른순
-      option5: { orderBy: ChallengeOrderBy.APPLY_LAST }, // 신청 시간 느린순
-      option6: { orderBy: ChallengeOrderBy.DEADLINE_FIRST }, // 마감 기한 빠른순
-      option7: { orderBy: ChallengeOrderBy.DEADLINE_LAST }, // 마감 기한 느린순
+      option4: { order: ChallengeOrderBy.CREATED_FIRST }, // 신청 시간 빠른순
+      option5: { order: ChallengeOrderBy.CREATED_LAST }, // 신청 시간 느린순
+      option6: { order: ChallengeOrderBy.DEADLINE_FIRST }, // 마감 기한 빠른순
+      option7: { order: ChallengeOrderBy.DEADLINE_LAST }, // 마감 기한 느린순
     };
     return mapping[value] || {};
   };
@@ -77,7 +77,7 @@ const AdminChallenge: NextPage = () => {
       category: challenge.field,
       title: challenge.title,
       people: challenge.maxParticipants,
-      applyDate: new Date(challenge.createdAt).toLocaleDateString('ko-KR', {
+      createdAt: new Date(challenge.createdAt).toLocaleDateString('ko-KR', {
         year: '2-digit',
         month: '2-digit',
         day: '2-digit',

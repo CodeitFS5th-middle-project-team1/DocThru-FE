@@ -1,20 +1,18 @@
 export enum ChallengeOrderBy {
-  DEFAULT = 'default',
-  APPLY_FIRST = 'applyFirst', // 승인 최신 순
-  APPLY_LAST = 'applyLast', // 승인 오래된 순
+  CREATED_FIRST = 'default',
+  CREATED_LAST = 'createdLast',
   DEADLINE_FIRST = 'deadLineFirst', // 마감일 빠른 순
   DEADLINE_LAST = 'deadLineLast', // 마감일 느린 순
 }
 
-// 관리자용 챌린지 목록 조회 파라미터 타입
 export interface AdminChallengeParams {
-  orderBy?: ChallengeOrderBy;
+  order?: ChallengeOrderBy | string;
   page?: number;
   limit?: number;
   approvalStatus?: string;
   keyword?: string;
 }
-// 관리자용 챌린지 목록 응답 타입
+
 export interface AdminChallengeResponse {
   challenges: {
     id: string;
@@ -36,19 +34,21 @@ export interface AdminChallengeResponse {
 export const fetchChallengesByAdmin = async (
   params: AdminChallengeParams = {}
 ): Promise<AdminChallengeResponse> => {
-  const { orderBy, page = 1, limit = 10, approvalStatus, keyword } = params;
+  const { order, page = 1, limit = 10, approvalStatus, keyword } = params;
 
   const baseURL =
     process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5004/api';
 
   // URL 쿼리 파라미터
   const queryParams = new URLSearchParams();
-  if (orderBy) queryParams.append('orderBy', orderBy);
+  console.log('정렬 조건:', order);
+  if (order) queryParams.append('order', order);
   if (page) queryParams.append('page', page.toString());
   if (limit) queryParams.append('limit', limit.toString());
   if (approvalStatus) queryParams.append('approvalStatus', approvalStatus);
   if (keyword) queryParams.append('keyword', keyword);
-
+  const finalUrl = `${baseURL}/challenges/manage?${queryParams.toString()}`;
+  console.log('요청 URL:', finalUrl);
   // 액세스 토큰 가져오기
   let token = '';
   if (typeof window !== 'undefined') {
@@ -63,7 +63,7 @@ export const fetchChallengesByAdmin = async (
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      // Next.js 캐싱 옵션
+      // credentials: 'include', // 쿠키 포함
       cache: 'no-store', // 매번 새로운 데이터 요청 -> 관리자 페이지는 항상 최신 데이터
     }
   );
