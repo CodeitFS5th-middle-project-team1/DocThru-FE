@@ -7,13 +7,13 @@ import Layout from '@/shared/components/layout/Layout';
 import { usePathname } from 'next/navigation';
 import ReactQueryProvider from '@/core/contexts/ReactQueryProvider';
 import { AuthProvider } from '@/core/contexts/AuthProvider';
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
+  const isLandingPage = pathname === '/'; //랜딩페이지는 AuthProvider 제외
   const isAuthPage =
     pathname.startsWith('/auth') || pathname.startsWith('/admin');
 
@@ -23,7 +23,11 @@ export default function RootLayout({
         <ToastProvider />
         <ReactQueryProvider>
           <AuthProvider>
-            {isAuthPage ? <>{children}</> : <Layout>{children}</Layout>}
+            {isAuthPage || isLandingPage ? (
+              <>{children}</>
+            ) : (
+              <Layout>{children}</Layout>
+            )}
           </AuthProvider>
         </ReactQueryProvider>
       </body>
