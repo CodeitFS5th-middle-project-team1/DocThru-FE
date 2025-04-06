@@ -1,11 +1,11 @@
 'use client';
 import Logo from '@/shared/Img/logo.svg';
 import Image from 'next/image';
-import ProfileDropDown from '../dropdown/ProfileDropdown';
-import { Divider } from '../Divider';
+import ProfileDropdown from '@/shared/components/dropdown/ProfileDropdown';
+import { Divider } from '@/shared/components/Divider';
 import { useRouter, usePathname } from 'next/navigation';
 // import { PATH } from '@/constants';
-import { Tab, TextPosition, TabActive } from '../tab/Tab';
+import { Tab, TextPosition, TabActive } from '@/shared/components/tab/Tab';
 import { useAuth } from '@/core/contexts/AuthProvider';
 
 interface HeaderProps {
@@ -68,7 +68,7 @@ const AdminHeader: React.FC<HeaderProps> = ({}) => {
         </div>
 
         {/* 우측 드롭다운 */}
-        <ProfileDropDown
+        <ProfileDropdown
           nickname={user?.nickname || '닉네임 없음'} // 사용자 닉네임이 없을 경우
           role={getUserRoleDisplay()}
           onLogout={() => console.log('로그아웃')} // 나중에 로그아웃 기능 추가하면 수정 onLogout={handleLogout}

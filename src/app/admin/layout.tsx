@@ -2,7 +2,7 @@
 
 // import { useRouter } from 'next/navigation';
 //import { useAuth } from '@/core/contexts/AuthProvider'; // 경로 확인 필요
-import AdminHeader from '@/shared/components/layout/AdminHeader';
+import AdminHeader from './components/AdminHeader';
 
 export default function AdminLayout({
   children,

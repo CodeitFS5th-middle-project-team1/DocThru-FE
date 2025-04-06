@@ -50,12 +50,12 @@ const ProfileDropdown: React.FC<Props> = ({ nickname, role, onLogout }) => {
             </div>
           </div>
           <hr className="my-2" />
-          {/* <button
+          <button
             onClick={onLogout}
             className="text-sm text-gray-600 hover:text-black"
           >
             로그아웃
-          </button> */}
+          </button>
         </div>
       )}
     </div>
