@@ -27,12 +27,15 @@ type Story = StoryObj<typeof meta>;
 
 export const card: Story = {
   args: {
+    id: '1',
+    role: 'base',
+    status: 'completed',
     title: 'Next.js - App Router: Routing Fundamentals',
     DocumentType: DocumentType.OFFICIAL,
     FieldType: FieldType.NEXTJS,
     deadLine: '2025-03-28',
     currentParticipants: 15,
     maxParticipants: 15,
-    href: '/',
+    onClick: () => console.log('clicked!'),
   },
 };

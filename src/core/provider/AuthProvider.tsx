@@ -1,9 +1,7 @@
 'use client';
-import { redirectAfterAuth } from '@/lib/authRedirect';
-import { AuthState, SetUser, useAuthStore } from '@/stores/authStore';
-import { usePathname, useRouter } from 'next/navigation';
+
+import { AuthState, SetUser, useAuthStore } from '@/api/auth/AuthStore';
 import { createContext, useContext, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 
 export interface LoginPayload {
   email: string;
@@ -36,11 +34,11 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user, accessToken, setAuth, clearAuth } = useAuthStore();
+  const { user, setAuth, clearAuth } = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
   // const router = useRouter();
   // const pathname = usePathname();
-  const isLoggedIn = !!accessToken;
+  const isLoggedIn = !!user;
 
   // const isProtected = protectedRoutes.some((route) =>
   //   pathname?.startsWith(route.replace('[id]', ''))

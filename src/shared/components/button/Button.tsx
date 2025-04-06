@@ -1,4 +1,4 @@
-import { ReactNode, ButtonHTMLAttributes } from 'react';
+import { ReactNode, ButtonHTMLAttributes, AnchorHTMLAttributes } from 'react';
 import Image from 'next/image';
 import linkIcon from '@images/arrow-icon/normal/link_click.svg';
 import watchWorkIcon from '@images/filter-icon/document.svg';
@@ -9,134 +9,219 @@ import feedbackOffIcon from '@images/feedback-icon/inactive.svg';
 import feedbackOnIcon from '@images/feedback-icon/active.svg';
 import Link from 'next/link';
 
-// export enum ButtonCategory {
-//   FILL = "fill",
-//   OUTLINE = "outline",
-//   SOLID = "solid",
-//   TRANSPARENT = "transparent"
-//   CONTINUE= "continue"
-//   WATCHWORK= "watchWork"
-//   NEWCHALLENGE = "newChallenge"
-// }
-
-export enum ButtonBorder {
-  LITTLE_RECTANGLE = 'littleRectangle',
-  LITTLE_RECTANGLE_BORDER = 'littleRectangleBorder',
-  RECTANGLE = 'rectangle',
-  RECTANGLE_BORDER = 'rectangleBorder',
-  RECTANGLE_BIG_BORDER = 'rectangleBigBorder',
-  ROUND = 'round',
-  ROUND_BORDER = 'roundBorder',
-}
-
-export enum BGColor {
-  RED = 'red',
-  YELLOW = 'yellow',
-  WHITE = 'white',
-  GRAY = 'gray',
-  DARK_GRAY = 'darkGary',
-  BLACK = 'black',
-}
-
-export enum ButtonImg {
-  TRANSPARENT = 'transparent',
-  WATCHWORK = 'watchWork',
-  NEWCHALLENGE = 'newChallenge',
+export enum ButtonCategory {
+  Auth = 'auth',
+  NEW_CHALLENGE = 'newChallenge',
+  EDIT = 'edit',
+  RESET = 'reset',
+  APPLY = 'apply',
   CONTINUE = 'continue',
-  FEEDBACKON = 'feedbackOn',
-  FEEDBACKOFF = 'feedbackOff',
+  MY_WORK = 'myWork',
+  LINK = 'link',
+  CANCEL = 'cancel',
+  YES = 'yes',
+  NO = 'no',
+  DISABLE = 'disable',
+  TO_DO_WORK = 'toDoWork',
+  WATCH_MORE = 'watchMore',
+  FEEDBACK_ON = 'feedBackOn',
+  FEEDBACK_OFF = 'feedBackOff',
+  DRAFT = 'draft',
+  SUBMIT = 'submit',
+  DROP = 'drop',
+  LOAD = 'load',
+  APPROVE = 'approve',
+  REJECT = 'reject',
+  MODIFY = 'modify',
+  VIEW_ORIGINAL = 'viewOriginal',
 }
 
-const ButtonBorderStyle = {
-  [ButtonBorder.LITTLE_RECTANGLE]: 'rounded-lg ',
-  [ButtonBorder.LITTLE_RECTANGLE_BORDER]:
-    'rounded-lg border-2 border-custom-gray-800 ',
-  [ButtonBorder.RECTANGLE]: 'rounded-xl ',
-  [ButtonBorder.RECTANGLE_BORDER]: 'rounded-xl border-1 border-custom-gray-800',
-  [ButtonBorder.RECTANGLE_BIG_BORDER]:
-    'rounded-xl border-3 border-custom-gray-800',
-  [ButtonBorder.ROUND]: 'rounded-4xl',
-  [ButtonBorder.ROUND_BORDER]: 'rounded-4xl border-1 border-custom-gray-800',
+const ButtonPreset = {
+  [ButtonCategory.Auth]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.NEW_CHALLENGE]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 rounded-4xl',
+    icon: addIcon,
+  },
+  [ButtonCategory.EDIT]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.RESET]: {
+    className:
+      'text-sm  font-semibold text-nowrap text-custom-gray-800 bg-custom-white rounded-xl border-1 border-custom-gray-800',
+    icon: null,
+  },
+  [ButtonCategory.APPLY]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.CONTINUE]: {
+    className:
+      'text-sm  font-semibold text-nowrap text-custom-gray-800 bg-custom-white rounded-4xl border-1 border-custom-gray-800',
+    icon: continueIcon,
+  },
+  [ButtonCategory.MY_WORK]: {
+    className:
+      'text-sm md:text-base font-semibold  text-custom-gray-500 bg-custom-gray-200 rounded-4xl',
+    icon: watchWorkIcon,
+  },
+  [ButtonCategory.LINK]: {
+    className:
+      'text-sm md:text-base font-bold text-custom-gray-700 bg-custom-gray-400 rounded-xl',
+    icon: linkIcon,
+  },
+  [ButtonCategory.CANCEL]: {
+    className:
+      'text-sm  font-semibold text-nowrap text-custom-gray-800 bg-custom-white border-custom-gray-300 rounded-lg',
+    icon: null,
+  },
+  [ButtonCategory.YES]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 border-custom-gray-300 rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.NO]: {
+    className:
+      'text-sm  font-semibold text-nowrap text-custom-gray-800 bg-custom-white border-custom-gray-300 rounded-xl border-1 border-custom-gray-800',
+    icon: null,
+  },
+  [ButtonCategory.DISABLE]: {
+    className:
+      'text-sm md:text-base font-semibold  text-custom-gray-500 bg-custom-gray-200  rounded-xl cursor-not-allowed pointer-events-none',
+    icon: null,
+  },
+  [ButtonCategory.TO_DO_WORK]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 border-custom-gray-300 rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.WATCH_MORE]: {
+    className:
+      'text-sm md:text-base font-medium  text-custom-gray-500 bg-[#f5f5f5]  rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.FEEDBACK_ON]: {
+    className: '',
+    icon: feedbackOnIcon,
+  },
+  [ButtonCategory.FEEDBACK_OFF]: {
+    className: '',
+    icon: feedbackOffIcon,
+  },
+  [ButtonCategory.DRAFT]: {
+    className:
+      'text-sm md:text-base  font-semibold text-nowrap text-custom-gray-800 bg-custom-white border-custom-gray-300 rounded-xl border-1 border-custom-gray-800 ',
+    icon: null,
+  },
+  [ButtonCategory.DROP]: {
+    className:
+      'text-sm md:text-base text-custom-red bg-custom-red-brand rounded-xl',
+    icon: closedIcon,
+  },
+  [ButtonCategory.SUBMIT]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 border-custom-gray-300 rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.LOAD]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 border-custom-gray-300 rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.APPROVE]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 border-custom-gray-300 rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.REJECT]: {
+    className:
+      'text-sm md:text-base text-custom-red bg-custom-red-brand rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.MODIFY]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 border-custom-gray-300 rounded-xl',
+    icon: null,
+  },
+  [ButtonCategory.VIEW_ORIGINAL]: {
+    className:
+      'text-sm md:text-base font-semibold text-custom-gray-800 bg-custom-yellow-brand border-2 border-custom-gray-800 rounded-xl',
+    icon: null,
+  },
 };
 
-const buttonColorStyle = {
-  [BGColor.RED]: 'text-custom-red bg-custom-red-brand py-2 md:py-2.5',
-  [BGColor.YELLOW]:
-    'text-sm md:text-base font-semibold  text-custom-gray-800 bg-custom-yellow-brand py-2 md:py-2.5',
-  [BGColor.WHITE]:
-    'text-sm  font-semibold text-nowrap text-custom-gray-800 bg-custom-white px-4 py-2 md:py-2.5 ',
-  [BGColor.GRAY]:
-    'text-sm md:text-base font-semibold  text-custom-gray-500 bg-custom-gray-200 py-2 md:py-2.5',
-  [BGColor.DARK_GRAY]:
-    'text-sm md:text-base font-bold text-custom-gray-700 bg-custom-gray-400 py-3 md:py-3.5',
-  [BGColor.BLACK]:
-    'text-sm md:text-base font-semibold text-custom-white bg-custom-gray-800 py-2 md:py-2.5',
+type AnchorProps = {
+  href: string;
+} & AnchorHTMLAttributes<HTMLAnchorElement>;
+
+type NativeButtonProps = {
+  href?: never;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
+
+type CommonProps = {
+  category: ButtonCategory;
+  size?: string;
+  iconW?: number;
+  iconH?: number;
+  iconAlt?: string;
+  children?: ReactNode;
 };
 
-const ButtonIconChoice = {
-  [ButtonImg.TRANSPARENT]: linkIcon,
-  [ButtonImg.WATCHWORK]: watchWorkIcon,
-  [ButtonImg.NEWCHALLENGE]: addIcon,
-  [ButtonImg.CONTINUE]: continueIcon,
-  [ButtonImg.FEEDBACKON]: feedbackOnIcon,
-  [ButtonImg.FEEDBACKOFF]: feedbackOffIcon,
-};
-
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  border: ButtonBorder;
-  bgColor: BGColor;
-  icon?: ButtonImg;
-  children: ReactNode;
-  href?: string;
-  closeIcon?: boolean;
-  onlyIcon?: boolean;
-}
+export type ButtonProps = CommonProps & (AnchorProps | NativeButtonProps);
 
 export default function Button({
-  border,
-  bgColor,
-  icon,
-  href,
-  onlyIcon = false,
+  category,
+  size = 'py-1 px-4',
+  iconW = 16,
+  iconH = 16,
+  iconAlt,
+
   children,
-  closeIcon = false,
   ...props
 }: ButtonProps) {
-  const baseStyle = 'w-full  justify-center cursor-pointer';
-  const bgColorStyle = buttonColorStyle[bgColor];
-  const borderStyle = ButtonBorderStyle[border];
-  const iconChoice = icon ? ButtonIconChoice[icon] : null;
+  const baseStyle = `w-full  justify-center items-center cursor-pointer`;
+  const preset = ButtonPreset[category];
+  const finalStyle = `${baseStyle} ${preset.className} ${size} `;
 
-  if (href) {
+  const iconSrc = preset.icon;
+
+  const iconElement = iconSrc && (
+    <Image src={iconSrc} alt={`${iconAlt} icon`} width={iconW} height={iconH} />
+  );
+
+  const Content = (
+    <>
+      {iconSrc && children && (
+        <span className="flex items-center  gap-2">
+          {iconElement}
+          {children}
+        </span>
+      )}
+      {!iconSrc && children && children}
+      {iconSrc && !children && iconElement}
+    </>
+  );
+
+  if ('href' in props && props.href) {
+    const { href, ...linkProps } = props;
+
     return (
-      <Link
-        href={href}
-        className={`flex gap-2 justify-center items-center px-4 ${baseStyle} ${bgColorStyle} ${borderStyle}`}
-      >
-        {children}
-        {icon ? (
-          <Image src={iconChoice} alt="button Icon" width={16} height={16} />
-        ) : (
-          ''
-        )}
+      <Link href={href} className={finalStyle} {...linkProps}>
+        {Content}
       </Link>
     );
   }
+  const buttonProps = props as React.ButtonHTMLAttributes<HTMLButtonElement>;
   return (
-    <>
-      {onlyIcon ? (
-        <button {...props}>
-          <Image src={iconChoice} alt="feedback icon" width={40} height={40} />
-        </button>
-      ) : (
-        <button
-          className={`flex gap-2 ${baseStyle} ${bgColorStyle} ${borderStyle} `}
-          {...props}
-        >
-          {children}
-          {closeIcon && <Image src={closedIcon} alt="close icon" width={16} />}
-        </button>
-      )}
-    </>
+    <button className={finalStyle} {...buttonProps}>
+      {Content}
+    </button>
   );
 }

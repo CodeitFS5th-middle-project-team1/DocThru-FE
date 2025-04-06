@@ -1,21 +1,13 @@
-import Button, {
-  BGColor,
-  ButtonBorder,
-  ButtonImg,
-} from '@/shared/components/button/Button';
+import Button, { ButtonCategory } from '@/shared/components/button/Button';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Button',
   component: Button,
   argTypes: {
-    border: {
+    category: {
       control: 'select',
-      options: Object.values(ButtonBorder),
-    },
-    bgColor: {
-      control: 'select',
-      options: Object.values(BGColor),
+      options: Object.values(ButtonCategory),
     },
   },
   parameters: {
@@ -30,13 +22,8 @@ type Story = StoryObj<typeof meta>;
 
 export const button: Story = {
   args: {
-    border: ButtonBorder.RECTANGLE,
-    bgColor: BGColor.RED,
+    category: ButtonCategory.YES,
     onClick: () => {},
-    icon: ButtonImg.TRANSPARENT,
-    onlyIcon: false,
-    closeIcon: false,
-    href: '',
     children: 'Next.js',
   },
 };

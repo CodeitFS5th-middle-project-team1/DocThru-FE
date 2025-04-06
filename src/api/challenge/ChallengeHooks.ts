@@ -1,6 +1,32 @@
 import { useToastMutation } from '@/shared/hooks/useToastMutation';
-import { ChallengeFormRequest, editChallenge } from '@/lib/api/challenge';
+
 import { useRouter, useSearchParams } from 'next/navigation';
+import {
+  ChallengeFormRequest,
+  createChallenge,
+  editChallenge,
+} from './ChallengeApi';
+
+export const useCreateChallenge = () => {
+  const router = useRouter();
+
+  return useToastMutation<ChallengeFormRequest, unknown, any>(
+    createChallenge,
+    {
+      pending: '챌린지를 생성 중입니다...',
+      success: '챌린지 생성 완료! 챌린지 페이지로 이동 중!',
+      error: '챌린지 생성 실패!',
+    },
+    {
+      onSuccess: () => {
+        setTimeout(() => {
+          router.push('/main/challenge');
+        }, 1500);
+      },
+    },
+    'challenge-toast'
+  );
+};
 
 export const useEditChallenge = (id: string) => {
   const router = useRouter();
@@ -12,7 +38,6 @@ export const useEditChallenge = (id: string) => {
     {
       pending: '챌린지를 수정 중입니다...',
       success: '챌린지 수정 완료! 상세 페이지로 이동 중!',
-      error: '챌린지 수정 실패!',
     },
     {
       onSuccess: () => {

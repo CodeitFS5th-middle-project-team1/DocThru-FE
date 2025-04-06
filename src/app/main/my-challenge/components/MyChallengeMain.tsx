@@ -5,11 +5,12 @@ import Search from '@/shared/components/input/search';
 import { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
-import { fetchChallenges } from '@/lib/api/challenge';
+
 import { Tab, TabActive, TextPosition } from '@/shared/components/tab/Tab';
 import ChallengeTable from './ChallengeTable';
 import dayjs from 'dayjs';
 import { Challenge } from '@/types';
+import { fetchChallenges } from '@/api/challenge/ChallengeApi';
 
 const TAB_LIST = [
   { key: 'participating', label: '참여중인 챌린지' },
@@ -43,11 +44,10 @@ const MyChallengeMain = () => {
     {
       pending: '불러오는 중...',
       success: '불러오기 완료!',
-      error: '불러오기 실패!',
     }
   );
 
-  const challenges = data?.challengesWithIsMax ?? [];
+  const challenges = data?.challenges ?? [];
   const totalPages = Math.ceil((data?.totalCount ?? 1) / limit);
 
   const tableData = (challenges as ChallengeWithApply[]).map((c, idx) => ({

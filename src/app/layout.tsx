@@ -2,11 +2,11 @@
 
 import '@shared/globals.css';
 
-import ToastProvider from '@/core/contexts/ToastProvider';
+import ToastProvider from '@/core/provider/ToastProvider';
 import Layout from '@/shared/components/layout/Layout';
 import { usePathname } from 'next/navigation';
-import ReactQueryProvider from '@/core/contexts/ReactQueryProvider';
-import { AuthProvider } from '@/core/contexts/AuthProvider';
+import ReactQueryProvider from '@/core/provider/ReactQueryProvider';
+import { AuthProvider } from '@/core/provider/AuthProvider';
 
 export default function RootLayout({
   children,
@@ -14,7 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const isAuthPage = pathname.startsWith('/auth');
+  const isAuthPage =
+    pathname.startsWith('/auth') ||
+    pathname.startsWith('/main/translation-work');
 
   return (
     <html lang="kor">

@@ -4,6 +4,7 @@ import {
   UseQueryResult,
   QueryKey,
 } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
 
 interface ToastMessages {
@@ -61,7 +62,14 @@ export function useToastQuery<
     },
     onError: (error: TError, variables: TQueryKey, context: unknown) => {
       if (toastId) toast.dismiss(toastId);
-      if (toastMessages?.error) toast.error(toastMessages.error);
+      let serverErrorMessage = '데이터를 불러오는 중 오류 발생';
+
+      if (isAxiosError(error)) {
+        serverErrorMessage =
+          error.response?.data?.message ?? serverErrorMessage;
+      }
+
+      toast.error(serverErrorMessage);
       userOnError?.(error, variables, context);
     },
     onSettled: (
