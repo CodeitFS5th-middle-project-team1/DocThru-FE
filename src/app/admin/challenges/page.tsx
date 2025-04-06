@@ -41,7 +41,7 @@ const AdminChallenge: NextPage = () => {
     keyword: searchTerm,
     ...getParamsFromSortValue(sortValue),
   };
-
+  console.log('queryParams:', queryParams);
   // API 호출
   const { data, isLoading, error } = useQuery<{
     challenges: any[];
@@ -52,7 +52,7 @@ const AdminChallenge: NextPage = () => {
     staleTime: 5000, //5초동안 캐시데이터 사용 -> 수정 가능
   });
 
-  //TODO: 검색 전체 데이터에서 가능하게 하는게 좋지 않을까?
+  //TODO: 검색 전체 데이터에서 가능하게 하는게 좋지 않을까? 현재는 정렬된 데이터에서만 가능
   const handleSearch = (e: string) => {
     setKeyword(e);
     setSearchTerm(e);
@@ -143,19 +143,19 @@ const AdminChallenge: NextPage = () => {
           </div>
         )}
 
-        {/* TODO: 에러 처리  */}
+        {/* TODO: 에러 처리 or 토큰 만료되었을때 화면  */}
         {error && (
           <div className="text-center text-red-500 py-6">
             데이터를 불러오는 중 오류가 발생했습니다.
           </div>
         )}
 
-        {/* 데이터 있는 경우 */}
+        {/* 챌린지 있는 경우 */}
         {!isLoading && !error && transformedData.length > 0 && (
           <ChallengeTable data={transformedData} />
         )}
 
-        {/* 데이터 없는 경우 */}
+        {/* 챌린지 없는 경우 */}
         {!isLoading && !error && transformedData.length === 0 && (
           <section className="flex flex-col gap-6 w-full">
             <div className="flex h-100 justify-center items-center">
