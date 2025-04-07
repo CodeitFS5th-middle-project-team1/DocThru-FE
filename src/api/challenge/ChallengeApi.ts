@@ -30,7 +30,7 @@ export const fetchChallenges = async (
   params: FetchChallengeParams
 ): Promise<FetchChallengeResponse> => {
   const res = await docThro.get('/challenges', { params });
-
+  console.log('res', res);
   return res.data;
 };
 
@@ -50,5 +50,15 @@ export const createChallenge = async (data: ChallengeFormRequest) => {
 
 export const editChallenge = async (id: string, data: ChallengeFormRequest) => {
   const res = await docThro.patch(`/challenges/${id}`, data);
+  return res.data;
+};
+
+export const deleteChallenge = async (id: string) => {
+  const res = await docThro.patch(`/challenges/${id}/remove`);
+  return res.data;
+};
+
+export const deleteChallengeByAdmin = async (id: string) => {
+  const res = await docThro.patch(`/challenges/${id}/removeForce`);
   return res.data;
 };

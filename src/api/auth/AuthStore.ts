@@ -1,5 +1,6 @@
 import { User } from '@/types';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -18,6 +19,7 @@ export const useAuthStore = create(
       setAuth: (user) => set({ user }),
       clearAuth: () => {
         set({ user: null });
+        localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
         delete axios.defaults.headers.common['Authorization'];
       },
@@ -27,3 +29,13 @@ export const useAuthStore = create(
     }
   )
 );
+
+export const useHydrated = () => {
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  return hydrated;
+};
