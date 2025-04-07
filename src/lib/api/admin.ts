@@ -1,6 +1,6 @@
 export enum ChallengeOrderBy {
-  CREATED_FIRST = 'default',
-  CREATED_LAST = 'createdLast',
+  CREATED_LAST = 'createdLast', // 신청 시간 빠른 순
+  CREATED_FIRST = 'createdFirst', // 신청 시간 느린 순
   DEADLINE_FIRST = 'deadLineFirst', // 마감일 빠른 순
   DEADLINE_LAST = 'deadLineLast', // 마감일 느린 순
 }
@@ -30,7 +30,7 @@ export interface AdminChallengeResponse {
   totalCount: number;
 }
 
-// 관리자용 챌린지 목록 조회
+// 관리자용 챌린지 목록 조회 API - NEXT FETCH 사용
 export const fetchChallengesByAdmin = async (
   params: AdminChallengeParams = {}
 ): Promise<AdminChallengeResponse> => {
@@ -42,7 +42,7 @@ export const fetchChallengesByAdmin = async (
   // URL 쿼리 파라미터
   const queryParams = new URLSearchParams();
   console.log('정렬 조건:', order);
-  if (order) queryParams.append('order', order);
+  if (order) queryParams.append('orderBy', order);
   if (page) queryParams.append('page', page.toString());
   if (limit) queryParams.append('limit', limit.toString());
   if (approvalStatus) queryParams.append('approvalStatus', approvalStatus);
