@@ -14,11 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
+  const isLandingPage = pathname === '/'; //랜딩페이지는 AuthProvider 제외
   const isAuthPage =
-
-  pathname.startsWith('/auth') ||
-  pathname.startsWith('/main/translation-work');
-
+    pathname.startsWith('/auth') || pathname.startsWith('/admin') || pathname.startsWith('/main/translation-work');
 
   return (
     <html lang="kor">
@@ -26,7 +24,11 @@ export default function RootLayout({
         <ToastProvider />
         <ReactQueryProvider>
           <AuthProvider>
-            {isAuthPage ? <>{children}</> : <Layout>{children}</Layout>}
+            {isAuthPage || isLandingPage ? (
+              <>{children}</>
+            ) : (
+              <Layout>{children}</Layout>
+            )}
           </AuthProvider>
         </ReactQueryProvider>
       </body>
