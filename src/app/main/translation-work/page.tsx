@@ -9,7 +9,7 @@ import ConfirmCancel from '@/shared/components/modal/confirmCancel';
 import Navigate from '@/shared/components/modal/navigate';
 import Editor from './_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { ErrorMessage, ErrorResponse } from '@/types';
@@ -36,7 +36,9 @@ const TranslationWork: NextPage = () => {
 
   // 로컬 스토리지에서 저장되어 있는 Challenge Id를 불러옵니다.
   useEffect(() => {
-    setChallengeId(localStorage.getItem('challengeId') as string);
+    const cid = localStorage.getItem('challengeId') as string
+    if(!cid) router.replace('/not-found')
+    else setChallengeId(cid);
   }, []);
 
   useUnloadWarning(content !== '');
