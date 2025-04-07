@@ -1,17 +1,16 @@
 'use client';
 import Logo from '@/shared/Img/logo.svg';
 import Image from 'next/image';
-import Member from '@/shared/Img/profile-icon/member.svg';
-import admin from '@/shared/Img/profile-icon/admin.svg';
 import BassBell from '@/shared/Img/bell-icon/bass.svg';
 import { Divider } from '../Divider';
 import { useRouter } from 'next/navigation';
 import { PATH } from '@/constants';
 import { useAuthStore, useHydrated } from '@/api/auth/AuthStore';
 import { TextPosition } from '../tab/Tab';
-import { TabGroup } from '../tab/TabGroup';
+
 import ProfileDropdown from '../dropdown/ProfileDropdown';
 import { useState } from 'react';
+import { TabGroup } from '../tab/TabGroup';
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState('management');
@@ -20,8 +19,6 @@ const Header = () => {
   const hasHydrated = useHydrated();
 
   if (!hasHydrated) return null;
-
-  if (!user) return null;
 
   const ImageStyle = 'cursor-pointer';
 
@@ -57,15 +54,13 @@ const Header = () => {
             alt="logo"
             onClick={() => router.push(PATH.main)}
           />
-          {user.role === 'ADMIN' ? (
+          {user?.role === 'ADMIN' && (
             <TabGroup
               items={TAB_LIST}
               activeKey={activeTab}
               onTabChange={handleTabChange}
               position={TextPosition.TOP}
             />
-          ) : (
-            ''
           )}
         </div>
         {!user ? (
