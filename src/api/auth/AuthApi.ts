@@ -1,10 +1,9 @@
+import { docThro } from '../url';
 import {
   LoginPayload,
   LoginResponse,
   SignupPayload,
-} from '@/core/contexts/AuthProvider';
-
-import { docThro } from '@/api/url';
+} from '@/core/provider/AuthProvider';
 
 export const loginFn = async (
   payload: LoginPayload

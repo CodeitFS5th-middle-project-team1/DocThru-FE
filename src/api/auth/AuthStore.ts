@@ -7,9 +7,7 @@ export type SetUser = Omit<User, 'password'>;
 
 export interface AuthState {
   user: SetUser | null;
-  accessToken: string | null;
-  refreshToken: string | null;
-  setAuth: (user: SetUser, accessToken: string, refreshToken: string) => void;
+  setAuth: (user: SetUser) => void;
   clearAuth: () => void;
 }
 
@@ -17,14 +15,10 @@ export const useAuthStore = create(
   persist<AuthState>(
     (set) => ({
       user: null,
-      accessToken: null,
-      refreshToken: null,
-      setAuth: (user, accessToken, refreshToken) =>
-        set({ user, accessToken, refreshToken }),
+      setAuth: (user) => set({ user }),
       clearAuth: () => {
-        set({ user: null, accessToken: null, refreshToken: null });
+        set({ user: null });
         localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
         delete axios.defaults.headers.common['Authorization'];
       },
     }),

@@ -5,14 +5,16 @@ import selectorIcon from '@images/menu-icon/Meatballs.svg';
 import dayjs from '@/lib/utill';
 import { DocumentType, FieldType } from '@/types';
 import { Chip } from '../chip/chip';
-import Button, { BGColor, ButtonBorder, ButtonImg } from '../button/Button';
+
 import { ChipCardStatus } from '../chip/ChipCardStatus';
 import { useRouter } from 'next/navigation';
 import { PATH } from '@/constants';
+import Button, { ButtonCategory } from '../button/Button';
 
 export interface CardProps {
   id: string;
-  category: 'base' | 'my';
+  role: 'base' | 'my' | 'admin';
+  status?: 'inProgress' | 'completed';
   title: string;
   DocumentType: DocumentType;
   FieldType: FieldType;
@@ -20,11 +22,13 @@ export interface CardProps {
   currentParticipants: number;
   maxParticipants: number;
   href?: string;
+  onClick?: () => void;
 }
 
 export const Card = ({
   id,
-  category,
+  role,
+  status,
   title,
   DocumentType,
   FieldType,
@@ -32,13 +36,23 @@ export const Card = ({
   currentParticipants,
   maxParticipants,
   href,
+  onClick,
 }: CardProps) => {
   const maxParticipant = maxParticipants === currentParticipants;
   const overDeadLine = dayjs(deadLine).isBefore(dayjs());
   const router = useRouter();
+
+  const isShowSelector = role === 'my' || role === 'admin';
+  const isShowButton = status === 'inProgress' || status === 'completed';
+
+  const handleClick = () => {
+    if (onClick) return onClick();
+    router.push(`${PATH.challenge}/${id}`);
+  };
+
   return (
     <div
-      onClick={() => router.push(`${PATH.challenge}/${id}`)}
+      onClick={handleClick}
       className="flex flex-col w-full justify-center items-center rounded-2xl border-2 border-custom-gray-800 gap-4 p-6 "
     >
       <section className="flex w-full justify-between relative">
@@ -59,11 +73,13 @@ export const Card = ({
             <Chip label={DocumentType} />
           </div>
         </div>
-        <Image
-          src={selectorIcon}
-          alt="selector Icon"
-          className="absolute right-0"
-        />
+        {isShowSelector && (
+          <Image
+            src={selectorIcon}
+            alt="selector Icon"
+            className="absolute right-0"
+          />
+        )}
       </section>
 
       <section className="flex w-full justify-between pt-4  border-t border-custom-gray-200">
@@ -78,19 +94,19 @@ export const Card = ({
           </p>
         </div>
 
-        {category === 'my' ? (
+        {isShowButton && (
           <div className="flex w-40 ">
             <Button
-              border={ButtonBorder.ROUND_BORDER}
-              bgColor={BGColor.WHITE}
-              icon={ButtonImg.CONTINUE}
+              category={
+                status === 'inProgress'
+                  ? ButtonCategory.CONTINUE
+                  : ButtonCategory.VIEW_ORIGINAL
+              }
               href={href}
             >
-              도전 계속하기
+              {status === 'inProgress' ? '도전 계속하기' : '내 작업물 보기'}
             </Button>
           </div>
-        ) : (
-          ''
         )}
       </section>
     </div>
