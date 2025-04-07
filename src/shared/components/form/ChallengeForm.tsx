@@ -1,7 +1,7 @@
 'use client';
 import Text from '../input/text';
 import Date from '../input/date';
-import Button, { BGColor, ButtonBorder } from '../button/Button';
+import Button, { ButtonCategory } from '../button/Button';
 import { DocumentType, FieldType } from '@/types';
 import { DropDown } from '../dropdown/DropDown';
 import { useFormContext, SubmitHandler } from 'react-hook-form';
@@ -134,11 +134,7 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
         ></Text>
       </section>
 
-      <Button
-        type="submit"
-        border={ButtonBorder.RECTANGLE}
-        bgColor={BGColor.BLACK}
-      >
+      <Button type="submit" category={ButtonCategory.EDIT}>
         {category === 'edit' ? '수정하기' : '신청하기'}
       </Button>
     </form>

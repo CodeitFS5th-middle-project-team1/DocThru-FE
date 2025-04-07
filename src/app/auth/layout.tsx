@@ -1,5 +1,5 @@
-import ReactQueryProvider from '@/core/contexts/ReactQueryProvider';
-import ToastProvider from '@/core/contexts/ToastProvider';
+import ReactQueryProvider from '@/core/provider/ReactQueryProvider';
+import ToastProvider from '@/core/provider/ToastProvider';
 import '@shared/globals.css';
 
 export default function AuthLayout({

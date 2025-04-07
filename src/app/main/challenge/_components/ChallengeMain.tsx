@@ -6,8 +6,7 @@ import { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 import { Filter } from '@/shared/components/dropdown/Filter';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
-import { fetchChallenges } from '@/lib/api/challenge';
-import { useChallengeListStore } from '@/api/store/ChallengeStore';
+import { fetchChallenges } from '@/api/challenge/ChallengeApi';
 
 const ChallengeMain = () => {
   const [page, setPage] = useState(1);
@@ -25,25 +24,20 @@ const ChallengeMain = () => {
     {
       pending: '불러오는 중...',
       success: '불러오기 완료!',
-      error: '불러오기 실패!',
     }
   );
-  const { challengeList, fetchChallengeList } = useChallengeListStore();
 
-  const challenges = data?.challengesWithIsMax ?? [];
+  const challenges = data?.challenges ?? [];
   const totalPages = Math.ceil((data?.totalCount ?? 1) / limit);
 
   useEffect(() => {
-    fetchChallengeList();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page]);
 
   return (
     <div className="flex flex-col gap-6 ">
       <section className="flex gap-3">
-        <div className="flex items-center">
-          <Filter />
-        </div>
+        <div className="flex items-center">{/* <Filter /> */}</div>
 
         <div className="w-full">
           <Search
@@ -59,7 +53,7 @@ const ChallengeMain = () => {
       </section>
 
       <section className="flex flex-col gap-6 w-full">
-        {challengeList?.length === 0 ? (
+        {challenges?.length === 0 ? (
           <div className="flex h-screen justify-center items-center">
             <p className="text-center text-gray-500">
               아직 챌린지가 없어요.
@@ -69,10 +63,10 @@ const ChallengeMain = () => {
           </div>
         ) : (
           <>
-            {challengeList?.map((data, index) => (
+            {challenges?.map((data, index) => (
               <Card
                 id={data.id}
-                category="base"
+                role="base"
                 key={index}
                 title={data.title}
                 DocumentType={data.documentType}
@@ -86,7 +80,7 @@ const ChallengeMain = () => {
         )}
       </section>
 
-      {challengeList && challengeList?.length > 0 && totalPages > 1 && (
+      {challenges && challenges?.length > 0 && totalPages > 1 && (
         <section className="flex justify-center">
           <Pagination
             currentPage={page}

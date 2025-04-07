@@ -17,7 +17,7 @@ type Story = StoryObj<typeof meta>;
 export const container: Story = {
   args: {
     originUrl: '/',
-    deadLine: '2025-03-28',
+    deadLine: '2025-04-30',
     currentParticipants: 5,
     maxParticipants: 15,
     onClick: () => {},

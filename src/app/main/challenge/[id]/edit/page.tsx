@@ -1,7 +1,7 @@
 'use client';
 
-import { useEditChallenge } from '@/core/hooks/challenge/useEditChallenge';
-import { fetchChallengeById } from '@/lib/api/challenge';
+import { fetchChallengeById } from '@/api/challenge/ChallengeApi';
+import { useEditChallenge } from '@/api/challenge/ChallengeHooks';
 import ChallengeForm, {
   ChallengeFormData,
 } from '@/shared/components/form/ChallengeForm';
