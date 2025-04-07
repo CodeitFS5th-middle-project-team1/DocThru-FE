@@ -32,7 +32,7 @@ const Header = () => {
 
     switch (key) {
       case 'management':
-        router.push(PATH.challenge);
+        router.push(PATH.admin);
         break;
       case 'inventory':
         router.push(PATH.challenge);

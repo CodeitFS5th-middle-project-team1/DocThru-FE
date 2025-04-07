@@ -5,4 +5,5 @@ export const PATH = {
   challenge: '/main/challenge',
   myChallenge: '/main/my-challenge',
   translation: '/main/translation',
+  admin: '/admin/challenges',
 };
