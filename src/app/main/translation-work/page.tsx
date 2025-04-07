@@ -39,7 +39,7 @@ const TranslationWork: NextPage = () => {
     setChallengeId(localStorage.getItem('challengeId') as string);
   }, []);
 
-  useUnloadWarning(content === '');
+  useUnloadWarning(content !== '');
 
   const { data: draftData } = useQuery({
     queryKey: ['draft', challengeId],
@@ -123,7 +123,7 @@ const TranslationWork: NextPage = () => {
         <div className="mt-6 flex justify-between h-[80px] items-center">
           <div
             onClick={() => {
-              router.push('/main/challenge');
+              setIsForgiveModal(true);
             }}
           >
             <Image

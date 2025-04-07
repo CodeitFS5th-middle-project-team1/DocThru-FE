@@ -8,7 +8,6 @@ export function useUnloadWarning(shouldWarn: boolean): void {
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (!shouldWarn) return
-      alert("나가기 감지");
       e.preventDefault()
       // @ts-ignore: returnValue는 브라우저에서 필수지만 타입스크립트는 사용 안 한다고 경고함
       e.returnValue = ''
