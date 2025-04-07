@@ -70,7 +70,7 @@ const TranslationWorkModify: NextPage = () => {
     }
   }, [TranslationData]);
 
-  useUnloadWarning(content !== '');
+  useUnloadWarning(content !== '' && !isSuccessModal);
 
   const { data: draftData } = useQuery({
     queryKey: ['draft', challengeId],
