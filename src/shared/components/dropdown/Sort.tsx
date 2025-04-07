@@ -83,7 +83,7 @@ export const Sort: React.FC<SortProps> = ({
           {options.map((d, idx) => (
             <div className="w-full" key={d.value}>
               <button
-                className={`w-full p-3 hover:bg-gray-100 ${className ?? ''}`}
+                className={`w-full p-3 hover:bg-gray-100 cursor-pointer ${className ?? ''}`}
                 onClick={() => {
                   handleChange(d.value);
                   setOpen(false);
