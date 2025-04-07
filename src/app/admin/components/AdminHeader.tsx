@@ -6,7 +6,7 @@ import { Divider } from '@/shared/components/Divider';
 import { useRouter, usePathname } from 'next/navigation';
 // import { PATH } from '@/constants';
 import { Tab, TextPosition, TabActive } from '@/shared/components/tab/Tab';
-import { useAuth } from '@/core/contexts/AuthProvider';
+import { useAuth } from '@/core/provider/AuthProvider';
 
 interface HeaderProps {
   onLogout?: () => void; // 로그아웃 기능 나중에 만들면 선택적으로 사용가능능

@@ -98,7 +98,7 @@ const AuthForm = ({ category, onSubmit, isPending }: AuthFormProps) => {
         )}
 
         <section>
-          <Button type="submit" category={ButtonCategory.Auth}>
+          <Button type="submit" category={ButtonCategory.Auth} size="py-3.5">
             {category === 'login' ? '로그인' : '회원가입'}
           </Button>
         </section>
