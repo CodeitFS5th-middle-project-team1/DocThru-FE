@@ -14,7 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const isAuthPage = pathname.startsWith('/auth');
+  const isAuthPage =
+  pathname.startsWith('/auth') ||
+  pathname.startsWith('/main/translation-work');
 
   return (
     <html lang="kor">

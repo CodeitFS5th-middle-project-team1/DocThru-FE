@@ -139,3 +139,13 @@ export interface ChallengeParticipant {
   challengeId: string;
   userId: string;
 }
+
+export type ErrorMessage = {
+  formErrors?: string[]; // 배열임
+  fieldErrors?: Record<string, string[]>;
+};
+
+export type ErrorResponse = {
+  code?: number;
+  message?: string | ErrorMessage;
+};
