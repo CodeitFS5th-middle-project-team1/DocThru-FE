@@ -21,6 +21,8 @@ const Header = () => {
 
   if (!hasHydrated) return null;
 
+  if (!user) return null;
+
   const ImageStyle = 'cursor-pointer';
 
   const TAB_LIST = [
@@ -55,12 +57,16 @@ const Header = () => {
             alt="logo"
             onClick={() => router.push(PATH.main)}
           />
-          <TabGroup
-            items={TAB_LIST}
-            activeKey={activeTab}
-            onTabChange={handleTabChange}
-            position={TextPosition.TOP}
-          />
+          {user.role === 'ADMIN' ? (
+            <TabGroup
+              items={TAB_LIST}
+              activeKey={activeTab}
+              onTabChange={handleTabChange}
+              position={TextPosition.TOP}
+            />
+          ) : (
+            ''
+          )}
         </div>
         {!user ? (
           <button
