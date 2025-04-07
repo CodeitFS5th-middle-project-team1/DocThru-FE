@@ -15,8 +15,10 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname();
   const isAuthPage =
-    pathname.startsWith('/auth') ||
-    pathname.startsWith('/main/translation-work');
+
+  pathname.startsWith('/auth') ||
+  pathname.startsWith('/main/translation-work');
+
 
   return (
     <html lang="kor">

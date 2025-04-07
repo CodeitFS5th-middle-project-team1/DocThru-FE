@@ -29,7 +29,7 @@ const Editor: React.FC<EditorProps> = ({content, setContent}) => {
 
   return (
     <div className="w-full p-4">
-      <ReactQuill theme="snow" value={content} onChange={setContent} modules={modules} />
+      <ReactQuill theme="snow" value={content} onChange={setContent} modules={modules} placeholder="내용을 입력하세요." />
     </div>
   );
 };

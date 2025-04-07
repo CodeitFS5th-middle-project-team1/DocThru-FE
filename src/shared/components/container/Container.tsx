@@ -59,8 +59,12 @@ export const Container = ({
                 ? ButtonCategory.DISABLE
                 : ButtonCategory.TO_DO_WORK
             }
+
             size="text-center py-3"
             disabled={overDeadLine || maxParticipant}
+
+            href="/main/translation-work"
+
             {...props}
           >
             작업 도전하기
