@@ -200,8 +200,8 @@ export default function Button({
     <>
       {iconSrc && children && (
         <span className="flex items-center  gap-2">
-          {iconElement}
           {children}
+          {iconElement}
         </span>
       )}
       {!iconSrc && children && children}

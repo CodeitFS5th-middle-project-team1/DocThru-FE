@@ -4,20 +4,22 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import Logo from '@/shared/Img/logo.svg';
 import Close from '@/shared/Img/close-icon/close.svg';
-import Button, {
-  BGColor,
-  ButtonBorder,
-} from '@/shared/components/button/Button';
 import { useEffect, useState } from 'react';
 import ConfirmCancel from '@/shared/components/modal/confirmCancel';
 import Navigate from '@/shared/components/modal/navigate';
 import Editor from './_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
-import { useRouter } from 'next/navigation';
-import { docThro } from '@/api/url';
+import { notFound, useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { ErrorMessage, ErrorResponse } from '@/types';
+import {
+  createDraftTranslation,
+  createTranslation,
+  getDraftTranslation,
+} from '@/api/TransLationApi';
+import Button, { ButtonCategory } from '@/shared/components/button/Button';
+import { useUnloadWarning } from '@/shared/hooks/useUnloadWarning';
 
 const TranslationWork: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -30,55 +32,23 @@ const TranslationWork: NextPage = () => {
   const [isErrorModal, setIsErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const router = useRouter();
-  const [challengeId, setChallengeId] = useState<string | null>(null);
+  const [challengeId, setChallengeId] = useState<string>('');
 
   // 로컬 스토리지에서 저장되어 있는 Challenge Id를 불러옵니다.
   useEffect(() => {
-    setChallengeId(localStorage.getItem('challengeId'));
+    const cid = localStorage.getItem('challengeId') as string
+    if(!cid) router.replace('/not-found')
+    else setChallengeId(cid);
   }, []);
 
-  // 번역물을 생성하는 API
-  const createTranslation = async ({
-    title,
-    content,
-  }: {
-    title: string;
-    content: string;
-  }) => {
-    const response = await docThro.post(
-      `/challenges/${challengeId}/translations`,
-      {
-        title,
-        content,
-      }
-    );
-    return response;
-  };
-
-  // 임시 저장 생성 API
-  const createDraftTranslation = async ({
-    title,
-    content,
-  }: {
-    title: string;
-    content: string;
-  }) => {
-    const response = await docThro.post(`/challenges/${challengeId}/drafts`, {
-      title,
-      content,
-    });
-    return response;
-  };
-
-  // 임시 저장된 번역물을 가져오는 API
-  const getDraftTranslation = async () => {
-    const response = await docThro.get(`/challenges/${challengeId}/drafts`);
-    return response;
-  };
+  useUnloadWarning(content !== '');
 
   const { data: draftData } = useQuery({
     queryKey: ['draft', challengeId],
-    queryFn: getDraftTranslation,
+    queryFn: ({ queryKey }) => {
+      const [, challengeId] = queryKey;
+      return getDraftTranslation(challengeId as string);
+    },
   });
 
   useEffect(() => {
@@ -155,7 +125,7 @@ const TranslationWork: NextPage = () => {
         <div className="mt-6 flex justify-between h-[80px] items-center">
           <div
             onClick={() => {
-              router.push('/main/challenge');
+              setIsForgiveModal(true);
             }}
           >
             <Image
@@ -166,36 +136,39 @@ const TranslationWork: NextPage = () => {
               alt="logo"
             />
           </div>
-          <div className="flex gap-2 h-[40px]">
-            <div className="w-[81px]">
+          <div className="flex gap-2">
+            <div className="md:w-[81px] w-[36px]">
               <Button
-                border={ButtonBorder.RECTANGLE}
-                bgColor={BGColor.RED}
-                closeIcon={true}
+                category={ButtonCategory.DROP}
+                size={'py-2 flex'}
                 onClick={() => {
                   setIsForgiveModal(true);
                 }}
               >
-                포기
+                <p className="hidden md:flex">포기</p>
               </Button>
             </div>
-            <div className="w-[90px]">
+            <div className="w-[90px] flex items-center">
               <Button
-                border={ButtonBorder.RECTANGLE_BORDER}
-                bgColor={BGColor.WHITE}
+                category={ButtonCategory.NO}
+                size={'py-2 flex'}
                 onClick={() => {
-                  createDraftMutation.mutate({ title, content });
+                  createDraftMutation.mutate({ title, content, challengeId });
                 }}
               >
                 임시저장
               </Button>
             </div>
-            <div className="w-[90px] h-[40px]">
+            <div className="w-[95px] flex items-center">
               <Button
-                border={ButtonBorder.RECTANGLE}
-                bgColor={BGColor.BLACK}
+                category={ButtonCategory.YES}
+                size={'py-2 flex'}
                 onClick={() => {
-                  createTranslationMutation.mutate({ title, content });
+                  createTranslationMutation.mutate({
+                    title,
+                    content,
+                    challengeId,
+                  });
                 }}
               >
                 제출하기
@@ -267,7 +240,7 @@ const TranslationWork: NextPage = () => {
           제출되었습니다!
         </Navigate>
         {isDrafted && (
-          <div className="border border-[#262626] rounded-[8px] fixed left-1/2 top-[90%] transform -translate-x-1/2 z-30 max-w-[750px] w-full flex justify-between items-center px-5">
+          <div className="border border-[#262626] rounded-[8px] fixed left-1/2 top-[90%] transform -translate-x-1/2 z-30 max-w-[750px] w-[95%] flex justify-between items-center px-5">
             <div className="flex gap-5 items-center">
               <div
                 onClick={() => {
@@ -286,10 +259,10 @@ const TranslationWork: NextPage = () => {
                 임시 저장된 작업물이 있어요. 저장된 작업을 불러오시겠어요??
               </div>
             </div>
-            <div className="w-[90px]">
+            <div className="w-[90px] my-1">
               <Button
-                border={ButtonBorder.RECTANGLE}
-                bgColor={BGColor.BLACK}
+                category={ButtonCategory.YES}
+                size={'py-1 flex'}
                 onClick={() => {
                   setTitle(draftData?.data.data.title);
                   setContent(draftData?.data.data.content);
