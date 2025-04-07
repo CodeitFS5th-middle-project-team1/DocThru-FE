@@ -33,11 +33,33 @@ export const getTranLationList = async (challengeId: string) => {
     challengeId,
   }: {
     title: string;
-    content: string;
+    content: string | null;
     challengeId: string;
   }) => {
     const response = await docThro.post(
       `/challenges/${challengeId}/translations`,
+      {
+        title,
+        content,
+      }
+    );
+    return response;
+  };
+
+  // 번역물을 수정하는 API
+  export const modifyTranslation = async ({
+    title,
+    content,
+    challengeId,
+    translationId,
+  }: {
+    title: string;
+    content: string | null;
+    challengeId: string;
+    translationId: string;
+  }) => {
+    const response = await docThro.patch(
+      `/challenges/${challengeId}/translations/${translationId}`,
       {
         title,
         content,
@@ -53,7 +75,7 @@ export const getTranLationList = async (challengeId: string) => {
       challengeId,
     }: {
       title: string;
-      content: string;
+      content: string | null;
       challengeId: string;
     }) => {
       const response = await docThro.post(`/challenges/${challengeId}/drafts`, {
@@ -62,6 +84,8 @@ export const getTranLationList = async (challengeId: string) => {
       });
       return response;
     };
+
+    
   
     // 임시 저장된 번역물을 가져오는 API
     export const getDraftTranslation = async (challengeId : string) => {

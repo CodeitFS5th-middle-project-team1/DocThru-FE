@@ -20,10 +20,11 @@ import {
 } from '@/api/TransLationApi';
 import Button, { ButtonCategory } from '@/shared/components/button/Button';
 import { useUnloadWarning } from '@/shared/hooks/useUnloadWarning';
+import { useToastMutation } from '@/shared/hooks/useToastMutation';
 
 const TranslationWork: NextPage = () => {
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState<string | null>(null);
   const [isDrafted, setIsDrafted] = useState(false);
   const [isDraftModal, setIsDraftModal] = useState(false);
   const [isDraftQuestionModal, setIsDraftQuestionModal] = useState(false);
@@ -33,6 +34,7 @@ const TranslationWork: NextPage = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const router = useRouter();
   const [challengeId, setChallengeId] = useState<string>('');
+  const [translationId, setTranslationId] = useState(''); 
 
   // 로컬 스토리지에서 저장되어 있는 Challenge Id를 불러옵니다.
   useEffect(() => {
@@ -41,7 +43,7 @@ const TranslationWork: NextPage = () => {
     else setChallengeId(cid);
   }, []);
 
-  useUnloadWarning(content !== '');
+  useUnloadWarning(content !== '' && !isSuccessModal);
 
   const { data: draftData } = useQuery({
     queryKey: ['draft', challengeId],
@@ -62,8 +64,8 @@ const TranslationWork: NextPage = () => {
   const createTranslationMutation = useMutation({
     mutationFn: createTranslation,
     onSuccess: (data) => {
+      setTranslationId(data.data.id);
       setIsSuccessModal(true);
-      console.log('성공', data);
     },
     onError: (error) => {
       const axiosError = error as AxiosError<ErrorResponse>;
@@ -107,17 +109,20 @@ const TranslationWork: NextPage = () => {
   });
 
   // 임시 저장 번역물 생성 Mutation
-  const createDraftMutation = useMutation({
-    mutationFn: createDraftTranslation,
-    onSuccess: (data) => {
-      setIsDraftModal(true);
-      console.log('성공', data);
+  const createDraftMutation = useToastMutation(
+    createDraftTranslation,
+    {
+      pending: '임시저장 중입니다...',
+      success: '임시저장 성공!',
+      error: '임시저장 실패 😢',
     },
-    onError: (error) => {
-      setErrorMessage('임시저장 중 에러 발생!');
-      setIsErrorModal(true);
+    {
+      onSuccess: () => {
+        console.log('성공 후 추가 작업');
+      },
     },
-  });
+    'save-translation' // <- toastId (중복 방지용 고유 id)
+  );
 
   return (
     <div className="w-screen h-screen flex flex-col items-center p-2">
@@ -225,7 +230,7 @@ const TranslationWork: NextPage = () => {
           onClose={() => setIsForgiveModal(false)}
           onConfirm={() => {
             setIsForgiveModal(false);
-            router.push('/main/challenge');
+            router.push(`/main/challenge/${challengeId}`);
           }}
           onCancel={() => setIsForgiveModal(false)}
         >
@@ -234,7 +239,7 @@ const TranslationWork: NextPage = () => {
         <Navigate
           isOpen={isSuccessModal}
           onClose={() => {}}
-          navigateUrl={`/main/challenge/${challengeId}`}
+          navigateUrl={`/main/translation/${translationId}`}
           text="작업물 보기"
         >
           제출되었습니다!
