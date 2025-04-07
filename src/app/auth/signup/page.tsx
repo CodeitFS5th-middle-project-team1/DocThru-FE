@@ -1,6 +1,6 @@
 'use client';
 
-import { useSignup } from '@/core/hooks/auth/useSignup';
+import { useSignup } from '@/api/auth/AuthHook';
 import AuthForm from '@/shared/components/form/AuthForm';
 import { NextPage } from 'next';
 import { useForm, FormProvider } from 'react-hook-form';

@@ -4,7 +4,7 @@ import { NextPage } from 'next';
 import { Title } from './components/Title';
 import { Participation } from './components/Participation';
 import { useEffect } from 'react';
-import { useChallengeStore } from '@/api/store/ChallengeStore';
+import { useChallengeStore } from '@/api/challenge/ChallengeStore';
 import { useParams } from 'next/navigation';
 import { useTranslationListStore } from '@/api/store/translationStore';
 

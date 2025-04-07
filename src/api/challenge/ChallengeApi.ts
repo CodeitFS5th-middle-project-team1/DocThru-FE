@@ -12,7 +12,7 @@ export interface FetchChallengeParams {
 }
 
 interface FetchChallengeResponse {
-  challengesWithIsMax: Challenge[];
+  challenges: Challenge[];
   totalCount: number;
 }
 
@@ -30,6 +30,7 @@ export const fetchChallenges = async (
   params: FetchChallengeParams
 ): Promise<FetchChallengeResponse> => {
   const res = await docThro.get('/challenges', { params });
+
   return res.data;
 };
 
@@ -37,7 +38,7 @@ export const fetchChallengeById = async (
   id: string
 ): Promise<ChallengeFormData> => {
   const response = await docThro.get(`/challenges/${id}`);
-  console.log('response', response);
+
   return response.data.challenge;
 };
 

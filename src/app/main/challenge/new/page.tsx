@@ -1,6 +1,6 @@
 'use client';
 
-import { useCreateChallenge } from '@/core/hooks/challenge/useCreateChallenge';
+import { useCreateChallenge } from '@/api/challenge/ChallengeHooks';
 import ChallengeForm, {
   ChallengeFormData,
 } from '@/shared/components/form/ChallengeForm';
