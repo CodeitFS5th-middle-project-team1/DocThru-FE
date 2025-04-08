@@ -14,8 +14,7 @@ export const useCreateChallenge = () => {
     createChallenge,
     {
       pending: '챌린지를 생성 중입니다...',
-      success: '챌린지 생성 완료! 챌린지 페이지로 이동 중!',
-      error: '챌린지 생성 실패!',
+      success: '챌린지 생성 완료!',
     },
     {
       onSuccess: () => {

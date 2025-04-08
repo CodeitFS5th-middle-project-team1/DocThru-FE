@@ -18,8 +18,6 @@ const ChallengeMain = () => {
     documentType: '',
     status: '',
   });
-  const { user } = useAuthStore();
-  const userRole = user?.role;
 
   const { data, isPending } = useToastQuery(
     ['challenges', page, limit, keyword, filters],
