@@ -21,6 +21,7 @@ import {
 import Button, { ButtonCategory } from '@/shared/components/button/Button';
 import { useUnloadWarning } from '@/shared/hooks/useUnloadWarning';
 import { useToastMutation } from '@/shared/hooks/useToastMutation';
+import { OriginView } from '@/shared/components/OriginView';
 
 const TranslationWork: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -236,6 +237,7 @@ const TranslationWork: NextPage = () => {
             </div>
           </div>
         )}
+        <OriginView />
       </div>
     </div>
   );
