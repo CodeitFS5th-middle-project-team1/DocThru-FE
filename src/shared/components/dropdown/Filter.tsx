@@ -67,7 +67,7 @@ export const Filter: React.FC<FilterProps> = ({ textSize, onApply }) => {
       className={`w-[140px] h-10 relative ${textSize === 'lg' ? 'R-14-0' : 'R-13-0'}`}
     >
       <div
-        className={`${selectBoxStyle} p-2 pl-3 pr-2 color ${filterCount !== 0 ? 'bg-custom-gray-800 text-custom-gray-50' : 'text-custom-gray-400'}`}
+        className={`${selectBoxStyle} p-3 pl-3 pr-2 color ${filterCount !== 0 ? 'bg-custom-gray-800 text-custom-gray-50' : 'text-custom-gray-400'}`}
         onClick={handleButtonClick}
       >
         {`필터  ${filterCount !== 0 ? filterCount : ''}`}
