@@ -5,11 +5,13 @@ import Image from 'next/image';
 import admin from '@/shared/Img/profile-icon/admin.svg';
 import member from '@/shared/Img/profile-icon/member.svg';
 import { useAuthStore, useHydrated } from '@/api/auth/AuthStore';
+import { useLogout } from '@/api/auth/AuthHook';
 
 const ProfileDropdown = () => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const { user, clearAuth } = useAuthStore();
+  const { user } = useAuthStore();
+  const logout = useLogout();
   const hasHydrated = useHydrated();
 
   const profileIcon = user?.role === 'ADMIN' ? admin : member;
@@ -54,7 +56,7 @@ const ProfileDropdown = () => {
           </div>
           <hr className="my-2" />
           <button
-            onClick={clearAuth}
+            onClick={logout}
             className="text-sm text-gray-600 hover:text-black"
           >
             로그아웃
