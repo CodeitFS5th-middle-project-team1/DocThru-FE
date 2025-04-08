@@ -13,6 +13,7 @@ import {
   fetchChallengeByParticipating,
   fetchChallenges,
 } from '@/api/challenge/ChallengeApi';
+import { Sort } from '@/shared/components/dropdown/Sort';
 
 const TAB_LIST = [
   { key: 'participating', label: '참여중인 챌린지' },
@@ -99,15 +100,30 @@ const MyChallengeMain = () => {
           ))}
         </div>
         <div className="w-full">
-          <Search
-            name={'text'}
-            placeholder="챌린지 이름을 검색해보세요"
-            onSearch={(e) => {
-              setKeyword(e);
-              setPage(1);
-            }}
-            size="w-full"
-          />
+          {activeTab === 'completed' ? (
+            <>
+              <Search
+                name={'text'}
+                placeholder="챌린지 이름을 검색해보세요"
+                onSearch={(e) => {
+                  setKeyword(e);
+                  setPage(1);
+                }}
+                size="w-full"
+              />
+              {/* <Sort /> */}
+            </>
+          ) : (
+            <Search
+              name={'text'}
+              placeholder="챌린지 이름을 검색해보세요"
+              onSearch={(e) => {
+                setKeyword(e);
+                setPage(1);
+              }}
+              size="w-full"
+            />
+          )}
         </div>
       </section>
 
