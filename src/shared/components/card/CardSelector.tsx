@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import selectorIcon from '@images/menu-icon/Meatballs.svg';
 import { useState } from 'react';
+import { useAuthStore } from '@/api/auth/AuthStore';
 
 export const CardSelector = ({
   onEdit,
@@ -10,6 +11,7 @@ export const CardSelector = ({
   onDelete: () => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuthStore();
 
   const toggleMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -21,6 +23,8 @@ export const CardSelector = ({
     callback();
     setIsOpen(false);
   };
+
+  if (!user) return null;
 
   return (
     <>
