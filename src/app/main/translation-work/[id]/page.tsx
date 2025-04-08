@@ -9,13 +9,12 @@ import ConfirmCancel from '@/shared/components/modal/confirmCancel';
 import Navigate from '@/shared/components/modal/navigate';
 import Editor from '../_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
-import { notFound, useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { ErrorMessage, ErrorResponse } from '@/types';
+import { ErrorMessage, ErrorResponse, Modal } from '@/types';
 import {
   createDraftTranslation,
-  createTranslation,
   getDraftTranslation,
   getTranLation,
   modifyTranslation,
@@ -27,12 +26,8 @@ import { useToastMutation } from '@/shared/hooks/useToastMutation';
 const TranslationWorkModify: NextPage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState<string | null>(null);
+  const [modal, setModal] = useState<Modal>('none');
   const [isDrafted, setIsDrafted] = useState(false);
-  const [isDraftModal, setIsDraftModal] = useState(false);
-  const [isDraftQuestionModal, setIsDraftQuestionModal] = useState(false);
-  const [isForgiveModal, setIsForgiveModal] = useState(false);
-  const [isSuccessModal, setIsSuccessModal] = useState(false);
-  const [isErrorModal, setIsErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [challengeId, setChallengeId] = useState<string>('');
   const [isLoaded, setIsLoaded] = useState(false);
@@ -47,10 +42,8 @@ const TranslationWorkModify: NextPage = () => {
       const [, challengeId] = queryKey;
       return getTranLation(challengeId, translationId);
     },
-    enabled: !!challengeId, // ✅ 이거 꼭 필요!
+    enabled: !!challengeId,
   });
-
-  console.log('TranslationData: ', TranslationData);
 
   // 로컬 스토리지에서 저장되어 있는 Challenge Id를 불러옵니다.
   useEffect(() => {
@@ -70,7 +63,7 @@ const TranslationWorkModify: NextPage = () => {
     }
   }, [TranslationData]);
 
-  useUnloadWarning(content !== '' && !isSuccessModal);
+  useUnloadWarning(content !== '' && !(modal === 'success'));
 
   const { data: draftData } = useQuery({
     queryKey: ['draft', challengeId],
@@ -84,49 +77,25 @@ const TranslationWorkModify: NextPage = () => {
     if (draftData?.status === 200) {
       setIsDrafted(true);
     }
-    console.log(draftData, 'draftData');
   }, [draftData]);
 
   // 번역물 생성 Mutation
   const modifyTranslationMutation = useMutation({
     mutationFn: modifyTranslation,
     onSuccess: (data) => {
-      setIsSuccessModal(true);
+      setModal('success')
       console.log('성공', data);
     },
     onError: (error) => {
       const axiosError = error as AxiosError<ErrorResponse>;
-      const data = axiosError.response?.data;
-      let message = '알 수 없는 에러가 발생했어요.';
-
-      if (data && typeof data.message === 'string') {
-        // message가 그냥 string일 경우
-        message = data.message;
-      } else if (
-        data &&
-        typeof data.message === 'object' &&
-        data.message !== null
-      ) {
-        const messageObj = data.message as ErrorMessage;
-
-        // formErrors가 있는 경우
-        if (
-          Array.isArray(messageObj.formErrors) &&
-          messageObj.formErrors.length > 0
-        ) {
-          message = messageObj.formErrors.join('\n');
-        }
-
-        // fieldErrors가 있는 경우
-        else if (messageObj.fieldErrors) {
-          const fieldMessages = Object.entries(messageObj.fieldErrors)
-            .map(([field, errors]) => `${errors.join('\n')}`)
-            .join('\n');
-          message = fieldMessages;
-        }
+      if(axiosError.status === 500 || axiosError.status === 404){
+        setErrorMessage("서버 요청 에러 발생!");
+        setModal("error");
       }
-      setErrorMessage(message);
-      setIsErrorModal(true);
+      else{
+        setErrorMessage("제목은 최소 1자 이상 최대 50자 이하로 입력해주세요.\n내용은 1000자 이하로 입력해주세요.");
+        setModal("error");
+      }
     },
   });
 
@@ -152,7 +121,7 @@ const TranslationWorkModify: NextPage = () => {
         <div className="mt-6 flex justify-between h-[80px] items-center">
           <div
             onClick={() => {
-              setIsForgiveModal(true);
+              setModal('forgive')
             }}
           >
             <Image
@@ -169,7 +138,7 @@ const TranslationWorkModify: NextPage = () => {
                 category={ButtonCategory.DROP}
                 size={'py-2 flex'}
                 onClick={() => {
-                  setIsForgiveModal(true);
+                  setModal('forgive')
                 }}
               >
                 <p className="hidden md:flex">포기</p>
@@ -225,48 +194,37 @@ const TranslationWorkModify: NextPage = () => {
           )}
         </div>
         <Confirm
-          isOpen={isDraftModal}
-          onClose={() => setIsDraftModal(false)}
+          isOpen={modal === 'drafted'}
+          onClose={() => setModal('none')}
           onConfirm={() => {
-            setIsDraftModal(false);
+            setModal('none')
             setIsDrafted(false);
           }}
         >
           임시저장 되었습니다!
         </Confirm>
         <Confirm
-          isOpen={isErrorModal}
-          onClose={() => setIsErrorModal(false)}
+          isOpen={modal==="error"}
+          onClose={() => setModal("none")}
           onConfirm={() => {
-            setIsErrorModal(false);
+            setModal("none");
           }}
         >
           {errorMessage}
         </Confirm>
         <ConfirmCancel
-          isOpen={isDraftQuestionModal}
-          onClose={() => setIsDraftQuestionModal(false)}
+          isOpen={modal==="forgive"}
+          onClose={() => setModal("none")}
           onConfirm={() => {
-            setIsDraftQuestionModal(false);
-            setIsDraftModal(true);
-          }}
-          onCancel={() => setIsDraftQuestionModal(false)}
-        >
-          임시저장 하시겠습니까?
-        </ConfirmCancel>
-        <ConfirmCancel
-          isOpen={isForgiveModal}
-          onClose={() => setIsForgiveModal(false)}
-          onConfirm={() => {
-            setIsForgiveModal(false);
+            setModal("none")
             router.push(`/main/translation/${translationId}`);
           }}
-          onCancel={() => setIsForgiveModal(false)}
+          onCancel={() => setModal("none")}
         >
           정말 작업을 포기하시겠어요?
         </ConfirmCancel>
         <Navigate
-          isOpen={isSuccessModal}
+          isOpen={modal === "success"}
           onClose={() => {}}
           navigateUrl={`/main/translation/${translationId}`}
           text="작업물 보기"
