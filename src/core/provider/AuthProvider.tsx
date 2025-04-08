@@ -1,24 +1,13 @@
 'use client';
 
-import { AuthState, SetUser, useAuthStore } from '@/api/auth/AuthStore';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { AuthState, useAuthStore, useHydrated } from '@/api/auth/AuthStore';
+import { PATH } from '@/constants';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { createContext, useContext, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
-export interface LoginPayload {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  user: SetUser;
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface SignupPayload {
-  email: string;
-  password: string;
-  nickName: string;
-}
+const publicPaths = ['/', PATH.login, PATH.signup, PATH.challenge];
+const homePaths = ['/'];
 
 interface AuthContextType {
   user: AuthState['user'];
@@ -28,36 +17,44 @@ interface AuthContextType {
   clearAuth: AuthState['clearAuth'];
 }
 
-//로그인 정보 없이는 막고 싶은 경로
-// const protectedRoutes = ['/main/challenge/new', '/main/challenge/[id]/edit'];
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, setAuth, clearAuth } = useAuthStore();
-  const [isLoading, setIsLoading] = useState(true);
-  // const router = useRouter();
-  // const pathname = usePathname();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const hydrated = useHydrated();
+
+  const message = searchParams.get('message');
   const isLoggedIn = !!user;
-
-  // const isProtected = protectedRoutes.some((route) =>
-  //   pathname?.startsWith(route.replace('[id]', ''))
-  // );
-
-  // useEffect(() => {
-  //   if (isLoading) return;
-
-  //   if (isProtected && !isLoggedIn) {
-  //     toast.error('로그인이 필요합니다.');
-  //     setTimeout(() => {
-  //       redirectAfterAuth(router);
-  //     }, 1500);
-  //   }
-  // }, [isLoading, isProtected, isLoggedIn, router]);
+  const isLoading = !hydrated;
+  const isPublic = publicPaths.some((path) => pathname.startsWith(path));
+  const isHome = homePaths.includes(pathname);
 
   useEffect(() => {
-    setIsLoading(false);
-  }, []);
+    if (!hydrated || !message) return;
+
+    const messages: Record<string, string> = {
+      needLogin: '로그인이 필요합니다.',
+      adminOnly: '관리자 전용 페이지입니다.',
+      forbidden: '접근 권한이 없습니다.',
+    };
+
+    const toastMessage = messages[message];
+    if (toastMessage) toast.error(toastMessage);
+  }, [hydrated, message]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+
+    const isAuthPage =
+      pathname.startsWith(PATH.login) || pathname.startsWith(PATH.signup);
+
+    if (isLoggedIn && isPublic && isAuthPage && isHome) {
+      router.replace(PATH.challenge);
+    }
+  }, [hydrated, isLoggedIn, isPublic, pathname, router]);
 
   return (
     <AuthContext.Provider

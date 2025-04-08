@@ -3,9 +3,9 @@ import { useToastMutation } from '@/shared/hooks/useToastMutation';
 import toast from 'react-hot-toast';
 import { loginFn, signupFn } from './AuthApi';
 import { useAuthStore } from './AuthStore';
+import { PATH } from '@/constants';
 
 export const useLogin = () => {
-  const router = useRouter();
   const { setAuth } = useAuthStore();
 
   return useToastMutation(
@@ -17,10 +17,11 @@ export const useLogin = () => {
     {
       onSuccess: ({ user }) => {
         setAuth(user);
-
-        setTimeout(() => {
-          router.back();
-        }, 1500);
+        if (user.role === 'ADMIN') {
+          window.location.href = PATH.admin;
+        } else {
+          window.location.href = PATH.challenge;
+        }
       },
     },
     'login-toast'
@@ -32,8 +33,12 @@ export const useLogout = () => {
 
   return () => {
     clearAuth();
+    document.cookie =
+      'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     toast.success('로그아웃 되었습니다!');
-    window.location.href = '/';
+    setTimeout(() => {
+      window.location.href = '/auth/login';
+    }, 300);
   };
 };
 
