@@ -1,11 +1,20 @@
 import { useToastMutation } from '@/shared/hooks/useToastMutation';
-
+import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ChallengeFormRequest,
   createChallenge,
   editChallenge,
+  fetchChallengeById,
 } from './ChallengeApi';
+
+export const useGetChallenge = (id: string) => {
+  return useToastQuery<ChallengeFormRequest, unknown, any>(
+    ['challenge', id],
+    () => fetchChallengeById(id),
+    'challenge-toast'
+  );
+};
 
 export const useCreateChallenge = () => {
   const router = useRouter();
