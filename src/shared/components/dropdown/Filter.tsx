@@ -6,14 +6,19 @@ import close from '@/shared/Img/out-icon/out.svg';
 import { CheckBox } from '../CheckBox';
 import { Divider } from '../Divider';
 import { RadioBtn } from '../RadioBtn';
-import Button, { BGColor, ButtonBorder } from '../button/Button';
+import Button, { ButtonCategory } from '../button/Button';
 interface FilterProps {
   options?: { value: string; name: string }[];
   handleChange?: (value: string) => void;
   textSize?: 'sm' | 'lg';
+  onApply: (filters: {
+    fields: string[];
+    documentType: string;
+    status: string;
+  }) => void;
 }
 
-export const Filter: React.FC<FilterProps> = ({ textSize }) => {
+export const Filter: React.FC<FilterProps> = ({ textSize, onApply }) => {
   const [open, setOpen] = useState(false);
   const [checkBoxList, setCheckBoxList] = useState<string[]>([]);
   const [documentType, setDocumentType] = useState<string>('');
@@ -38,6 +43,7 @@ export const Filter: React.FC<FilterProps> = ({ textSize }) => {
     setStatus('');
     setFilterCount(0);
     setOpen(false);
+    onApply({ fields: checkBoxList, documentType, status });
   };
   const selectBoxStyle =
     'flex flex-row justify-between items-center border-[1px] border-custom-gray-300 rounded-4xl cursor-pointer ';
@@ -53,6 +59,7 @@ export const Filter: React.FC<FilterProps> = ({ textSize }) => {
     setFilterCount(count);
 
     setOpen(false);
+    onApply({ fields: checkBoxList, documentType, status });
   };
 
   return (
@@ -87,46 +94,52 @@ export const Filter: React.FC<FilterProps> = ({ textSize }) => {
 
             <div className="SB-14-0">분야</div>
             <CheckBox
-              name="Next.JS"
-              value="Next.JS"
+              name="NEXTJS"
+              value="NEXTJS"
               handleChange={addCheckBoxList}
-              checked={checkBoxList.includes('Next.JS')}
+              checked={checkBoxList.includes('NEXTJS')}
             />
             <CheckBox
-              name="Modern JS"
-              value="Modern JS"
+              name="MODERNJS"
+              value="MODERNJS"
               handleChange={addCheckBoxList}
-              checked={checkBoxList.includes('Modern JS')}
+              checked={checkBoxList.includes('MODERNJS')}
             />
             <CheckBox
-              name="Web"
-              value="Web"
+              name="API"
+              value="API"
               handleChange={addCheckBoxList}
-              checked={checkBoxList.includes('Web')}
+              checked={checkBoxList.includes('API')}
             />
             <CheckBox
-              name="Career"
-              value="Career"
+              name="WEB"
+              value="WEB"
               handleChange={addCheckBoxList}
-              checked={checkBoxList.includes('Career')}
+              checked={checkBoxList.includes('WEB')}
+            />
+            <CheckBox
+              name="CAREER"
+              value="CAREER"
+              handleChange={addCheckBoxList}
+              checked={checkBoxList.includes('CAREER')}
             />
             <Divider />
             <div className="SB-14-0">문서타입</div>
             <RadioBtn
               id="공식문서"
               groupName="문서타입"
-              value={'official document'}
+              value={'OFFICIAL'}
               name="공식문서"
               onChange={(e) => setDocumentType(e.target.value)}
-              checked={documentType === 'official document'}
+              checked={documentType === 'OFFICIAL'}
             />
             <RadioBtn
               id="블로그"
               groupName="문서타입"
-              value={'blog'}
+              value={'BLOG'}
               name="블로그"
               onChange={(e) => setDocumentType(e.target.value)}
-              checked={documentType === 'blog'}
+              checked={documentType === 'BLOG'}
             />
             <Divider />
             <div className="SB-14-0">상태</div>
@@ -147,18 +160,10 @@ export const Filter: React.FC<FilterProps> = ({ textSize }) => {
               checked={status === 'done'}
             />
             <div className="flex justify-between items-center mt-2 gap-2">
-              <Button
-                bgColor={BGColor.WHITE}
-                border={ButtonBorder.LITTLE_RECTANGLE_BORDER}
-                onClick={handleReset}
-              >
+              <Button category={ButtonCategory.NO} onClick={handleReset}>
                 초기화
               </Button>
-              <Button
-                bgColor={BGColor.BLACK}
-                border={ButtonBorder.LITTLE_RECTANGLE}
-                onClick={handleApply}
-              >
+              <Button category={ButtonCategory.YES} onClick={handleApply}>
                 적용하기
               </Button>
             </div>

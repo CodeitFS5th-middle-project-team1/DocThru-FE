@@ -29,8 +29,15 @@ export interface ChallengeFormRequest {
 export const fetchChallenges = async (
   params: FetchChallengeParams
 ): Promise<FetchChallengeResponse> => {
-  const res = await docThro.get('/challenges', { params });
-  console.log('res', res);
+  const cleanParams = Object.fromEntries(
+    Object.entries(params).filter(([_, value]) => {
+      if (Array.isArray(value)) return value.length > 0;
+      return value !== undefined && value !== null && value !== '';
+    })
+  );
+  console.log('cleanParams', cleanParams);
+  const res = await docThro.get('/challenges', { params: cleanParams });
+
   return res.data;
 };
 

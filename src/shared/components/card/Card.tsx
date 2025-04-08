@@ -19,8 +19,8 @@ import toast from 'react-hot-toast';
 export interface CardData {
   id: string;
   userId: string;
+  approvalStatus?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'DELETED';
   status?: 'inProgress' | 'completed';
-  approvalStatus?: 'PENDING' | 'APPROVED' | 'REJECTED';
   title: string;
   documentType: DocumentType;
   field: FieldType;
@@ -33,21 +33,21 @@ export interface CardData {
 
 export interface CardProps {
   data: CardData;
-
   href?: string;
   onClick?: () => void;
 }
 
 export const Card = ({ data, href, onClick }: CardProps) => {
-  const maxParticipant = data?.isParticipantsFull ?? false;
-  const overDeadLine = data?.isDeadlineFull ?? false;
   const { user } = useAuthStore();
   const router = useRouter();
 
+  const maxParticipant = data?.isParticipantsFull ?? false;
+  const overDeadLine = data?.isDeadlineFull ?? false;
+
   const isMine = user?.id === data.userId;
   const isAdmin = user?.role === 'ADMIN';
-  const isApproval = data.approvalStatus === 'APPROVED';
-  const isShowSelector = isApproval ? isAdmin : isMine || isAdmin;
+  const isPending = data.approvalStatus !== 'APPROVED';
+  const isShowSelector = isAdmin || (isMine && isPending);
   const isShowButton =
     data.status === 'inProgress' || data.status === 'completed';
 
@@ -57,6 +57,7 @@ export const Card = ({ data, href, onClick }: CardProps) => {
   };
 
   const handleEdit = () => router.push(`${PATH.challenge}/${data.id}/edit`);
+
   const handleDelete = async () => {
     try {
       if (isAdmin) {
