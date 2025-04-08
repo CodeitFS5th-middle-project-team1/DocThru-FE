@@ -46,8 +46,7 @@ export const Card = ({ data, href, onClick }: CardProps) => {
 
   const isMine = user?.id === data.userId;
   const isAdmin = user?.role === 'ADMIN';
-  const isPending = data.approvalStatus !== 'APPROVED';
-  const isShowSelector = isAdmin || (isMine && isPending);
+  const isShowSelector = isAdmin;
   const isShowButton =
     data.status === 'inProgress' || data.status === 'completed';
 

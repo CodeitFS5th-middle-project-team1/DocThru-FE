@@ -146,24 +146,32 @@ export const Filter: React.FC<FilterProps> = ({ textSize, onApply }) => {
             <RadioBtn
               id="진생중"
               groupName="상태"
-              value={'progress'}
+              value={'running'}
               name="진행중"
               onChange={(e) => setStatus(e.target.value)}
-              checked={status === 'progress'}
+              checked={status === 'running'}
             />
             <RadioBtn
               id="마감"
               groupName="상태"
-              value={'done'}
+              value={'end'}
               name="마감"
               onChange={(e) => setStatus(e.target.value)}
-              checked={status === 'done'}
+              checked={status === 'end'}
             />
             <div className="flex justify-between items-center mt-2 gap-2">
-              <Button category={ButtonCategory.NO} onClick={handleReset}>
+              <Button
+                category={ButtonCategory.NO}
+                size="py-2"
+                onClick={handleReset}
+              >
                 초기화
               </Button>
-              <Button category={ButtonCategory.YES} onClick={handleApply}>
+              <Button
+                category={ButtonCategory.YES}
+                size="py-2"
+                onClick={handleApply}
+              >
                 적용하기
               </Button>
             </div>

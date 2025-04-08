@@ -9,6 +9,7 @@ export interface FetchChallengeParams {
   fields?: string[];
   approvalStatus?: string;
   keyword?: string;
+  status?: string;
 }
 
 interface FetchChallengeResponse {

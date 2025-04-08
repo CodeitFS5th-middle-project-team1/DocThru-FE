@@ -30,6 +30,7 @@ const ChallengeMain = () => {
         keyword,
         documentType: filters.documentType,
         fields: filters.fields,
+        status: filters.status,
       }),
     'challenge-toast',
     {

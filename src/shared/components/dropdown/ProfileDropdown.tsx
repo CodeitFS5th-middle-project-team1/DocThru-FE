@@ -6,6 +6,8 @@ import admin from '@/shared/Img/profile-icon/admin.svg';
 import member from '@/shared/Img/profile-icon/member.svg';
 import { useAuthStore, useHydrated } from '@/api/auth/AuthStore';
 import { useLogout } from '@/api/auth/AuthHook';
+import Link from 'next/link';
+import { PATH } from '@/constants';
 
 const ProfileDropdown = () => {
   const [open, setOpen] = useState(false);
@@ -15,6 +17,7 @@ const ProfileDropdown = () => {
   const hasHydrated = useHydrated();
 
   const profileIcon = user?.role === 'ADMIN' ? admin : member;
+  const isAdmin = user?.role === 'ADMIN';
 
   //드롭다운 닫기
   useEffect(() => {
@@ -41,7 +44,7 @@ const ProfileDropdown = () => {
         onClick={() => setOpen((prev) => !prev)}
       />
       {open && (
-        <div className="absolute right-0 mt-2 min-w-[12rem] max-w-[16rem] bg-white border rounded-xl shadow-lg p-4 z-50">
+        <div className="absolute right-0 mt-2 min-w-[10rem] max-w-[16rem] bg-white border rounded-xl shadow-lg p-4 z-50">
           <div className="flex items-center gap-3 mb-3">
             <Image src={profileIcon} alt="사용자" width={36} height={36} />
             <div className="flex flex-col overflow-hidden">
@@ -55,12 +58,23 @@ const ProfileDropdown = () => {
             </div>
           </div>
           <hr className="my-2" />
-          <button
-            onClick={logout}
-            className="text-sm text-gray-600 hover:text-black"
-          >
-            로그아웃
-          </button>
+          <div className="flex flex-col gap-2 items-start">
+            {!isAdmin && (
+              <Link
+                href={PATH.myChallenge}
+                className="text-sm text-gray-600 hover:text-black"
+              >
+                나의 챌린지
+              </Link>
+            )}
+
+            <button
+              onClick={logout}
+              className="text-sm text-gray-600 hover:text-black"
+            >
+              로그아웃
+            </button>
+          </div>
         </div>
       )}
     </div>
