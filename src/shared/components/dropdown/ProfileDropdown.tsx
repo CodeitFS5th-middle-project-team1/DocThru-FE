@@ -4,18 +4,17 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import admin from '@/shared/Img/profile-icon/admin.svg';
 import member from '@/shared/Img/profile-icon/member.svg';
-interface Props {
-  nickname: string;
-  role: string; // 어드민 or 일반 사용자
-  onLogout: () => void;
-}
+import { useAuthStore, useHydrated } from '@/api/auth/AuthStore';
+import { useLogout } from '@/api/auth/AuthHook';
 
-const ProfileDropdown: React.FC<Props> = ({ nickname, role, onLogout }) => {
+const ProfileDropdown = () => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  //console.log('[ProfileDropDown] role 값:', role);
-  //이거 콘솔로그가 브라우저랑 서버에 다른값이 찍힘 -> 하이드레이션 문제(?)
-  const profileIcon = role === '어드민' ? admin : member; //'어드민' 하드코딩 괜찮은지? 나중에 수정 필요할수도
+  const { user } = useAuthStore();
+  const logout = useLogout();
+  const hasHydrated = useHydrated();
+
+  const profileIcon = user?.role === 'ADMIN' ? admin : member;
 
   //드롭다운 닫기
   useEffect(() => {
@@ -27,6 +26,9 @@ const ProfileDropdown: React.FC<Props> = ({ nickname, role, onLogout }) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  if (!hasHydrated) return null;
+  if (!user) return null;
 
   return (
     <div className="relative" ref={ref}>
@@ -43,15 +45,18 @@ const ProfileDropdown: React.FC<Props> = ({ nickname, role, onLogout }) => {
           <div className="flex items-center gap-3 mb-3">
             <Image src={profileIcon} alt="사용자" width={36} height={36} />
             <div className="flex flex-col overflow-hidden">
-              <p className="text-sm font-semibold truncate" title={nickname}>
-                {nickname}
+              <p
+                className="text-sm font-semibold truncate"
+                title={user.nickname}
+              >
+                {user.nickname}
               </p>
-              <p className="text-xs text-gray-500">{role}</p>
+              <p className="text-xs text-gray-500">{user.role}</p>
             </div>
           </div>
           <hr className="my-2" />
           <button
-            onClick={onLogout}
+            onClick={logout}
             className="text-sm text-gray-600 hover:text-black"
           >
             로그아웃

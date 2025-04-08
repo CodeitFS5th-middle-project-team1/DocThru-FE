@@ -63,19 +63,7 @@ const ChallengeMain = () => {
           </div>
         ) : (
           <>
-            {challenges?.map((data, index) => (
-              <Card
-                id={data.id}
-                role="base"
-                key={index}
-                title={data.title}
-                DocumentType={data.documentType}
-                FieldType={data.field}
-                deadLine={data.deadline}
-                currentParticipants={data.currentParticipants}
-                maxParticipants={data.maxParticipants}
-              />
-            ))}
+            {challenges?.map((data, index) => <Card key={index} data={data} />)}
           </>
         )}
       </section>

@@ -1,9 +1,22 @@
 import { docThro } from '../url';
-import {
-  LoginPayload,
-  LoginResponse,
-  SignupPayload,
-} from '@/core/provider/AuthProvider';
+import { SetUser } from './AuthStore';
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  user: SetUser;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface SignupPayload {
+  email: string;
+  password: string;
+  nickName: string;
+}
 
 export const loginFn = async (
   payload: LoginPayload

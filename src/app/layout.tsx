@@ -14,9 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const isLandingPage = pathname === '/'; //랜딩페이지는 AuthProvider 제외
+  const isLandingPage = pathname === '/';
   const isAuthPage =
-    pathname.startsWith('/auth') || pathname.startsWith('/admin') || pathname.startsWith('/main/translation-work');
+    pathname.startsWith('/auth') ||
+    pathname.startsWith('/main/translation-work');
 
   return (
     <html lang="kor">

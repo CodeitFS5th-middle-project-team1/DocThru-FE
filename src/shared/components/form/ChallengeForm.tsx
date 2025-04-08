@@ -134,7 +134,7 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
         ></Text>
       </section>
 
-      <Button type="submit" category={ButtonCategory.EDIT}>
+      <Button type="submit" category={ButtonCategory.EDIT} size="py-3.5">
         {category === 'edit' ? '수정하기' : '신청하기'}
       </Button>
     </form>
