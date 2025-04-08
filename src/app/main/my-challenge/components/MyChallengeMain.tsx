@@ -5,12 +5,15 @@ import Search from '@/shared/components/input/search';
 import { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
-
 import { Tab, TabActive, TextPosition } from '@/shared/components/tab/Tab';
 import ChallengeTable from './ChallengeTable';
 import dayjs from 'dayjs';
 import { Challenge } from '@/types';
-import { fetchChallenges } from '@/api/challenge/ChallengeApi';
+import {
+  fetchChallengeByParticipating,
+  fetchChallenges,
+} from '@/api/challenge/ChallengeApi';
+import { Sort } from '@/shared/components/dropdown/Sort';
 
 const TAB_LIST = [
   { key: 'participating', label: '참여중인 챌린지' },
@@ -32,14 +35,27 @@ const MyChallengeMain = () => {
   const [activeTab, setActiveTab] = useState<TabKey>('participating');
 
   const { data, isPending } = useToastQuery(
-    ['my-challenges', page, limit, keyword],
-    () =>
-      fetchChallenges({
+    ['my-challenges', page, limit, keyword, activeTab],
+    () => {
+      if (activeTab === 'applied') {
+        return fetchChallenges({
+          page,
+          limit,
+          keyword,
+        });
+      }
+      return fetchChallengeByParticipating({
         page,
-        limit: 10,
+        limit,
         keyword,
-        status: activeTab,
-      }),
+        isExpired:
+          activeTab === 'completed'
+            ? true
+            : activeTab === 'participating'
+              ? false
+              : undefined,
+      });
+    },
     'challenge-toast',
     {
       pending: '불러오는 중...',
@@ -60,7 +76,6 @@ const MyChallengeMain = () => {
     deadline: dayjs(c.deadline).format('YYYY.MM.DD'),
     approvalStatus: c.approvalStatus,
   }));
-  console.log('tableData', tableData);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -85,15 +100,30 @@ const MyChallengeMain = () => {
           ))}
         </div>
         <div className="w-full">
-          <Search
-            name={'text'}
-            placeholder="챌린지 이름을 검색해보세요"
-            onSearch={(e) => {
-              setKeyword(e);
-              setPage(1);
-            }}
-            size="w-full"
-          />
+          {activeTab === 'completed' ? (
+            <>
+              <Search
+                name={'text'}
+                placeholder="챌린지 이름을 검색해보세요"
+                onSearch={(e) => {
+                  setKeyword(e);
+                  setPage(1);
+                }}
+                size="w-full"
+              />
+              {/* <Sort /> */}
+            </>
+          ) : (
+            <Search
+              name={'text'}
+              placeholder="챌린지 이름을 검색해보세요"
+              onSearch={(e) => {
+                setKeyword(e);
+                setPage(1);
+              }}
+              size="w-full"
+            />
+          )}
         </div>
       </section>
 
@@ -110,31 +140,29 @@ const MyChallengeMain = () => {
           <ChallengeTable data={tableData} />
         ) : (
           <>
-            {challenges.map((data, index) => (
+            {challenges.map((challenge) => (
               <Card
-                category="base"
-                key={index}
-                title={data.title}
-                DocumentType={data.documentType}
-                FieldType={data.field}
-                deadLine={data.deadline}
-                currentParticipants={data.currentParticipants}
-                maxParticipants={data.maxParticipants}
+                key={challenge.id}
+                data={{
+                  ...challenge,
+                  approvalStatus:
+                    challenge.approvalStatus === 'PENDING'
+                      ? 'PENDING'
+                      : challenge.approvalStatus,
+                }}
               />
             ))}
           </>
         )}
       </section>
 
-      {challenges.length > 0 && totalPages > 1 && (
-        <section className="flex justify-center">
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={(newPage) => setPage(newPage)}
-          />
-        </section>
-      )}
+      <section className="flex justify-center">
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={(newPage) => setPage(newPage)}
+        />
+      </section>
     </div>
   );
 };
