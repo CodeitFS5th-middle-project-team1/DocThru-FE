@@ -77,5 +77,6 @@ export const fetchChallengesByAdmin = async (
   }
 
   const data = await response.json();
+  console.log('API 응답 데이터:', data);
   return data;
 };
