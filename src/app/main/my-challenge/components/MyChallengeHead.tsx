@@ -7,6 +7,7 @@ export default function MyChallengeHead() {
       <div className="flex px-">
         <Button
           category={ButtonCategory.NEW_CHALLENGE}
+          size="py-2.5 px-3"
           href={'/main/challenge/new'}
         >
           신규 챌린지 신청

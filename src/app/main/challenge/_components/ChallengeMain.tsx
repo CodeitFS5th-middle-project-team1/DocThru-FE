@@ -7,18 +7,28 @@ import Pagination from './Pagination';
 import { Filter } from '@/shared/components/dropdown/Filter';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import { fetchChallenges } from '@/api/challenge/ChallengeApi';
+import { useAuthStore } from '@/api/auth/AuthStore';
 
 const ChallengeMain = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [keyword, setKeyword] = useState('');
+  const [filters, setFilters] = useState({
+    fields: [] as string[],
+    documentType: '',
+    status: '',
+  });
+
   const { data, isPending } = useToastQuery(
-    ['challenges', page, limit, keyword],
+    ['challenges', page, limit, keyword, filters],
     () =>
       fetchChallenges({
         page,
         limit: 10,
         keyword,
+        documentType: filters.documentType,
+        fields: filters.fields,
+        status: filters.status,
       }),
     'challenge-toast',
     {
@@ -37,7 +47,14 @@ const ChallengeMain = () => {
   return (
     <div className="flex flex-col gap-6 ">
       <section className="flex gap-3">
-        <div className="flex items-center">{/* <Filter /> */}</div>
+        <div className="flex items-center">
+          <Filter
+            onApply={(appliedFilters) => {
+              setFilters(appliedFilters);
+              setPage(1);
+            }}
+          />
+        </div>
 
         <div className="w-full">
           <Search
@@ -63,20 +80,29 @@ const ChallengeMain = () => {
           </div>
         ) : (
           <>
-            {challenges?.map((data, index) => <Card key={index} data={data} />)}
+            {challenges?.map((challenge) => (
+              <Card
+                key={challenge.id}
+                data={{
+                  ...challenge,
+                  approvalStatus:
+                    challenge.approvalStatus === 'PENDING'
+                      ? 'PENDING'
+                      : challenge.approvalStatus,
+                }}
+              />
+            ))}
           </>
         )}
       </section>
 
-      {challenges && challenges?.length > 0 && totalPages > 1 && (
-        <section className="flex justify-center">
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={(newPage) => setPage(newPage)}
-          />
-        </section>
-      )}
+      <section className="flex justify-center">
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={(newPage) => setPage(newPage)}
+        />
+      </section>
     </div>
   );
 };
