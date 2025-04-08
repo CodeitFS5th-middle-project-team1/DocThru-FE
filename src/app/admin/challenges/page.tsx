@@ -161,7 +161,7 @@ const AdminChallenge: NextPage = () => {
           </section>
         )}
 
-        {/* 페이지네이션 - 데이터가 있을 때만 */}
+        {/* 페이지네이션 */}
         {!isLoading && !error && (data?.totalCount ?? 0) > 0 && (
           <section className="flex justify-center mb-40">
             <Pagination
