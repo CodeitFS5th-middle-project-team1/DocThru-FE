@@ -156,6 +156,38 @@ export type ErrorResponse = {
   message?: string | ErrorMessage;
 };
 
-
 /** 번역물 생성 및 수정 모달 타입 */
 export type Modal = 'none' | 'drafted' | 'forgive' | 'success' | 'error';
+
+export interface ChallengeUser {
+  id: string;
+  idx: number;
+  field: FieldType;
+  userId: string;
+  title: string;
+  originURL: string;
+  documentType: DocumentType;
+  deadline: string;
+  maxParticipants: number;
+  currentParticipants: number;
+  description: string;
+  deletedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedReason?: string;
+  rejectedReason?: string;
+  rejectedAt?: string;
+  approvalStatus: ApprovalStatus;
+  approvalAt?: string;
+  isParticipantsFull: boolean;
+  isDeadlineFull: boolean;
+  user: {
+    nickname: string;
+  };
+  prevChallengeId?: {
+    id: string;
+  };
+  nextChallengeId?: {
+    id: string;
+  };
+}

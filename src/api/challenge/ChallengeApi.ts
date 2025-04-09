@@ -1,6 +1,6 @@
 import { docThro } from '@/api/url';
 import { ChallengeFormData } from '@/shared/components/form/ChallengeForm';
-import { Challenge, DocumentType, FieldType } from '@/types';
+import { Challenge, ChallengeUser, DocumentType, FieldType } from '@/types';
 
 export interface FetchChallengeParams {
   page?: number;
@@ -90,6 +90,12 @@ export const fetchChallengeById = async (
   const response = await docThro.get(`/challenges/${id}`);
 
   return response.data.challenge;
+};
+
+export const fetchMyChallenge = async (id: string): Promise<ChallengeUser> => {
+  const res = await docThro.get<ChallengeUser>(`/challenges/${id}`);
+  console.log('dasdsadwqe214214', res.data);
+  return res.data;
 };
 
 export const createChallenge = async (data: ChallengeFormRequest) => {
