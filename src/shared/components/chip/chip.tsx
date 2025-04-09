@@ -27,7 +27,7 @@ export const Chip: React.FC<ChipProps> = ({ label, className }) => {
     [ApprovalStatusLabels.PENDING]: `${chipStatusStyle} bg-[#FFFDE7] text-[#F2BC00]`,
     [ApprovalStatusLabels.REJECTED]: `${chipStatusStyle} bg-[#FFF0F0] text-[#E54946]`,
     [ApprovalStatusLabels.APPROVED]: `${chipStatusStyle} bg-[#DFF0FF] text-[#4095DE]`,
-    [ApprovalStatusLabels.DELETED]: `${chipStatusStyle} bg-custom-gray-200 text-custom-gray-500`,
+    [ApprovalStatusLabels.DELETED]: `${chipStatusStyle} whitespace-nowrap bg-custom-gray-200 text-custom-gray-500`,
   };
 
   const chipStyle =

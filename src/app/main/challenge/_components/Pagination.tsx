@@ -33,6 +33,7 @@ const Pagination = ({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={isPrevDisabled}
+        className={`${isPrevDisabled ? 'cursor-default' : 'cursor-pointer hover:-translate-y-0.5'}`}
       >
         <Image
           key={`${isPrevDisabled}-prev`}
@@ -49,11 +50,12 @@ const Pagination = ({
           <button
             key={page}
             onClick={() => onPageChange(page)}
-            className={`w-10 h-10 rounded-xl ${
-              page === currentPage
-                ? 'bg-custom-gray-800 text-sm text-custom-yellow-brand font-medium'
-                : 'bg-white text-sm text-custom-gray-400 font-medium'
-            }`}
+            className={`w-10 h-10 rounded-xl cursor-pointer transition-all duration-200
+              ${
+                page === currentPage
+                  ? 'bg-custom-gray-800 text-custom-yellow-brand'
+                  : 'bg-white text-custom-gray-400 hover:text-custom-gray-800 hover:font-semibold'
+              }`}
           >
             {page}
           </button>
@@ -63,6 +65,7 @@ const Pagination = ({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={isNextDisabled}
+        className={`${isNextDisabled ? 'cursor-default' : 'cursor-pointer hover:-translate-y-0.5'}`}
       >
         <Image
           key={`${isNextDisabled}-prev`}
