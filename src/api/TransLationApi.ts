@@ -25,3 +25,71 @@ export const getTranLationList = async (challengeId: string) => {
     console.error('Error fetching data:', error);
   }
 };
+
+  // 번역물을 생성하는 API
+  export const createTranslation = async ({
+    title,
+    content,
+    challengeId,
+  }: {
+    title: string;
+    content: string | null;
+    challengeId: string;
+  }) => {
+    const response = await docThro.post(
+      `/challenges/${challengeId}/translations`,
+      {
+        title,
+        content,
+      }
+    );
+    return response;
+  };
+
+  // 번역물을 수정하는 API
+  export const modifyTranslation = async ({
+    title,
+    content,
+    challengeId,
+    translationId,
+  }: {
+    title: string;
+    content: string | null;
+    challengeId: string;
+    translationId: string;
+  }) => {
+    const response = await docThro.patch(
+      `/challenges/${challengeId}/translations/${translationId}`,
+      {
+        title,
+        content,
+      }
+    );
+    return response;
+  };
+
+    // 임시 저장 생성 API
+    export const createDraftTranslation = async ({
+      title,
+      content,
+      challengeId,
+    }: {
+      title: string;
+      content: string | null;
+      challengeId: string;
+    }) => {
+      const response = await docThro.post(`/challenges/${challengeId}/drafts`, {
+        title,
+        content,
+      });
+      return response;
+    };
+
+    
+  
+    // 임시 저장된 번역물을 가져오는 API
+    export const getDraftTranslation = async (challengeId : string) => {
+      const response = await docThro.get(`/challenges/${challengeId}/drafts`);
+      return response;
+    };
+  

@@ -1,7 +1,7 @@
 'use client';
 import Text from '../input/text';
 import Date from '../input/date';
-import Button, { BGColor, ButtonBorder } from '../button/Button';
+import Button, { ButtonCategory } from '../button/Button';
 import { DocumentType, FieldType } from '@/types';
 import { DropDown } from '../dropdown/DropDown';
 import { useFormContext, SubmitHandler } from 'react-hook-form';
@@ -71,6 +71,18 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           placeholder="제목을 입력해주세요"
           register={register}
           size="w-full h-12"
+          rules={{
+            required: '제목을 입력해주세요.',
+            minLength: {
+              value: 2,
+              message: '제목은 최소 2자 이상이어야 합니다.',
+            },
+            maxLength: {
+              value: 15,
+              message: '제목은 최대 15자 이하여야 합니다.',
+            },
+          }}
+          errorMessage={_errors.title?.message}
         />
       </section>
 
@@ -81,6 +93,14 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           placeholder="원문 링크를 입력해주세요"
           register={register}
           size="w-full h-12"
+          rules={{
+            required: '유효한 URL을 입력해주세요.',
+            pattern: {
+              value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gm,
+              message: '유효한 URL을 입력해주세요.',
+            },
+          }}
+          errorMessage={_errors.originURL?.message}
         ></Text>
       </section>
 
@@ -121,6 +141,19 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           placeholder="최대 인원 수를 입력해주세요"
           register={register}
           size="w-full h-12"
+          rules={{
+            required: '최대 인원을 입력해주세요.',
+            min: { value: 1, message: '최소 2명 이상 입력해주세요.' },
+            max: {
+              value: 20,
+              message: '최대 인원 수는 20명 이하이어야 합니다.',
+            },
+            valueAsNumber: true,
+            validate: (value) =>
+              !isNaN(Number(value)) || '숫자만 입력 가능합니다.',
+          }}
+          type="number"
+          errorMessage={_errors.maxParticipants?.message}
         ></Text>
       </section>
 
@@ -131,14 +164,18 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           placeholder="내용을 입력해주세요"
           register={register}
           size="w-full h-40"
+          rules={{
+            required: '내용은 최소 10자 이상이어야 합니다.',
+            minLength: {
+              value: 10,
+              message: '내용은 최소 10자 이상이어야 합니다.',
+            },
+          }}
+          errorMessage={_errors.description?.message}
         ></Text>
       </section>
 
-      <Button
-        type="submit"
-        border={ButtonBorder.RECTANGLE}
-        bgColor={BGColor.BLACK}
-      >
+      <Button type="submit" category={ButtonCategory.EDIT} size="py-3.5">
         {category === 'edit' ? '수정하기' : '신청하기'}
       </Button>
     </form>

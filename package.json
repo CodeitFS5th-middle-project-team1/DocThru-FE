@@ -20,7 +20,9 @@
     "@tanstack/react-query-devtools": "^5.69.0",
     "axios": "^1.8.4",
     "dayjs": "^1.11.13",
+    "framer-motion": "^12.6.3",
     "html-react-parser": "^5.2.3",
+    "jwt-decode": "^4.0.0",
     "jsonwebtoken": "^9.0.2",
     "next": "15.2.3",
     "react": "^19.0.0",
@@ -31,6 +33,7 @@
     "react-quill-new": "^3.4.6",
     "react-syntax-highlighter": "^15.6.1",
     "remark-gfm": "^4.0.1",
+    "tailwind-scrollbar-hide": "^2.0.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

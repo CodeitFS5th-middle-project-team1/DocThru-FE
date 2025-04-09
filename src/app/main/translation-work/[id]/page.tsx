@@ -1,146 +1,55 @@
 'use client';
 
 import { NextPage } from 'next';
-import Image from 'next/image';
-import Logo from '@/shared/Img/logo.svg';
-import Close from '@/shared/Img/close-icon/close.svg';
-import Button, {
-  BGColor,
-  ButtonBorder,
-} from '@/shared/components/button/Button';
+import PatchCard from '../_components/PatchCard';
+import { OriginView } from '@/shared/components/OriginView';
 import { useState } from 'react';
-import ConfirmCancel from '@/shared/components/modal/confirmCancel';
-import Navigate from '@/shared/components/modal/navigate';
-import Editor from '../_components/Editor';
-import Confirm from '@/shared/components/modal/confirm';
+import OutImg from '@/shared/Img/ic_out_circle.svg';
+import Image from 'next/image';
+import ListImg from '@/shared/Img/ic_list.svg';
 
-const TranslationWork: NextPage = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [isDrafted, setIsDrafted] = useState(false);
-  const [isDraftModal, setIsDraftModal] = useState(false);
-  const [isForgiveModal, setIsForgiveModal] = useState(false);
-  const [isSuccessModal, setIsSuccessModal] = useState(false);
+
+const TranslationWorkModify: NextPage = () => {
+  const [showOriginal, setShowOriginal] = useState(false);
   return (
-    <div className="max-w-[1000px] w-full h-full">
-      <div className="mt-6 flex justify-between h-[80px] items-center">
-        <div>
+    <div
+      className={`${showOriginal ? 'flex md:justify-center md:flex-row flex-col-reverse' : 'block'} h-screen`}
+    >
+      <div className="flex md:flex-1 flex-2/3 justify-center overflow-y-auto px-3">
+        <PatchCard />
+      </div>
+      {showOriginal && (
+        <div className="relative md:flex-1 flex-1/3 md:w-1/2 w-[100%] h-full border-r border-gray-300 overflow-y-auto">
+          <OriginView width="100%" height="100%" />
           <Image
-            className={'cursor-pointer'}
-            width={120}
-            height={27}
-            src={Logo}
-            alt="logo"
+            src={OutImg}
+            alt="원문 안보기"
+            width={32}
+            height={32}
+            className="absolute top-2 left-2 cursor-pointer"
+            onClick={() => setShowOriginal(false)}
           />
         </div>
-        <div className="flex gap-2 h-[40px]">
-          <div className="w-[81px]">
-            <Button
-              border={ButtonBorder.RECTANGLE}
-              bgColor={BGColor.RED}
-              closeIcon={true}
-              onClick={() => {
-                setIsForgiveModal(true);
-              }}
-            >
-              포기
-            </Button>
-          </div>
-          <div className="w-[90px]">
-            <Button
-              border={ButtonBorder.RECTANGLE_BORDER}
-              bgColor={BGColor.WHITE}
-              onClick={() => {
-                setIsDraftModal(true);
-              }}
-            >
-              임시저장
-            </Button>
-          </div>
-          <div className="w-[90px] h-[40px]">
-            <Button
-              border={ButtonBorder.RECTANGLE}
-              bgColor={BGColor.BLACK}
-              onClick={() => {
-                setIsSuccessModal(true);
-              }}
-            >
-              수정하기
-            </Button>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div className="mb-5">
-          <input className="text-[20px] w-full" value={title} onChange={(e) => setTitle(e.target.value)} />
-        </div>
-        <hr />
-        <div className="mt-5">
-          <Editor setContent={setContent} content={content} draftedValue=''/>
-        </div>
-      </div>
-      <Confirm
-        isOpen={isDraftModal}
-        onClose={() => setIsDraftModal(false)}
-        onConfirm={() => {
-          setIsDraftModal(false);
-          setIsDrafted(false);
-        }}
-      >
-        임시저장 되었습니다!
-      </Confirm>
-      <ConfirmCancel
-        isOpen={isForgiveModal}
-        onClose={() => setIsForgiveModal(false)}
-        onConfirm={() => {
-          setIsForgiveModal(false);
-        }}
-        onCancel={() => setIsForgiveModal(false)}
-      >
-        정말 작업을 포기하시겠어요?
-      </ConfirmCancel>
-      <Navigate
-        isOpen={isSuccessModal}
-        onClose={() => {}}
-        navigateUrl="/main"
-        text="작업물 보기"
-      >
-        수정되었습니다!
-      </Navigate>
-      {isDrafted && (
-        <div className="border border-[#262626] rounded-[8px] fixed left-1/2 top-[90%] transform -translate-x-1/2 z-30 max-w-[890px] w-full flex justify-between items-center px-5">
-          <div className="flex gap-5 items-center">
-            <div
-              onClick={() => {
-                setIsDrafted(false);
-              }}
-            >
+      )}
+      {!showOriginal && (
+        <div
+          className="hover:bg-custom-gray-50 bg-white absolute right-0 top-52 border-[#F5F5F5] border-2 z-50 md:py-6 py-2 px-2 cursor-pointer rounded-l-[24px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]"
+          onClick={() => setShowOriginal(true)}
+        >
+          <div className='flex md:flex-col gap-1 justify-center items-center'>
+            <div>
               <Image
-                className={'cursor-pointer'}
-                width={15}
-                height={15}
-                src={Close}
-                alt="close"
+                src={ListImg}
+                alt="원문 보기"
+                width={20}
+                height={20}
               />
             </div>
-            <div>
-              임시 저장된 작업물이 있어요. 저장된 작업을 불러오시겠어요??
-            </div>
-          </div>
-          <div className="w-[90px]">
-            <Button
-              border={ButtonBorder.RECTANGLE}
-              bgColor={BGColor.BLACK}
-              onClick={() => {
-                setIsDraftModal(true);
-              }}
-            >
-              불러오기
-            </Button>
+            <div>원문</div>
           </div>
         </div>
       )}
     </div>
   );
 };
-export default TranslationWork;
+export default TranslationWorkModify;

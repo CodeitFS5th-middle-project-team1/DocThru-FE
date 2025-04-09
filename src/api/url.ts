@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const url =
   process.env.NEXT_PUBLIC_API_URL || //배포 환경
@@ -9,6 +10,7 @@ export const docThro = axios.create({
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
   },
+  withCredentials: true,
 });
 
 docThro.interceptors.request.use(
@@ -39,10 +41,9 @@ docThro.interceptors.response.use(
   },
 
   async (error) => {
-    console.error(error);
-
     if (error.response?.status === 401) {
-      console.error('Access Token 만료! 로그인 페이지로 이동합니다.');
+      toast.error('Access Token 만료! \n로그인 페이지로 이동합니다.');
+      console.error('Access Token 만료! \n로그인 페이지로 이동합니다.');
 
       if (typeof window !== 'undefined') {
         localStorage.removeItem('accessToken');

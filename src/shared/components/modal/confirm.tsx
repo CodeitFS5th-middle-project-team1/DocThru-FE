@@ -26,7 +26,7 @@ const Confirm: React.FC<ConfirmModalProps> = ({
       height={height}
       justifyContent="justify-end"
     >
-      <div className="w-full flex justify-center">{children}</div>
+      <div className="w-full flex justify-center" style={{ whiteSpace: 'pre-line' }}>{children}</div>
       <div className="mt-11 flex justify-end">
         <button
           onClick={onConfirm}

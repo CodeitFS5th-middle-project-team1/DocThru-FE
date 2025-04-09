@@ -32,7 +32,13 @@ export enum ApprovalStatus {
   REJECTED = 'REJECTED',
   DELETED = 'DELETED',
 }
-
+/** 승인 상태 한글 라벨 매핑 */
+export const ApprovalStatusLabels: Record<ApprovalStatus, string> = {
+  [ApprovalStatus.PENDING]: '승인 대기',
+  [ApprovalStatus.APPROVED]: '신청 승인',
+  [ApprovalStatus.REJECTED]: '신청 거절',
+  [ApprovalStatus.DELETED]: '챌린지 삭제',
+};
 /** 유저 타입 */
 export interface User {
   id: string;
@@ -139,3 +145,17 @@ export interface ChallengeParticipant {
   challengeId: string;
   userId: string;
 }
+
+export type ErrorMessage = {
+  formErrors?: string[]; // 배열임
+  fieldErrors?: Record<string, string[]>;
+};
+
+export type ErrorResponse = {
+  code?: number;
+  message?: string | ErrorMessage;
+};
+
+
+/** 번역물 생성 및 수정 모달 타입 */
+export type Modal = 'none' | 'drafted' | 'forgive' | 'success' | 'error';

@@ -1,17 +1,16 @@
-import { DocumentType, FieldType } from '@/types';
+import {
+  DocumentType,
+  FieldType,
+  ApprovalStatusLabels,
+  ApprovalStatus,
+} from '@/types';
+
+type ApprovalStatusLabelType = (typeof ApprovalStatusLabels)[ApprovalStatus];
 
 interface ChipProps {
-  label:
-    | string
-    | DocumentType
-    | FieldType
-    | '승인 대기'
-    | '신청 거절'
-    | '신청 승인'
-    | '챌린지 삭제';
+  label: string | DocumentType | FieldType | ApprovalStatusLabelType;
   className?: string;
 }
-
 export const Chip: React.FC<ChipProps> = ({ label, className }) => {
   const chipTypeStyle = 'B-14-0 w-fit px-3 py-[3px] rounded-lg';
   const chipCategoryStyle =
@@ -25,10 +24,10 @@ export const Chip: React.FC<ChipProps> = ({ label, className }) => {
     Career: `${chipTypeStyle} bg-[#7EB2EE] text-custom-gray-600 `,
     공식문서: chipCategoryStyle,
     블로그: chipCategoryStyle,
-    '승인 대기': `${chipStatusStyle} bg-[#FFFDE7] text-[#F2BC00]`,
-    '신청 거절': `${chipStatusStyle} bg-[#FFF0F0] text-[#E54946]`,
-    '신청 승인': `${chipStatusStyle} bg-[#DFF0FF] text-[#4095DE]`,
-    '챌린지 삭제': `${chipStatusStyle} bg-custom-gray-200 text-custom-gray-500`,
+    [ApprovalStatusLabels.PENDING]: `${chipStatusStyle} whitespace-nowrap bg-[#FFFDE7] text-[#F2BC00]`,
+    [ApprovalStatusLabels.REJECTED]: `${chipStatusStyle} whitespace-nowrap bg-[#FFF0F0] text-[#E54946]`,
+    [ApprovalStatusLabels.APPROVED]: `${chipStatusStyle} whitespace-nowrap bg-[#DFF0FF] text-[#4095DE]`,
+    [ApprovalStatusLabels.DELETED]: `${chipStatusStyle} whitespace-nowrap bg-custom-gray-200 text-custom-gray-500`,
   };
 
   const chipStyle =

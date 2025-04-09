@@ -2,10 +2,7 @@
 
 import mainLogo from '@images/img_logo .svg';
 import Image from 'next/image';
-import Button, {
-  BGColor,
-  ButtonBorder,
-} from '@/shared/components/button/Button';
+import Button, { ButtonCategory } from '@/shared/components/button/Button';
 import Email from '../input/email';
 import Password from '../input/password';
 import Text from '../input/text';
@@ -101,11 +98,7 @@ const AuthForm = ({ category, onSubmit, isPending }: AuthFormProps) => {
         )}
 
         <section>
-          <Button
-            type="submit"
-            border={ButtonBorder.LITTLE_RECTANGLE}
-            bgColor={isPending ? BGColor.GRAY : BGColor.BLACK}
-          >
+          <Button type="submit" category={ButtonCategory.Auth} size="py-3.5">
             {category === 'login' ? '로그인' : '회원가입'}
           </Button>
         </section>

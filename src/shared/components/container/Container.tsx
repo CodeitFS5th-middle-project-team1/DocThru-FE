@@ -1,9 +1,9 @@
 import timerIcon from '@images/deadLine-icon/small.svg';
 import personIcon from '@images/person-icon/small.svg';
 import Image from 'next/image';
-import Button, { BGColor, ButtonBorder } from '../button/Button';
 import dayjs from '@/lib/utill';
 import { ButtonHTMLAttributes } from 'react';
+import Button, { ButtonCategory } from '../button/Button';
 
 export interface ContainerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -39,23 +39,32 @@ export const Container = ({
       <section className="flex  md:flex-col md:items-center gap-3">
         <div className="flex w-40 md:w-56 xl:w-60 ">
           <Button
-            border={ButtonBorder.RECTANGLE_BIG_BORDER}
-            bgColor={BGColor.YELLOW}
+            category={ButtonCategory.VIEW_ORIGINAL}
+            size="text-center py-2"
             href={originUrl}
           >
             원본 보기
           </Button>
         </div>
         <div className="flex w-40 md:w-56 xl:w-60">
-          <Button
-            border={ButtonBorder.RECTANGLE}
-            bgColor={
-              maxParticipant || overDeadLine ? BGColor.GRAY : BGColor.BLACK
-            }
-            {...props}
-          >
-            작업 도전하기
-          </Button>
+          {overDeadLine || maxParticipant ? (
+            <Button
+              category={ButtonCategory.DISABLE}
+              size="text-center py-3"
+              disabled={overDeadLine || maxParticipant}
+              {...props}
+            >
+              작업 도전하기
+            </Button>
+          ) : (
+            <Button
+              category={ButtonCategory.TO_DO_WORK}
+              size="text-center py-3"
+              href="/main/translation-work"
+            >
+              작업 도전하기
+            </Button>
+          )}
         </div>
       </section>
     </div>
