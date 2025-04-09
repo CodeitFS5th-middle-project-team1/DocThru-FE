@@ -54,7 +54,7 @@ export const useSignup = () => {
     signupFn,
     {
       pending: '회원가입 중입니다...',
-      success: '회원가입 성공! 로그인 페이지로 이동 중 ~',
+      success: '회원가입 성공! \n 로그인 페이지로 이동 중 ~',
     },
     {
       onSuccess: () => {

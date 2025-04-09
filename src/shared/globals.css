@@ -257,3 +257,9 @@
   color: #aaa;
   transition: none !important;
 }
+
+/* 토스트 줄바꿈 적용*/
+.react-hot-toast {
+  white-space: pre-wrap;
+  word-break: break-word;
+}

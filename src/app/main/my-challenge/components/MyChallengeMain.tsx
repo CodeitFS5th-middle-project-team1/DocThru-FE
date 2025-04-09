@@ -208,9 +208,11 @@ const MyChallengeMain = () => {
         ) : activeTab === 'applied' ? (
           <ChallengeTable data={tableData} />
         ) : (
+
           <div className="flex h-screen justify-center items-center">
             <p className="text-center text-gray-500">챌린지를 선택해주세요.</p>
           </div>
+
         )}
       </section>
 

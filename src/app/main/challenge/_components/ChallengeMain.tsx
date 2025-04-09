@@ -7,7 +7,6 @@ import Pagination from './Pagination';
 import { Filter } from '@/shared/components/dropdown/Filter';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import { fetchChallenges } from '@/api/challenge/ChallengeApi';
-import { useAuthStore } from '@/api/auth/AuthStore';
 
 const ChallengeMain = () => {
   const [page, setPage] = useState(1);
