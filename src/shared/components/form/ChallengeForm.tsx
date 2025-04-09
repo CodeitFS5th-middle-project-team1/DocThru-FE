@@ -135,12 +135,16 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           register={register}
           size="w-full h-12"
           rules={{
-            required: '최소 5이상의 숫자를 입력해주세요.',
+            required: '최대 인원을 입력해주세요.',
             minLength: {
-              value: 2,
+              value: 5,
               message: '최소 5이상의 숫자를 입력해주세요',
             },
+            valueAsNumber: true,
+            validate: (value) =>
+              !isNaN(Number(value)) || '숫자만 입력 가능합니다.',
           }}
+          type="number"
           errorMessage={_errors.maxParticipants?.message}
         ></Text>
       </section>
