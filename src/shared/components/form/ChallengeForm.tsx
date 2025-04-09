@@ -77,6 +77,10 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
               value: 2,
               message: '제목은 최소 2자 이상이어야 합니다.',
             },
+            maxLength: {
+              value: 15,
+              message: '제목은 최대 15자 이하여야 합니다.',
+            },
           }}
           errorMessage={_errors.title?.message}
         />
@@ -143,7 +147,7 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
             max: {
               value: 20,
               message: '최대 인원 수는 20명 이하이어야 합니다.',
-            }, // ✅
+            },
             valueAsNumber: true,
             validate: (value) =>
               !isNaN(Number(value)) || '숫자만 입력 가능합니다.',
