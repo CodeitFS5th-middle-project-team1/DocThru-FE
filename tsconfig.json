@@ -10,8 +10,9 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "noUnusedLocals": false, // 안 쓰는 변수 경고
+    "forceConsistentCasingInFileNames": false,
     "jsx": "preserve",
     "incremental": true,
     "plugins": [
