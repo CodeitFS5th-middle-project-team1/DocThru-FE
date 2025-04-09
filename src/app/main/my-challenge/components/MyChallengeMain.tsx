@@ -179,16 +179,18 @@ const MyChallengeMain = () => {
                   size="w-full"
                 />
               </div>
-              <div className="whitespace-nowrap text-gray-500">
-                <Sort
-                  options={options}
-                  placeholder="승인 대기"
-                  value={sortValue}
-                  defaultValue="option1"
-                  handleChange={handleSortChange}
-                  className="text-left"
-                />
-              </div>
+              {activeTab === 'applied' && (
+                <div className="whitespace-nowrap text-gray-500">
+                  <Sort
+                    options={options}
+                    placeholder="승인 대기"
+                    value={sortValue}
+                    defaultValue="option1"
+                    handleChange={handleSortChange}
+                    className="text-left"
+                  />
+                </div>
+              )}
             </section>
           )}
         </div>
