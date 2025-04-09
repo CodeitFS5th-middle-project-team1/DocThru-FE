@@ -1,21 +1,22 @@
 'use client';
 
-import { Card } from '@/shared/components/card/Card';
+//import { Card } from '@/shared/components/card/Card';
 import Search from '@/shared/components/input/search';
 import { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import { Tab, TabActive, TextPosition } from '@/shared/components/tab/Tab';
 import ChallengeTable from './ChallengeTable';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import { Challenge } from '@/types';
 import {
   fetchChallengeByParticipating,
   fetchChallengeByUser,
-  fetchChallenges,
+  //fetchChallenges,
 } from '@/api/challenge/ChallengeApi';
 import { Sort } from '@/shared/components/dropdown/Sort';
-
+import { ApprovalStatus, ApprovalStatusLabels } from '@/types';
+import { ChallengeOrderBy } from '@/lib/api/admin';
 const TAB_LIST = [
   { key: 'participating', label: '참여중인 챌린지' },
   { key: 'completed', label: '마감된 챌린지' },
@@ -33,12 +34,26 @@ const MyChallengeMain = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [keyword, setKeyword] = useState('');
-  const [orderBy, setOrderBy] = useState('');
-  const [approvalStatus, setApprovalStatus] = useState('');
+  //const [orderBy, setOrderBy] = useState('');
+  //const [approvalStatus, setApprovalStatus] = useState('');
   const [activeTab, setActiveTab] = useState<TabKey>('participating');
-
+  const [sortValue, setSortValue] = useState('option1');
+  const getParamsFromSortValue = (value: string) => {
+    const mapping: Record<string, any> = {
+      option1: { approvalStatus: 'PENDING' },
+      option2: { approvalStatus: 'APPROVED' },
+      option3: { approvalStatus: 'REJECTED' },
+      option4: { orderBy: ChallengeOrderBy.CREATED_FIRST },
+      option5: { orderBy: ChallengeOrderBy.CREATED_LAST },
+      option6: { orderBy: ChallengeOrderBy.DEADLINE_FIRST },
+      option7: { orderBy: ChallengeOrderBy.DEADLINE_LAST },
+    };
+    return mapping[value] || {};
+  };
+  const { approvalStatus, orderBy } = getParamsFromSortValue(sortValue);
+  console.log('🔥 orderBy:', orderBy);
   const { data, isPending } = useToastQuery(
-    ['my-challenges', page, limit, keyword, activeTab],
+    ['my-challenges', page, limit, keyword, activeTab, sortValue],
     () => {
       if (activeTab === 'applied') {
         return fetchChallengeByUser({
@@ -49,6 +64,7 @@ const MyChallengeMain = () => {
           approvalStatus,
         });
       }
+
       return fetchChallengeByParticipating({
         page,
         limit,
@@ -71,17 +87,49 @@ const MyChallengeMain = () => {
   const challenges = data?.challenges ?? [];
   const totalPages = Math.ceil((data?.totalCount ?? 1) / limit);
 
-  const tableData = (challenges as ChallengeWithApply[]).map((c, idx) => ({
-    no: idx + 1 + (page - 1) * limit,
-    type: c.field,
-    category: c.documentType,
-    title: c.title,
-    people: `${c.currentParticipants}/${c.maxParticipants}`,
-    applyDate: dayjs(c.appliedAt).format('YYYY.MM.DD'),
-    deadline: dayjs(c.deadline).format('YYYY.MM.DD'),
-    approvalStatus: c.approvalStatus,
-  }));
+  const getStatusLabel = (status: string): string => {
+    if (Object.values(ApprovalStatus).includes(status as ApprovalStatus)) {
+      return ApprovalStatusLabels[status as ApprovalStatus];
+    }
+    return '승인 대기';
+  };
+  const handleSortChange = (value: string) => {
+    setSortValue(value);
+    setPage(1);
+  };
 
+  const options = [
+    { value: 'option1', name: '승인 대기' },
+    { value: 'option2', name: '신청 승인' },
+    { value: 'option3', name: '신청 거절' },
+    { value: 'option4', name: '신청 시간 빠른순' },
+    { value: 'option5', name: '신청 시간 느린순' },
+    { value: 'option6', name: '마감 기한 빠른순' },
+    { value: 'option7', name: '마감 기한 느린순' },
+  ];
+  const tableData =
+    activeTab === 'applied'
+      ? (challenges as ChallengeWithApply[]).map((challenge, idx) => ({
+          no: idx + 1 + (page - 1) * limit,
+          type: challenge.documentType,
+          category: challenge.field,
+          title: challenge.title,
+          people: challenge.maxParticipants,
+          createdAt: new Date(challenge.createdAt).toLocaleDateString('ko-KR', {
+            year: '2-digit',
+            month: '2-digit',
+            day: '2-digit',
+          }),
+          deadline: new Date(challenge.deadline).toLocaleDateString('ko-KR', {
+            year: '2-digit',
+            month: '2-digit',
+            day: '2-digit',
+          }),
+          status: getStatusLabel(challenge.approvalStatus || ''),
+          id: challenge.id,
+        }))
+      : [];
+  console.table(tableData);
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page]);
@@ -104,6 +152,7 @@ const MyChallengeMain = () => {
             </Tab>
           ))}
         </div>
+
         <div className="w-full">
           {activeTab === 'completed' ? (
             <>
@@ -116,18 +165,31 @@ const MyChallengeMain = () => {
                 }}
                 size="w-full"
               />
-              {/* <Sort /> */}
             </>
           ) : (
-            <Search
-              name={'text'}
-              placeholder="챌린지 이름을 검색해보세요"
-              onSearch={(e) => {
-                setKeyword(e);
-                setPage(1);
-              }}
-              size="w-full"
-            />
+            <section className="flex gap-3">
+              <div className="w-full">
+                <Search
+                  name={'text'}
+                  placeholder="챌린지 이름을 검색해보세요"
+                  onSearch={(e) => {
+                    setKeyword(e);
+                    setPage(1);
+                  }}
+                  size="w-full"
+                />
+              </div>
+              <div className="whitespace-nowrap text-gray-500">
+                <Sort
+                  options={options}
+                  placeholder="승인 대기"
+                  value={sortValue}
+                  defaultValue="option1"
+                  handleChange={handleSortChange}
+                  className="text-left"
+                />
+              </div>
+            </section>
           )}
         </div>
       </section>
@@ -144,20 +206,9 @@ const MyChallengeMain = () => {
         ) : activeTab === 'applied' ? (
           <ChallengeTable data={tableData} />
         ) : (
-          <>
-            {challenges.map((challenge) => (
-              <Card
-                key={challenge.id}
-                data={{
-                  ...challenge,
-                  approvalStatus:
-                    challenge.approvalStatus === 'PENDING'
-                      ? 'PENDING'
-                      : challenge.approvalStatus,
-                }}
-              />
-            ))}
-          </>
+          <div className="flex h-screen justify-center items-center">
+            <p className="text-center text-gray-500">챌린지를 선택해주세요.</p>
+          </div>
         )}
       </section>
 
