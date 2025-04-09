@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import { Challenge } from '@/types';
 import {
   fetchChallengeByParticipating,
+  fetchChallengeByUser,
   fetchChallenges,
 } from '@/api/challenge/ChallengeApi';
 import { Sort } from '@/shared/components/dropdown/Sort';
@@ -32,16 +33,20 @@ const MyChallengeMain = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [keyword, setKeyword] = useState('');
+  const [orderBy, setOrderBy] = useState('');
+  const [approvalStatus, setApprovalStatus] = useState('');
   const [activeTab, setActiveTab] = useState<TabKey>('participating');
 
   const { data, isPending } = useToastQuery(
     ['my-challenges', page, limit, keyword, activeTab],
     () => {
       if (activeTab === 'applied') {
-        return fetchChallenges({
+        return fetchChallengeByUser({
           page,
           limit,
           keyword,
+          orderBy,
+          approvalStatus,
         });
       }
       return fetchChallengeByParticipating({
