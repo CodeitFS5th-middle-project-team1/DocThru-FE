@@ -4,7 +4,6 @@ import toast from 'react-hot-toast';
 import { loginFn, signupFn, logoutFn } from './AuthApi';
 import { useAuthStore } from './AuthStore';
 import { PATH } from '@/constants';
-import { docThro } from '../url';
 
 export const useLogin = () => {
   const { setAuth } = useAuthStore();
@@ -16,12 +15,8 @@ export const useLogin = () => {
       success: '로그인 성공!',
     },
     {
-      onSuccess: ({ user, accessToken }) => {
+      onSuccess: ({ user }) => {
         setAuth(user);
-        //  accessToken 저장
-        localStorage.setItem('accessToken', accessToken);
-        docThro.defaults.headers.common['Authorization'] =
-          `Bearer ${accessToken}`;
         if (user.role === 'ADMIN') {
           window.location.href = PATH.admin;
         } else {
