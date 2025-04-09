@@ -10,6 +10,7 @@ export const docThro = axios.create({
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
   },
+  withCredentials: true,
 });
 
 docThro.interceptors.request.use(
