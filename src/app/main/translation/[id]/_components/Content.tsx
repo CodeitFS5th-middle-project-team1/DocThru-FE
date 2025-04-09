@@ -7,7 +7,11 @@ interface ContentProps {
 export const Content: React.FC<ContentProps> = ({ content = '' }) => {
   return (
     <div>
-      <div className="pt-6 pb-16">{content}</div>
+      <div
+        className="ql-editor"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+
       <Divider />
     </div>
   );

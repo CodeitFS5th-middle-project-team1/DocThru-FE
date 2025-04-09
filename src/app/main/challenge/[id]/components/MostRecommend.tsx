@@ -59,7 +59,10 @@ export const MostRecommend: React.FC<MostRecommendProps> = ({ data }) => {
           }}
           className="overflow-hidden transition-all duration-1800 ease-in-out whitespace-pre-wrap break-words"
         >
-          {data?.content}
+          <div
+            className="ql-editor"
+            dangerouslySetInnerHTML={{ __html: data?.content || '' }}
+          />
         </div>
       </div>
       <div
