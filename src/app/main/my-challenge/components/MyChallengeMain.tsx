@@ -33,6 +33,8 @@ const MyChallengeMain = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [keyword, setKeyword] = useState('');
+  const [orderBy, setOrderBy] = useState('');
+  const [approvalStatus, setApprovalStatus] = useState('');
   const [activeTab, setActiveTab] = useState<TabKey>('participating');
 
   const { data, isPending } = useToastQuery(
@@ -43,6 +45,8 @@ const MyChallengeMain = () => {
           page,
           limit,
           keyword,
+          orderBy,
+          approvalStatus,
         });
       }
       return fetchChallengeByParticipating({
