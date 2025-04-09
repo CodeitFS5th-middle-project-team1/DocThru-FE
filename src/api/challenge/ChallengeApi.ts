@@ -11,6 +11,7 @@ export interface FetchChallengeParams {
   keyword?: string;
   status?: string;
   isExpired?: boolean;
+  orderBy?: string;
 }
 
 interface FetchChallengeResponse {

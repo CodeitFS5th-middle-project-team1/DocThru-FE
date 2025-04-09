@@ -12,6 +12,7 @@ interface TextInputProps<T extends FieldValues> {
   size?: string;
   rules?: RegisterOptions<T, Path<T>>;
   errorMessage?: string;
+  type?: string;
 }
 
 const Text = <T extends FieldValues>({
@@ -21,14 +22,24 @@ const Text = <T extends FieldValues>({
   size = 'w-86 md:w-147.5 h-12',
   rules,
   errorMessage,
+  type = 'text',
 }: TextInputProps<T>) => {
   return (
     <div>
-      <textarea
-        {...register(name, rules)}
-        placeholder={placeholder}
-        className={`leading-none resize-none p-[14px] border rounded-[6px] focus:outline-none focus:ring-2 focus:ring-custom-gray-200 ${size}`}
-      />
+      {type ? (
+        <input
+          type={type}
+          {...register(name, rules)}
+          placeholder={placeholder}
+          className={`leading-none resize-none p-[14px] border rounded-[6px] focus:outline-none focus:ring-2 focus:ring-custom-gray-200 ${size}`}
+        />
+      ) : (
+        <textarea
+          {...register(name, rules)}
+          placeholder={placeholder}
+          className={`leading-none resize-none p-[14px] border rounded-[6px] focus:outline-none focus:ring-2 focus:ring-custom-gray-200 ${size}`}
+        />
+      )}
       {errorMessage && (
         <p className="mt-1 text-sm text-red-500">{errorMessage}</p>
       )}
