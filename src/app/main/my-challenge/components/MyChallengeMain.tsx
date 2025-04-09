@@ -155,6 +155,7 @@ const MyChallengeMain = () => {
                       ? 'PENDING'
                       : challenge.approvalStatus,
                 }}
+                status={activeTab}
               />
             ))}
           </>
