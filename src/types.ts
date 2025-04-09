@@ -159,8 +159,3 @@ export type ErrorResponse = {
 
 /** 번역물 생성 및 수정 모달 타입 */
 export type Modal = 'none' | 'drafted' | 'forgive' | 'success' | 'error';
-
-export interface AuthFormData {
-  email: string;
-  password: string;
-}

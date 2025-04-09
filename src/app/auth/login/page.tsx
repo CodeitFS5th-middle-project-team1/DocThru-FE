@@ -1,8 +1,7 @@
 'use client';
 
 import { useLogin } from '@/api/auth/AuthHook';
-import AuthForm from '@/shared/components/form/AuthForm';
-import { AuthFormData } from '@/types';
+import AuthForm, { AuthFormData } from '@/shared/components/form/AuthForm';
 import { NextPage } from 'next';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 

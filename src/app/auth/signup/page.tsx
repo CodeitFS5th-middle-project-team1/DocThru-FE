@@ -1,19 +1,20 @@
 'use client';
 
 import { useSignup } from '@/api/auth/AuthHook';
-import AuthForm from '@/shared/components/form/AuthForm';
+import AuthForm, { AuthFormData } from '@/shared/components/form/AuthForm';
+
 import { NextPage } from 'next';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 
 const SignUp: NextPage = () => {
-  const methods = useForm();
+  const methods = useForm<AuthFormData>();
   const sign = useSignup();
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit: SubmitHandler<AuthFormData> = async (data) => {
     console.log('data', data);
     sign.mutate({
       email: data.email,
-      nickName: data.nickName,
+      nickName: data.nickName as string,
       password: data.password,
     });
   };
@@ -23,7 +24,7 @@ const SignUp: NextPage = () => {
       <FormProvider {...methods}>
         <AuthForm
           category="signup"
-          onSubmit={methods.handleSubmit(handleSubmit)}
+          onSubmit={handleSubmit}
           isPending={sign.isPending}
         />
       </FormProvider>

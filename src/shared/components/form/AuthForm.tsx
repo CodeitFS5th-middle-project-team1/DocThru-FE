@@ -9,7 +9,7 @@ import Text from '../input/text';
 import Link from 'next/link';
 import { useFormContext, SubmitHandler } from 'react-hook-form';
 
-interface AuthFormData {
+export interface AuthFormData {
   email: string;
   password: string;
   passwordConfirm?: string;
