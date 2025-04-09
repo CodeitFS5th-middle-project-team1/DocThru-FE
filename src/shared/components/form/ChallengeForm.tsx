@@ -91,7 +91,10 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           size="w-full h-12"
           rules={{
             required: '유효한 URL을 입력해주세요.',
-            minLength: { value: 2, message: '유효한 URL을 입력해주세요.' },
+            pattern: {
+              value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gm,
+              message: '유효한 URL을 입력해주세요.',
+            },
           }}
           errorMessage={_errors.originURL?.message}
         ></Text>
@@ -136,10 +139,11 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           size="w-full h-12"
           rules={{
             required: '최대 인원을 입력해주세요.',
-            minLength: {
-              value: 5,
-              message: '최소 5이상의 숫자를 입력해주세요',
-            },
+            min: { value: 1, message: '최소 2명 이상 입력해주세요.' },
+            max: {
+              value: 20,
+              message: '최대 인원 수는 20명 이하이어야 합니다.',
+            }, // ✅
             valueAsNumber: true,
             validate: (value) =>
               !isNaN(Number(value)) || '숫자만 입력 가능합니다.',
@@ -157,10 +161,10 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           register={register}
           size="w-full h-40"
           rules={{
-            required: '설명은 최소 10자 이상이어야 합니다.',
+            required: '내용은 최소 10자 이상이어야 합니다.',
             minLength: {
-              value: 2,
-              message: '설명은 최소 10자 이상이어야 합니다.',
+              value: 10,
+              message: '내용은 최소 10자 이상이어야 합니다.',
             },
           }}
           errorMessage={_errors.description?.message}
