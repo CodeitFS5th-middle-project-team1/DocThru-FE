@@ -3,6 +3,7 @@ import likeActive from '@images/like-icon/small-active.svg';
 import likeInactive from '@images/like-icon/small-inactive.svg';
 import profile from '@images/profile-icon/member.svg';
 import { Divider } from '@/shared/components/Divider';
+import dayjs from 'dayjs';
 
 interface AuthorProps {
   like?: boolean;
@@ -17,9 +18,10 @@ export const Author: React.FC<AuthorProps> = ({
   create,
   likeCount = 0,
 }) => {
+  const formatted = dayjs(create).format('YY/MM/DD');
   return (
     <div>
-      <div className="w-full M-14-0 flex justify-between items-center py-4  ">
+      <div className="w-full M-14-0  flex justify-between items-center pt-6 pb-16  ">
         <div className="flex gap-3">
           <div className="flex gap-2 text-custom-gray-800 items-center">
             <Image src={profile} alt="profileIcon" />
@@ -35,7 +37,7 @@ export const Author: React.FC<AuthorProps> = ({
           </div>
         </div>
         <div className="text-custom-gray-500">
-          <span>{create ? create : ''}</span>
+          <span>{formatted}</span>
         </div>
       </div>
       <Divider />
