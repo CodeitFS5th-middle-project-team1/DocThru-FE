@@ -71,6 +71,14 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           placeholder="제목을 입력해주세요"
           register={register}
           size="w-full h-12"
+          rules={{
+            required: '제목을 입력해주세요.',
+            minLength: {
+              value: 2,
+              message: '제목은 최소 2자 이상이어야 합니다.',
+            },
+          }}
+          errorMessage={_errors.title?.message}
         />
       </section>
 
@@ -81,6 +89,11 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           placeholder="원문 링크를 입력해주세요"
           register={register}
           size="w-full h-12"
+          rules={{
+            required: '유효한 URL을 입력해주세요.',
+            minLength: { value: 2, message: '유효한 URL을 입력해주세요.' },
+          }}
+          errorMessage={_errors.originURL?.message}
         ></Text>
       </section>
 
@@ -121,6 +134,14 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           placeholder="최대 인원 수를 입력해주세요"
           register={register}
           size="w-full h-12"
+          rules={{
+            required: '최소 5이상의 숫자를 입력해주세요.',
+            minLength: {
+              value: 2,
+              message: '최소 5이상의 숫자를 입력해주세요',
+            },
+          }}
+          errorMessage={_errors.maxParticipants?.message}
         ></Text>
       </section>
 
@@ -131,6 +152,14 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
           placeholder="내용을 입력해주세요"
           register={register}
           size="w-full h-40"
+          rules={{
+            required: '설명은 최소 10자 이상이어야 합니다.',
+            minLength: {
+              value: 2,
+              message: '설명은 최소 10자 이상이어야 합니다.',
+            },
+          }}
+          errorMessage={_errors.description?.message}
         ></Text>
       </section>
 
