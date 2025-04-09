@@ -11,7 +11,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noUnusedLocals": true, // 안 쓰는 변수 경고
+    "noUnusedLocals": false, // 안 쓰는 변수 경고
     "jsx": "preserve",
     "incremental": true,
     "plugins": [
