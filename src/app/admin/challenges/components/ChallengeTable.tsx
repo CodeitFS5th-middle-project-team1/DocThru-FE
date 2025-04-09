@@ -28,15 +28,18 @@ const ChallengeTable = ({ data }: ChallengeTableProps) => {
   return (
     <div className="overflow-x-auto relative shadow-md">
       {/*  헤더 */}
-      <div className="grid grid-cols-[1fr_1.3fr_1.5fr_3.5fr_2.2fr_1.3fr_1.3fr_1.5fr] text-[13px] bg-custom-gray-800 text-white py-2 px-3 rounded-lg min-w-[640px]">
+      <div className="whitespace-nowrap grid grid-cols-[0.8fr_1.3fr_1.7fr_0fr_3.6fr_0.2fr_1fr_0fr_1.3fr_1.3fr_1.5fr] gap-1 text-[13px] bg-custom-gray-800 text-white py-2 px-3 rounded-lg min-w-[640px]">
         <span>No.</span>
         <span>분야</span>
         <span>카테고리</span>
+        <span></span>
         <span>챌린지 제목</span>
+        <span></span>
         <span>모집 인원</span>
-        <span>신청일</span>
-        <span>마감 기한</span>
-        <span>상태</span>
+        <span></span>
+        <span className="text-center">신청일</span>
+        <span className="text-center">마감 기한</span>
+        <span className="pl-4">상태</span>
       </div>
 
       {/* 테이블 */}
@@ -46,7 +49,7 @@ const ChallengeTable = ({ data }: ChallengeTableProps) => {
             <tr
               key={index}
               onClick={() => router.push(`/main/challenge/${row.id}`)}
-              className={`grid grid-cols-[1fr_1.3fr_1.5fr_3.5fr_2.2fr_1.3fr_1.3fr_1.5fr] text-[13px] px-3 py-4 border-b border-gray-300 text-gray-400 cursor-pointer hover:text-gray-800 hover:bg-indigo-50 transition-colors duration-200 ${
+              className={`grid grid-cols-[0.8fr_1.3fr_1.7fr_0fr_3.5fr_0.2fr_1fr_0.2fr_1.3fr_1.3fr_1.5fr] gap-1 text-[13px] px-3 py-4 border-b border-gray-300 text-gray-400 cursor-pointer hover:text-gray-800 hover:bg-indigo-50 transition-colors duration-200 ${
                 row.status === ApprovalStatusLabels.DELETED
                   ? 'bg-[#F5f5f5]'
                   : 'bg-white'
@@ -55,8 +58,11 @@ const ChallengeTable = ({ data }: ChallengeTableProps) => {
               <td>{row.no}</td>
               <td>{row.type}</td>
               <td>{row.category}</td>
+              <td></td>
               <td className="truncate">{row.title}</td>
-              <td>{row.people}</td>
+              <td></td>
+              <td className="text-center">{row.people}</td>
+              <td></td>
               <td className="text-center whitespace-pre-line">
                 {formatDate(row.createdAt)}
               </td>

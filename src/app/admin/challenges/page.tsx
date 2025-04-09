@@ -163,7 +163,7 @@ const AdminChallenge: NextPage = () => {
 
         {/* 페이지네이션 */}
         {!isLoading && !error && (data?.totalCount ?? 0) > 0 && (
-          <section className="flex justify-center mb-40">
+          <section className="flex justify-center ">
             <Pagination
               totalPages={Math.ceil((data?.totalCount ?? 0) / limit)}
               currentPage={page}
