@@ -9,6 +9,8 @@ export interface FetchChallengeParams {
   fields?: string[];
   approvalStatus?: string;
   keyword?: string;
+  status?: string;
+  isExpired?: boolean;
 }
 
 interface FetchChallengeResponse {
@@ -29,8 +31,56 @@ export interface ChallengeFormRequest {
 export const fetchChallenges = async (
   params: FetchChallengeParams
 ): Promise<FetchChallengeResponse> => {
-  const res = await docThro.get('/challenges', { params });
-  console.log('res', res);
+  const cleanParams = Object.fromEntries(
+    Object.entries(params).filter(([_, value]) => {
+      if (Array.isArray(value)) return value.length > 0;
+      return value !== undefined && value !== null && value !== '';
+    })
+  );
+  const res = await docThro.get('/challenges', { params: cleanParams });
+  return res.data;
+};
+
+export const fetchChallengeByParticipating = async (
+  params: FetchChallengeParams
+): Promise<FetchChallengeResponse> => {
+  const cleanParams = Object.fromEntries(
+    Object.entries(params).filter(([_, value]) => {
+      if (Array.isArray(value)) return value.length > 0;
+      return value !== undefined && value !== null && value !== '';
+    })
+  );
+
+  const res = await docThro.get('/challenges/participating', {
+    params: cleanParams,
+  });
+
+  return res.data;
+};
+
+export const fetchChallengeByUser = async (
+  params: FetchChallengeParams
+): Promise<FetchChallengeResponse> => {
+  const cleanParams = Object.fromEntries(
+    Object.entries(params).filter(([_, value]) => {
+      if (Array.isArray(value)) return value.length > 0;
+      return value !== undefined && value !== null && value !== '';
+    })
+  );
+  const res = await docThro.get('/challenges/user', { params: cleanParams });
+  return res.data;
+};
+
+export const fetchChallengeByAdmin = async (
+  params: FetchChallengeParams
+): Promise<FetchChallengeResponse> => {
+  const cleanParams = Object.fromEntries(
+    Object.entries(params).filter(([_, value]) => {
+      if (Array.isArray(value)) return value.length > 0;
+      return value !== undefined && value !== null && value !== '';
+    })
+  );
+  const res = await docThro.get('/challenges/manage', { params: cleanParams });
   return res.data;
 };
 

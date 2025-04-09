@@ -1,3 +1,4 @@
+'use client';
 import { User } from '@/types';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
