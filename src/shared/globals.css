@@ -252,3 +252,8 @@
   border: none !important;
   outline: none !important; /* 포커스 시에도 테두리 안 나오게 */
 }
+
+.ql-editor.ql-blank::before {
+  color: #aaa;
+  transition: none !important;
+}
