@@ -1,4 +1,5 @@
-'use client';
+'use client'
+
 import Image from 'next/image';
 import Logo from '@/shared/Img/logo.svg';
 import Close from '@/shared/Img/close-icon/close.svg';
@@ -7,34 +8,59 @@ import ConfirmCancel from '@/shared/components/modal/confirmCancel';
 import Navigate from '@/shared/components/modal/navigate';
 import Editor from '../_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
-import { notFound, useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { ErrorMessage, ErrorResponse, Modal } from '@/types';
 import {
   createDraftTranslation,
-  createTranslation,
   getDraftTranslation,
+  getTranLation,
+  modifyTranslation,
 } from '@/api/TransLationApi';
 import Button, { ButtonCategory } from '@/shared/components/button/Button';
 import { useUnloadWarning } from '@/shared/hooks/useUnloadWarning';
 import { useToastMutation } from '@/shared/hooks/useToastMutation';
-export default function PostCard () {
+
+export default function PatchCard () {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState<string | null>(null);
-  const [isDrafted, setIsDrafted] = useState(false);
   const [modal, setModal] = useState<Modal>('none');
+  const [isDrafted, setIsDrafted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const router = useRouter();
   const [challengeId, setChallengeId] = useState<string>('');
-  const [translationId, setTranslationId] = useState(''); 
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const router = useRouter();
+  const params = useParams();
+  const translationId = params.id as string;
+
+  const { data: TranslationData } = useQuery({
+    queryKey: ['Translation', challengeId, translationId],
+    queryFn: ({ queryKey }) => {
+      const [, challengeId] = queryKey;
+      return getTranLation(challengeId, translationId);
+    },
+    enabled: !!challengeId,
+  });
 
   // 로컬 스토리지에서 저장되어 있는 Challenge Id를 불러옵니다.
   useEffect(() => {
-    const cid = localStorage.getItem('challengeId') as string
-    if(!cid) router.replace('/not-found')
+    const cid = localStorage.getItem('challengeId') as string;
+    if (!cid) router.replace('/not-found');
     else setChallengeId(cid);
   }, []);
+
+  useEffect(() => {
+    if (
+      TranslationData?.title !== undefined &&
+      TranslationData?.content !== undefined
+    ) {
+      setTitle(TranslationData.title);
+      setContent(TranslationData.content);
+      setIsLoaded(true);
+    }
+  }, [TranslationData]);
 
   useUnloadWarning(content !== '' && !(modal === 'success'));
 
@@ -50,15 +76,14 @@ export default function PostCard () {
     if (draftData?.status === 200) {
       setIsDrafted(true);
     }
-    console.log(draftData, 'draftData');
   }, [draftData]);
 
   // 번역물 생성 Mutation
-  const createTranslationMutation = useMutation({
-    mutationFn: createTranslation,
+  const modifyTranslationMutation = useMutation({
+    mutationFn: modifyTranslation,
     onSuccess: (data) => {
-      setTranslationId(data.data.id);
-      setModal('success');
+      setModal('success')
+      console.log('성공', data);
     },
     onError: (error) => {
       const axiosError = error as AxiosError<ErrorResponse>;
@@ -90,6 +115,7 @@ export default function PostCard () {
   );
 
   return (
+    <div className="w-screen h-screen flex flex-col items-center p-2">
       <div className="max-w-[1000px] w-full h-full">
         <div className="mt-6 flex justify-between h-[80px] items-center">
           <div
@@ -133,14 +159,15 @@ export default function PostCard () {
                 category={ButtonCategory.YES}
                 size={'py-2 flex'}
                 onClick={() => {
-                  createTranslationMutation.mutate({
+                  modifyTranslationMutation.mutate({
                     title,
                     content,
                     challengeId,
+                    translationId,
                   });
                 }}
               >
-                제출하기
+                수정하기
               </Button>
             </div>
           </div>
@@ -155,47 +182,53 @@ export default function PostCard () {
             />
           </div>
           <hr />
-          <div className="mt-5">
-            <Editor setContent={setContent} content={content} draftedValue="" />
-          </div>
+          {isLoaded && (
+            <div className="mt-5">
+              <Editor
+                setContent={setContent}
+                content={content}
+                draftedValue=""
+              />
+            </div>
+          )}
         </div>
         <Confirm
           isOpen={modal === 'drafted'}
           onClose={() => setModal('none')}
           onConfirm={() => {
-            setModal('none');
+            setModal('none')
             setIsDrafted(false);
           }}
         >
           임시저장 되었습니다!
         </Confirm>
         <Confirm
-          isOpen={modal === 'error'}
-          onClose={() => setModal('none')}
+          isOpen={modal==="error"}
+          onClose={() => setModal("none")}
           onConfirm={() => {
-            setModal('none')
+            setModal("none");
           }}
         >
           {errorMessage}
         </Confirm>
         <ConfirmCancel
-          isOpen={modal === 'forgive'}
-          onClose={() => setModal('none')}
+          isOpen={modal==="forgive"}
+          onClose={() => setModal("none")}
           onConfirm={() => {
-            setModal('none');
-            router.push(`/main/challenge/${challengeId}`);
+            setModal("none")
+            router.push(`/main/translation/${translationId}`);
           }}
-          onCancel={() => setModal('none')}
+          onCancel={() => setModal("none")}
         >
           정말 작업을 포기하시겠어요?
         </ConfirmCancel>
         <Navigate
-          isOpen={modal === 'success'}
+          isOpen={modal === "success"}
           onClose={() => {}}
           navigateUrl={`/main/translation/${translationId}`}
           text="작업물 보기"
         >
-          제출되었습니다!
+          수정되었습니다!
         </Navigate>
         {isDrafted && (
           <div className="border border-[#262626] rounded-[8px] fixed left-1/2 top-[90%] transform -translate-x-1/2 z-30 max-w-[750px] w-[95%] flex justify-between items-center px-5">
@@ -233,5 +266,6 @@ export default function PostCard () {
           </div>
         )}
       </div>
+    </div>
   );
 }
