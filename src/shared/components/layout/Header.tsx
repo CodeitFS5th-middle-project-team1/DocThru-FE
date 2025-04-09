@@ -1,17 +1,16 @@
 'use client';
 import Logo from '@/shared/Img/logo.svg';
 import Image from 'next/image';
-import BassBell from '@/shared/Img/bell-icon/bass.svg';
+//import BassBell from '@/shared/Img/bell-icon/bass.svg';
 import { Divider } from '../Divider';
 import { useRouter } from 'next/navigation';
 import { PATH } from '@/constants';
 import { useAuthStore, useHydrated } from '@/api/auth/AuthStore';
 import { TextPosition } from '../tab/Tab';
-
 import ProfileDropdown from '../dropdown/ProfileDropdown';
 import { useState } from 'react';
 import { TabGroup } from '../tab/TabGroup';
-
+import NotificationBell from '@/app/notification/components/NotificationBell';
 const Header = () => {
   const [activeTab, setActiveTab] = useState('management');
   const router = useRouter();
@@ -72,7 +71,8 @@ const Header = () => {
           </button>
         ) : user.role !== 'ADMIN' ? (
           <div className="flex items-center gap-4">
-            <Image className={ImageStyle} src={BassBell} alt="bell" />
+            {/* <Image className={ImageStyle} src={BassBell} alt="bell" /> */}
+            <NotificationBell userId={user.id} />
             <ProfileDropdown />
           </div>
         ) : (

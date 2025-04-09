@@ -24,3 +24,8 @@ export interface Notification {
   translationId?: string;
   feedbackId?: string;
 }
+
+export type CreateNotificationPayload = Omit<
+  Notification,
+  'id' | 'isRead' | 'createdAt'
+>;
