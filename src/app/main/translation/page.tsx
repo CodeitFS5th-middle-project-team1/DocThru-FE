@@ -1,5 +1,7 @@
 import { NextPage } from 'next';
 
-export const TransLation: NextPage = () => {
+const TransLation: NextPage = () => {
   return <></>;
 };
+
+export default TransLation;
