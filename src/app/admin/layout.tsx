@@ -1,13 +1,10 @@
-'use client';
-
+import '@shared/globals.css';
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className=" h-screen flex flex-col ">
-      <div className="max-w-[1200px] w-full h-full">{children}</div>
-    </div>
+    <section className="flex gap-4 flex-col pt-6 pb-28">{children}</section>
   );
 }

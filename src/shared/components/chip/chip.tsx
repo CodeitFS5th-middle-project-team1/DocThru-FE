@@ -24,9 +24,9 @@ export const Chip: React.FC<ChipProps> = ({ label, className }) => {
     Career: `${chipTypeStyle} bg-[#7EB2EE] text-custom-gray-600 `,
     공식문서: chipCategoryStyle,
     블로그: chipCategoryStyle,
-    [ApprovalStatusLabels.PENDING]: `${chipStatusStyle} bg-[#FFFDE7] text-[#F2BC00]`,
-    [ApprovalStatusLabels.REJECTED]: `${chipStatusStyle} bg-[#FFF0F0] text-[#E54946]`,
-    [ApprovalStatusLabels.APPROVED]: `${chipStatusStyle} bg-[#DFF0FF] text-[#4095DE]`,
+    [ApprovalStatusLabels.PENDING]: `${chipStatusStyle} whitespace-nowrap bg-[#FFFDE7] text-[#F2BC00]`,
+    [ApprovalStatusLabels.REJECTED]: `${chipStatusStyle} whitespace-nowrap bg-[#FFF0F0] text-[#E54946]`,
+    [ApprovalStatusLabels.APPROVED]: `${chipStatusStyle} whitespace-nowrap bg-[#DFF0FF] text-[#4095DE]`,
     [ApprovalStatusLabels.DELETED]: `${chipStatusStyle} whitespace-nowrap bg-custom-gray-200 text-custom-gray-500`,
   };
 
