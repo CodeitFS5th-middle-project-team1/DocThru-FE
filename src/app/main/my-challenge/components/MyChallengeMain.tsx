@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import { Challenge } from '@/types';
 import {
   fetchChallengeByParticipating,
+  fetchChallengeByUser,
   fetchChallenges,
 } from '@/api/challenge/ChallengeApi';
 import { Sort } from '@/shared/components/dropdown/Sort';
@@ -38,7 +39,7 @@ const MyChallengeMain = () => {
     ['my-challenges', page, limit, keyword, activeTab],
     () => {
       if (activeTab === 'applied') {
-        return fetchChallenges({
+        return fetchChallengeByUser({
           page,
           limit,
           keyword,
@@ -150,6 +151,7 @@ const MyChallengeMain = () => {
                       ? 'PENDING'
                       : challenge.approvalStatus,
                 }}
+                status={activeTab}
               />
             ))}
           </>

@@ -20,7 +20,6 @@ export interface CardData {
   id: string;
   userId: string;
   approvalStatus?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'DELETED';
-  status?: 'inProgress' | 'completed';
   title: string;
   documentType: DocumentType;
   field: FieldType;
@@ -29,26 +28,25 @@ export interface CardData {
   maxParticipants: number;
   isDeadlineFull: boolean;
   isParticipantsFull: boolean;
+  Translations?: { id: string };
 }
 
 export interface CardProps {
   data: CardData;
+  status?: 'participating' | 'completed' | 'applied';
   href?: string;
   onClick?: () => void;
 }
 
-export const Card = ({ data, href, onClick }: CardProps) => {
+export const Card = ({ data, href, status, onClick }: CardProps) => {
   const { user } = useAuthStore();
   const router = useRouter();
 
   const maxParticipant = data?.isParticipantsFull ?? false;
   const overDeadLine = data?.isDeadlineFull ?? false;
-
-  const isMine = user?.id === data.userId;
   const isAdmin = user?.role === 'ADMIN';
   const isShowSelector = isAdmin;
-  const isShowButton =
-    data.status === 'inProgress' || data.status === 'completed';
+  const isShowButton = status === 'participating' || status === 'completed';
 
   const handleClick = () => {
     if (onClick) return onClick();
@@ -67,6 +65,16 @@ export const Card = ({ data, href, onClick }: CardProps) => {
       router.refresh();
     } catch (error) {
       toast.error('삭제 중 오류가 발생했습니다.');
+    }
+  };
+
+  const handleRoute = () => {
+    if (status === 'participating') {
+      router.push(`${PATH.myChallenge}/${data.id}`);
+    } else if (data.Translations?.id) {
+      router.push(`${PATH.translation}/${data.Translations.id}`);
+    } else {
+      console.warn('No translation data found');
     }
   };
 
@@ -113,18 +121,17 @@ export const Card = ({ data, href, onClick }: CardProps) => {
         </div>
 
         {isShowButton && (
-          <div className="flex w-40 ">
+          <div className="flex w-44 ">
             <Button
               category={
-                data.status === 'inProgress'
+                status === 'participating'
                   ? ButtonCategory.CONTINUE
                   : ButtonCategory.VIEW_ORIGINAL
               }
-              href={href}
+              onClick={() => handleRoute()}
+              size="py-2 pl-4 pr-1"
             >
-              {data.status === 'inProgress'
-                ? '도전 계속하기'
-                : '내 작업물 보기'}
+              {status === 'participating' ? '도전 계속하기' : '내 작업물 보기'}
             </Button>
           </div>
         )}
