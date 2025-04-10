@@ -1,6 +1,6 @@
 import { docThro } from '@/api/url';
 import { ChallengeFormData } from '@/shared/components/form/ChallengeForm';
-import { Challenge, DocumentType, FieldType } from '@/types';
+import { Challenge, ChallengeUser, DocumentType, FieldType } from '@/types';
 
 export interface FetchChallengeParams {
   page?: number;
@@ -112,4 +112,23 @@ export const deleteChallenge = async (id: string) => {
 export const deleteChallengeByAdmin = async (id: string) => {
   const res = await docThro.patch(`/challenges/${id}/removeForce`);
   return res.data;
+};
+
+export const fetchMyChallenge = async (id: string): Promise<ChallengeUser> => {
+  const res = await docThro.get<ChallengeUser>(`/challenges/${id}`);
+  console.log('dasdsadwqe214214', res.data);
+  return res.data;
+};
+
+export const rejectChallenge = async (
+  id: string,
+  reason: string
+): Promise<void> => {
+  await docThro.patch(`/challenges/${id}/admin/reject`, {
+    rejectedReason: reason,
+  });
+};
+
+export const approveChallenge = async (id: string): Promise<void> => {
+  await docThro.patch(`/challenges/${id}/admin/approve`);
 };
