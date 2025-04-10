@@ -13,7 +13,7 @@ interface PopupProps {
   notifications: Notification[];
 }
 
-const Popup: React.FC<PopupProps> = ({ isOpen, onClose, notifications }) => {
+const Popup: React.FC<PopupProps> = ({ isOpen, notifications }) => {
   if (!isOpen) return null;
 
   return (
