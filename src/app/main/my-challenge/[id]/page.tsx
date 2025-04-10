@@ -22,7 +22,7 @@ export default async function MyChallengeDetail({
         name={data.name}
         time={data.time}
       />
-      <MiniCard info={data} />
+      {/* <MiniCard info={data} /> */}
       <div>
         <p>원문 링크</p>
       </div>
