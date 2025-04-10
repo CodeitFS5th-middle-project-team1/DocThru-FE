@@ -1,4 +1,4 @@
-import ClientChallengeDetail from './components/index';
+import AdminChallengeDetail from './components/index';
 
 interface Params {
   params: {
@@ -7,5 +7,5 @@ interface Params {
 }
 
 export default function Page({ params }: Params) {
-  return <ClientChallengeDetail id={params.id} />;
+  return <AdminChallengeDetail id={params.id} />;
 }
