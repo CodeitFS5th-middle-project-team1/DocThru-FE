@@ -7,16 +7,16 @@ import Pagination from './Pagination';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import { Tab, TabActive, TextPosition } from '@/shared/components/tab/Tab';
 import ChallengeTable from './ChallengeTable';
-// import dayjs from 'dayjs';
 import { Challenge } from '@/types';
 import {
   fetchChallengeByParticipating,
   fetchChallengeByUser,
-  //fetchChallenges,
 } from '@/api/challenge/ChallengeApi';
 import { Sort } from '@/shared/components/dropdown/Sort';
 import { ApprovalStatus, ApprovalStatusLabels } from '@/types';
 import { ChallengeOrderBy } from '@/lib/api/admin';
+import { Card } from '@/shared/components/card/Card';
+
 const TAB_LIST = [
   { key: 'participating', label: '참여중인 챌린지' },
   { key: 'completed', label: '마감된 챌린지' },
@@ -30,16 +30,19 @@ export type ChallengeWithApply = Challenge & {
   approvalStatus?: string;
 };
 
+type Params = {
+  approvalStatus?: 'PENDING' | 'APPROVED' | 'REJECTED';
+  orderBy?: ChallengeOrderBy;
+};
+
 const MyChallengeMain = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [keyword, setKeyword] = useState('');
-  //const [orderBy, setOrderBy] = useState('');
-  //const [approvalStatus, setApprovalStatus] = useState('');
   const [activeTab, setActiveTab] = useState<TabKey>('participating');
   const [sortValue, setSortValue] = useState('option1');
-  const getParamsFromSortValue = (value: string) => {
-    const mapping: Record<string, any> = {
+  const getParamsFromSortValue = (value: string): Params => {
+    const mapping: Record<string, Params> = {
       option1: { approvalStatus: 'PENDING' },
       option2: { approvalStatus: 'APPROVED' },
       option3: { approvalStatus: 'REJECTED' },
@@ -51,8 +54,8 @@ const MyChallengeMain = () => {
     return mapping[value] || {};
   };
   const { approvalStatus, orderBy } = getParamsFromSortValue(sortValue);
-  console.log('🔥 orderBy:', orderBy);
-  const { data, isPending } = useToastQuery(
+
+  const { data } = useToastQuery(
     ['my-challenges', page, limit, keyword, activeTab, sortValue],
     () => {
       if (activeTab === 'applied') {
@@ -208,9 +211,21 @@ const MyChallengeMain = () => {
         ) : activeTab === 'applied' ? (
           <ChallengeTable data={tableData} />
         ) : (
-          <div className="flex h-screen justify-center items-center">
-            <p className="text-center text-gray-500">챌린지를 선택해주세요.</p>
-          </div>
+          <>
+            {challenges.map((challenge) => (
+              <Card
+                key={challenge.id}
+                data={{
+                  ...challenge,
+                  approvalStatus:
+                    challenge.approvalStatus === 'PENDING'
+                      ? 'PENDING'
+                      : challenge.approvalStatus,
+                }}
+                status={activeTab}
+              />
+            ))}
+          </>
         )}
       </section>
 

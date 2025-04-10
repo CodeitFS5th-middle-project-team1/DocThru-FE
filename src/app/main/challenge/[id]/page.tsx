@@ -81,7 +81,6 @@ const ChallengeDetail: NextPage = () => {
   return (
     <div className="flex flex-col gap-6 w-full ">
       <Title
-        id={challenge?.id}
         isSameUser={isSameUser}
         title={challenge?.title}
         document={challenge?.documentType}

@@ -2,30 +2,41 @@ import Image from 'next/image';
 import profile from '@images/profile-icon/member.svg';
 import modify from '@images/menu-icon/Meatballs.svg';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 interface ReplyProps {
   user: { nickName: string; img?: string };
+  id: string;
   create: string;
   content: string;
   userId?: string;
+  onClick?: (id: string, content: string) => void;
 }
 
 export const Reply: React.FC<ReplyProps> = ({
   user,
   create,
+  id,
   content,
   userId,
+  onClick,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>(content);
 
-  const onHandleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const createdAt = dayjs(create).format('YY/MM/DD hh:mm');
+
+  const onHandleCancel = () => {
     setFeedback(content);
     setIsOpen(false);
   };
   const onHandleChange = () => {
+    if (!id) return;
+    if (!feedback) return;
     setFeedback(feedback);
     setIsOpen(false);
+    console.log(id, '1', feedback);
+    onClick?.(id, feedback);
   };
   return (
     <div className="w-full h-full bg-custom-gray-50 rounded-xl p-4 overflow-hidden">
@@ -34,17 +45,17 @@ export const Reply: React.FC<ReplyProps> = ({
           <Image src={user.img ? user.img : profile} alt="profile" />
           <div className="flex flex-col gap-1">
             <div className="text-custom-gray-800 M-14-0">{user.nickName}</div>
-            <div className="text-custom-gray-400 M-12-0">{create}</div>
+            <div className="text-custom-gray-400 M-12-0">{createdAt}</div>
           </div>
         </div>
         {!isOpen ? (
           userId !== undefined && (
-            <Image
-              src={modify}
+            <div
               onClick={() => setIsOpen(true)}
-              alt="modify"
               className="R-16-0 cursor-pointer"
-            />
+            >
+              <Image src={modify} alt="modify" />
+            </div>
           )
         ) : (
           <div className="flex gap-1 SB-14-0">

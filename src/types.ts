@@ -120,6 +120,7 @@ export interface Challenge {
   idx: number;
   field: FieldType;
   userId: string;
+  user: { nickname: string };
   title: string;
   originURL: string;
   documentType: DocumentType;

@@ -14,13 +14,15 @@ export default function ClientChallengeDetail({ id }: Props) {
 
   if (isLoading) return <div>Loading...</div>;
   if (isError || !data) return <div>Error loading challenge</div>;
-  const info = data;
 
   return (
     <div>
-      <Status data={info} />
-      <MiniCard data={info} />
-      <OriginView originUrl={info.originURL} width="100%"></OriginView>
+      <Status data={data} />
+      <MiniCard data={data} />
+      <OriginView
+        originUrl={data.challenge.originURL}
+        width="100%"
+      ></OriginView>
     </div>
   );
 }
