@@ -7,7 +7,7 @@ import Pagination from '../../main/challenge/_components/Pagination';
 import ChallengeTable from './components/ChallengeTable';
 import { Sort } from '@/shared/components/dropdown/Sort';
 import { useQuery } from '@tanstack/react-query';
-import { ChallengeOrderBy, fetchChallengesByAdmin } from '@/lib/api/admin';
+import { ChallengeOrderBy, fetchChallengesByAdmin } from '@/api/admin/admin';
 import { ApprovalStatus, ApprovalStatusLabels } from '@/types';
 interface ChallengeApiResponse {
   id: string;
