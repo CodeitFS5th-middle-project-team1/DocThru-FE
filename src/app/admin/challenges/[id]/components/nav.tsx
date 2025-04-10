@@ -1,6 +1,6 @@
 import { ChallengeUser } from '@/types';
-import prev from '@images/arrow-icon/no-stick/black.svg';
-import next from '@images/arrow-icon/no-stick/gray.svg';
+import next from '@images/arrow-icon/no-stick/icon_arrow_right.svg';
+import prev from '@images/arrow-icon/no-stick/icon_arrow_left.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -9,21 +9,19 @@ interface Props {
 }
 
 export const Nav = ({ data }: Props) => {
-  console.log('nav data', data);
   return (
-    <div>
+    <div className="flex justify-between">
       <div>No. {data.challenge.idx}</div>
-      <div>
-        {data.prevChallengeId && (
-          <Link href={`/main/my-challenge/${data.prevChallengeId.id}`}>
-            <Image src={prev} alt="arrow_left Icon" width={16} height={16} />
-          </Link>
-        )}
-        {data.nextChallengeId && (
-          <Link href={`/main/my-challenge/${data.nextChallengeId.id}`}>
-            <Image src={next} alt="arrow_right Icon" width={16} height={16} />
-          </Link>
-        )}
+      <div className="flex">
+        <Link
+          className="mr-2.5"
+          href={`/admin/challenges/${data.prevChallengeId?.id ?? ''}`}
+        >
+          <Image src={prev} alt="arrow_left Icon" width={24} height={24} />
+        </Link>
+        <Link href={`/admin/challenges/${data.nextChallengeId?.id ?? ''}`}>
+          <Image src={next} alt="arrow_right Icon" width={24} height={24} />
+        </Link>
       </div>
     </div>
   );

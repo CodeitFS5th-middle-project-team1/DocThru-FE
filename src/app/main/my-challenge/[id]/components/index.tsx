@@ -14,8 +14,7 @@ export default function ClientChallengeDetail({ id }: Props) {
 
   if (isLoading) return <div>Loading...</div>;
   if (isError || !data) return <div>Error loading challenge</div>;
-  const info = data.challenge;
-  console.log('이것이 데이터이다', data);
+  const info = data;
 
   return (
     <div>
