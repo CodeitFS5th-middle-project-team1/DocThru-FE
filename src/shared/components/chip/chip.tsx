@@ -22,7 +22,8 @@ export const Chip: React.FC<ChipProps> = ({ label, className }) => {
     return label;
   })();
 
-  const chipStatusStyle = 'SB-13-0 w-fit px-2 py-1 rounded-sm';
+  const chipStatusStyle =
+    'SB-13-0 w-fit px-2 py-1 rounded-sm  whitespace-nowrap';
   const chipStyles: Record<string, string> = {
     'Next.js': `${chipTypeStyle} bg-[#79E16A] text-custom-gray-600 `,
     'Modern JS': `${chipTypeStyle} bg-[#F66E6B] text-custom-gray-600 `,
