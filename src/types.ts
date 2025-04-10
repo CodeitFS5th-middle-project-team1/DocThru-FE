@@ -160,34 +160,36 @@ export type ErrorResponse = {
 export type Modal = 'none' | 'drafted' | 'forgive' | 'success' | 'error';
 
 export interface ChallengeUser {
-  id: string;
-  idx: number;
-  field: FieldType;
-  userId: string;
-  title: string;
-  originURL: string;
-  documentType: DocumentType;
-  deadline: string;
-  maxParticipants: number;
-  currentParticipants: number;
-  description: string;
-  deletedAt?: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedReason?: string;
-  rejectedReason?: string;
-  rejectedAt?: string;
-  approvalStatus: ApprovalStatus;
-  approvalAt?: string;
-  isParticipantsFull: boolean;
-  isDeadlineFull: boolean;
-  user: {
-    nickname: string;
-  };
-  prevChallengeId?: {
+  challenge: {
     id: string;
+    idx: number;
+    field: FieldType;
+    userId: string;
+    title: string;
+    originURL: string;
+    documentType: DocumentType;
+    deadline: string;
+    maxParticipants: number;
+    currentParticipants: number;
+    description: string;
+    deletedAt?: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedReason?: string;
+    rejectedReason?: string;
+    rejectedAt?: string;
+    approvalStatus: ApprovalStatus;
+    approvalAt?: string;
+    isParticipantsFull: boolean;
+    isDeadlineFull: boolean;
+    user: {
+      nickname: string;
+    };
   };
-  nextChallengeId?: {
+  nextChallengeId: {
     id: string;
-  };
+  } | null;
+  prevChallengeId: {
+    id: string;
+  } | null;
 }

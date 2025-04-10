@@ -70,6 +70,7 @@ const MyChallengeMain = () => {
 
   const challenges = data?.challenges ?? [];
   const totalPages = Math.ceil((data?.totalCount ?? 1) / limit);
+  console.log('챌린지 데이터', challenges);
 
   const tableData = (challenges as ChallengeWithApply[]).map((c, idx) => ({
     no: idx + 1 + (page - 1) * limit,
