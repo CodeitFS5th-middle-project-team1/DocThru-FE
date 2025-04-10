@@ -94,7 +94,6 @@ export const fetchChallengeById = async (
 };
 
 export const createChallenge = async (data: ChallengeFormRequest) => {
-  console.log('data', data);
   const res = await docThro.post('/challenges', data);
   return res.data;
 };
@@ -116,7 +115,6 @@ export const deleteChallengeByAdmin = async (id: string) => {
 
 export const fetchMyChallenge = async (id: string): Promise<ChallengeUser> => {
   const res = await docThro.get<ChallengeUser>(`/challenges/${id}`);
-  console.log('dasdsadwqe214214', res.data);
   return res.data;
 };
 
