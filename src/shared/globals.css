@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'react-quill-new/dist/quill.snow.css';
 
 /*여기에 폰트 넣으시면 됩니다.*/
 @font-face {
@@ -17,11 +18,11 @@
 }
 
 @theme {
+  --breakpoint-s: 344px;
+  --breakpoint-m: 744px;
   --color-custom-black: #000000;
-
   --color-custom-red: #f24744;
   --color-custom-red-brand: #ffe7e7;
-
   --color-custom-yellow-brand: #ffc107;
   --color-custom-white: #ffffff;
   --color-custom-white-brand: #f1f2f5;
@@ -251,6 +252,182 @@
 .ql-editor {
   border: none !important;
   outline: none !important; /* 포커스 시에도 테두리 안 나오게 */
+}
+
+.ql-editor ol[data-list='bullet'] {
+  @apply list-disc pl-6;
+}
+
+.ql-editor ol[data-list='bullet'] > li {
+  @apply mb-1 leading-relaxed;
+}
+
+/* --- Ordered 리스트 --- */
+.ql-editor ol[data-list='ordered'] {
+  @apply list-decimal pl-6;
+}
+
+.ql-editor ol[data-list='ordered'] > li {
+  @apply mb-1 leading-relaxed;
+}
+
+/* --- Indent --- */
+.ql-indent-1 {
+  @apply pl-6;
+}
+.ql-indent-2 {
+  @apply pl-12;
+}
+.ql-indent-3 {
+  @apply pl-16;
+}
+
+/* --- 정렬 --- */
+.ql-align-center {
+  @apply text-center;
+}
+.ql-align-right {
+  @apply text-right;
+}
+.ql-align-justify {
+  @apply text-justify;
+}
+
+/* --- 텍스트 크기 --- */
+.ql-size-large {
+  @apply text-lg;
+}
+.ql-size-small {
+  @apply text-sm;
+}
+.ql-size-huge {
+  @apply text-2xl;
+}
+
+/* --- 강조 스타일 --- */
+strong {
+  @apply font-bold;
+}
+em {
+  @apply italic;
+}
+u {
+  @apply underline;
+}
+s {
+  @apply line-through;
+}
+
+/* --- Blockquote --- */
+blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 dark:text-gray-400;
+}
+
+/* --- 코드 블럭 --- */
+.ql-code-block-container {
+  @apply bg-gray-100 dark:bg-gray-800 p-4 rounded-md my-4 overflow-x-auto;
+}
+
+.ql-code-block {
+  @apply font-mono text-sm text-gray-800 dark:text-gray-100;
+}
+
+/* --- 기타 --- */
+
+.ql-editor h1 {
+  @apply text-3xl font-bold mb-4;
+}
+
+.ql-editor h2 {
+  @apply text-2xl font-semibold mb-3;
+}
+
+.ql-editor h3 {
+  @apply text-xl font-semibold mb-2;
+}
+
+.ql-editor p {
+  @apply mb-4;
+}
+
+.ql-editor a {
+  @apply text-blue-600 underline hover:text-blue-800;
+}
+
+.ql-editor blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4;
+}
+
+.ql-editor code {
+  @apply font-mono bg-gray-100 text-sm px-1 py-0.5 rounded;
+}
+
+.ql-editor pre {
+  @apply bg-gray-100 p-4 overflow-auto rounded text-sm font-mono;
+}
+
+.ql-editor ul {
+  @apply list-disc pl-6 mb-4;
+}
+
+.ql-editor ol {
+  @apply list-decimal pl-6 mb-4;
+}
+
+.ql-editor li {
+  @apply mb-1;
+}
+
+.ql-editor .ql-indent-1 {
+  @apply ml-4;
+}
+
+.ql-editor .ql-indent-2 {
+  @apply ml-8;
+}
+
+.ql-editor .ql-align-center {
+  @apply text-center;
+}
+
+.ql-editor .ql-align-right {
+  @apply text-right;
+}
+
+.ql-editor .ql-align-justify {
+  @apply text-justify;
+}
+
+.ql-editor .ql-size-small {
+  @apply text-sm;
+}
+
+.ql-editor .ql-size-large {
+  @apply text-lg;
+}
+
+.ql-editor .ql-size-huge {
+  @apply text-2xl;
+}
+
+.ql-editor .ql-font-serif {
+  @apply font-serif;
+}
+
+.ql-editor .ql-font-monospace {
+  @apply font-mono;
+}
+
+.ql-editor strong {
+  @apply font-bold;
+}
+
+.ql-editor em {
+  @apply italic;
+}
+
+.ql-editor s {
+  @apply line-through;
 }
 
 .ql-editor.ql-blank::before {

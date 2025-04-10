@@ -3,10 +3,9 @@ import prev from '@images/arrow-icon/no-stick/black.svg';
 import next from '@images/arrow-icon/no-stick/gray.svg';
 import { Translation } from '@/types';
 import { ListItems } from './ListItems';
-import { useState } from 'react';
 
 interface ParticipationProps {
-  List: Translation[] | [];
+  List: Translation[] | undefined;
   page?: number;
   maxPage?: number;
   handleNextPage?: () => void;

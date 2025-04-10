@@ -17,8 +17,8 @@ export const Title: React.FC<TitleProps> = ({
     <div className="flex flex-col pt-10 gap-4">
       <div className="w-full SB-24-0">{title}</div>
       <div className="flex flex-row gap-2">
-        <Chip label={document} />
         <Chip label={field} />
+        <Chip label={document} />
       </div>
       <Divider />
     </div>

@@ -1,10 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-const token = {
-  accessToken: 'accessToken',
-  role: '',
-};
 export const useAuth = () => {
   const [role, setRole] = useState<string | null>('');
   const [isLogin, setIsLogin] = useState<string | null>('');

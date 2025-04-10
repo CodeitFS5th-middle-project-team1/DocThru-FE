@@ -42,8 +42,7 @@ docThro.interceptors.response.use(
 
   async (error) => {
     if (error.response?.status === 401) {
-      toast.error('Access Token 만료! \n로그인 페이지로 이동합니다.');
-      console.error('Access Token 만료! \n로그인 페이지로 이동합니다.');
+      toast.error('로그인 제한 시간이 만료되었습니다.');
 
       if (typeof window !== 'undefined') {
         localStorage.removeItem('accessToken');

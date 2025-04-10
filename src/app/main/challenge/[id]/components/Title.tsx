@@ -20,7 +20,6 @@ interface TitleProps {
   deadLine?: string;
   originUrl?: string;
   isSameUser?: boolean;
-  id: string;
   isParticipantsFull?: boolean;
   isDeadlineFull?: boolean;
 }
@@ -38,7 +37,6 @@ export const Title: React.FC<TitleProps> = ({
   isSameUser = false,
   isParticipantsFull = false,
   isDeadlineFull = false,
-  id = '',
 }) => {
   const [openMenu, setOpenMenu] = useState(false);
   return (

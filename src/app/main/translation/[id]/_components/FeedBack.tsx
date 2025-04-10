@@ -1,30 +1,66 @@
 'use client';
+import { FetchFeedBackResponse } from '@/api/feedback/api';
+import { usePatchFeedBack } from '@/api/feedback/hook';
 import { Reply } from '@/shared/components/Reply';
 import { TextBox } from '@/shared/components/TextBox';
 import { Feedback } from '@/types';
-import { useEffect, useState } from 'react';
+import { UseMutateAsyncFunction } from '@tanstack/react-query';
+import { useState } from 'react';
 
 interface FeedBackProps {
-  feedBack: Feedback[] | null;
+  feedBack: Feedback[] | undefined;
+  createFeedBack: UseMutateAsyncFunction<
+    FetchFeedBackResponse,
+    unknown,
+    string,
+    unknown
+  >;
+  id: string;
 }
 
-export const FeedBack: React.FC<FeedBackProps> = ({ feedBack }) => {
+export const FeedBack: React.FC<FeedBackProps> = ({
+  feedBack,
+  createFeedBack,
+  id,
+}) => {
+  const { mutateAsync: patchFeedBack } = usePatchFeedBack(id);
   const [showAll, setShowAll] = useState(false);
+  const [content, setContent] = useState<string>('');
   const visibleItems = showAll ? feedBack || [] : (feedBack || []).slice(0, 3);
-  useEffect(() => {
-    console.log('visibleItems', feedBack);
-  }, [feedBack]);
+  const hendleClick = async () => {
+    try {
+      if (content === '') return;
+      await createFeedBack(content);
+      setContent('');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const hendlePatch = async (id: string, content: string) => {
+    try {
+      console.log(content);
+      await patchFeedBack({ feedBackId: id, content });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const hendleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+  };
+
   return (
     <div className="flex flex-col gap-4 py-6">
-      <TextBox />
-      {visibleItems?.map((d, idx) => {
+      <TextBox onClick={hendleClick} onChange={hendleChange} value={content} />
+      {visibleItems?.map((d) => {
         return (
           <Reply
-            key={idx}
+            key={d.id}
+            id={d.id}
             userId={d.userId}
             content={d.content}
             create={d.createdAt}
             user={{ nickName: d.userNickname, img: d.userProfileImg }}
+            onClick={hendlePatch}
           />
         );
       })}

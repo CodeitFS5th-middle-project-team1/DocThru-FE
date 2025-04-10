@@ -1,6 +1,6 @@
 import { useToastMutation } from '@/shared/hooks/useToastMutation';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
-import { ChallengeUser } from '@/types';
+import { Challenge, ChallengeUser } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ChallengeFormRequest,
@@ -11,7 +11,7 @@ import {
 } from './ChallengeApi';
 
 export const useGetChallenge = (id: string) => {
-  return useToastQuery<ChallengeFormRequest, unknown, any>(
+  return useToastQuery<Challenge, Challenge>(
     ['challenge', id],
     () => fetchChallengeById(id),
     'challenge-toast'
@@ -19,7 +19,7 @@ export const useGetChallenge = (id: string) => {
 };
 
 export const useGetMyChallenge = (id: string) => {
-  return useToastQuery<ChallengeUser, unknown, any>(
+  return useToastQuery<ChallengeUser, unknown>(
     ['my-challenge', id],
     () => fetchMyChallenge(id),
     'challenge-toast'
@@ -29,7 +29,7 @@ export const useGetMyChallenge = (id: string) => {
 export const useCreateChallenge = () => {
   const router = useRouter();
 
-  return useToastMutation<ChallengeFormRequest, unknown, any>(
+  return useToastMutation<ChallengeFormRequest, unknown>(
     createChallenge,
     {
       pending: '챌린지를 생성 중입니다...',
@@ -51,7 +51,7 @@ export const useEditChallenge = (id: string) => {
   const searchParams = useSearchParams();
   const from = searchParams.get('from');
 
-  return useToastMutation<ChallengeFormRequest, unknown, any>(
+  return useToastMutation<ChallengeFormRequest, unknown>(
     (data) => editChallenge(id, data),
     {
       pending: '챌린지를 수정 중입니다...',

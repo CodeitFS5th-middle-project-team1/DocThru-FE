@@ -20,6 +20,9 @@ interface ChallengeApiResponse {
   deadline: string;
   approvalStatus: string;
 }
+type Params =
+  | { approvalStatus: 'PENDING' | 'APPROVED' | 'REJECTED' }
+  | { order: ChallengeOrderBy };
 
 const AdminChallenge: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,8 +30,8 @@ const AdminChallenge: NextPage = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
 
-  const getParamsFromSortValue = (value: string) => {
-    const mapping: Record<string, any> = {
+  const getParamsFromSortValue = (value: string): Params => {
+    const mapping: Record<string, Params> = {
       option1: { approvalStatus: 'PENDING' },
       option2: { approvalStatus: 'APPROVED' },
       option3: { approvalStatus: 'REJECTED' },
@@ -37,7 +40,7 @@ const AdminChallenge: NextPage = () => {
       option6: { order: ChallengeOrderBy.DEADLINE_FIRST },
       option7: { order: ChallengeOrderBy.DEADLINE_LAST },
     };
-    return mapping[value] || {};
+    return mapping[value];
   };
 
   const queryParams = {
