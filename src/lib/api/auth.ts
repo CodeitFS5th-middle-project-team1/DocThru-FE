@@ -10,7 +10,7 @@ export const loginFn = async (
   payload: LoginPayload
 ): Promise<LoginResponse> => {
   const res = await docThro.post<LoginResponse>('/auth/login', payload, {
-    withCredentials: true, // ✅ accessToken 쿠키를 받아오도록 설정
+    withCredentials: true, // accessToken 쿠키를 받아오도록 설정
   });
   return res.data;
 };
