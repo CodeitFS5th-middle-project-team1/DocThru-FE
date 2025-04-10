@@ -7,7 +7,8 @@ interface Props {
 }
 
 const Status: NextPage<Props> = ({ data }) => {
-  console.log('data', data);
+  const challenge = data.challenge;
+
   const StatusComponent: Record<string, JSX.Element> = {
     REJECTED: (
       <div className="w-full h-[35px] bg-[#FFF0F0] flex justify-center items-center mt-6 mb-4 rounded-[17.5px] text-[#e54946] text-[16px] font-semibold">
@@ -34,12 +35,12 @@ const Status: NextPage<Props> = ({ data }) => {
             삭제 사유
           </div>
           <div className="flex justify-center text-[#404040]">
-            {data.challenge.deletedReason}
+            {challenge.deletedReason || '삭제 사유가 없습니다.'}
           </div>
           <div className="flex justify-end m-[14px] text-[14px] font-normal">
-            <div className="text-[#404040]">{data.challenge.user.nickname}</div>
+            <div className="text-[#404040]">{challenge.user.nickname}</div>
             <div className="mx-[8px] text-[#E5E5E5]">|</div>
-            <div className="text-[#737373]">{data.challenge.createdAt}</div>
+            <div className="text-[#737373]">{challenge.createdAt}</div>
           </div>
         </div>
         <div className="border border-[#e5e5e5] mb-4 w-full"></div>
@@ -53,12 +54,12 @@ const Status: NextPage<Props> = ({ data }) => {
             신청 거절 사유
           </div>
           <div className="flex justify-center text-[#404040]">
-            {data.challenge.deletedReason}
+            {challenge.rejectedReason}
           </div>
           <div className="flex justify-end m-[14px] text-[14px] font-normal">
-            <div className="text-[#404040]">{data.challenge.user.nickname}</div>
+            <div className="text-[#404040]">{challenge.user.nickname}</div>
             <div className="mx-[8px] text-[#E5E5E5]">|</div>
-            <div className="text-[#737373]">{data.challenge.createdAt}</div>
+            <div className="text-[#737373]">{challenge.createdAt}</div>
           </div>
         </div>
         <div className="border border-[#e5e5e5] mb-4 w-full"></div>
@@ -68,8 +69,8 @@ const Status: NextPage<Props> = ({ data }) => {
 
   return (
     <>
-      {StatusComponent[data.challenge.approvalStatus] ?? null}
-      {StatusReason[data.challenge.approvalStatus] ?? null}
+      {StatusComponent[challenge.approvalStatus] ?? null}
+      {StatusReason[challenge.approvalStatus] ?? null}
     </>
   );
 };

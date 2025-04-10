@@ -20,7 +20,7 @@ export const useGetChallenge = (id: string) => {
 
 export const useGetMyChallenge = (id: string) => {
   return useToastQuery<ChallengeUser, unknown, any>(
-    ['challenge', id],
+    ['my-challenge', id],
     () => fetchMyChallenge(id),
     'challenge-toast'
   );
