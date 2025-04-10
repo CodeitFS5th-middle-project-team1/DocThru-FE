@@ -1,36 +1,31 @@
 'use client';
 
-import Popup from '@/shared/components/popup/popup';
-import BassBell from '@/shared/Img/bell-icon/bass.svg';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { Notification } from '@/lib/notification/notification.types';
-import { fetchNotifications } from '@/lib/notification/notification.api';
-interface Props {
-  userId: string;
-}
+import Image from 'next/image';
+import BellIcon from '@/shared/Img/bell-icon/bass.svg';
+import {
+  fetchNotifications,
+  Notification,
+} from '@/lib/notification/notification.api';
+import Popup from '@/shared/components/popup/popup';
 
-const NotificationBell = ({ userId }: Props) => {
+export default function NotificationBell({ userId }: { userId: string }) {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   useEffect(() => {
     if (!userId) return;
-
     fetchNotifications(userId)
-      .then((data) => {
-        console.log('알림:', data);
-        setNotifications(data);
-      })
+      .then(setNotifications)
       .catch((err) => console.error('알림 불러오기 실패:', err));
   }, [userId]);
 
   return (
     <div className="relative">
       <Image
-        className="cursor-pointer"
-        src={BassBell}
+        src={BellIcon}
         alt="bell"
+        className="cursor-pointer"
         onClick={() => setOpen((prev) => !prev)}
       />
       <Popup
@@ -40,6 +35,4 @@ const NotificationBell = ({ userId }: Props) => {
       />
     </div>
   );
-};
-
-export default NotificationBell;
+}
