@@ -46,13 +46,14 @@ export const fetchTranslationById = async (
 };
 
 export const createTranslation = async (
-  data: DraftRequest
+  data: DraftRequest,
+  challengeId: string,
 ): Promise<Translation> => {
-  const challengeId = localStorage.getItem('challengeId');
   const response = await docThro.post(
     `/challenges/${challengeId}/translations`,
-    { data }
+    { title: data.title, content: data.content }
   );
+  console.log('API Response:', response.data); // 응답 로그 출력
   return response.data;
 };
 

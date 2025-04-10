@@ -58,19 +58,26 @@ export const useGetTranslationsByIds = (ids?: string[]) => {
   return { data, isLoading, isError };
 };
 
-export const useCreateTranslation = () => {
-  return useToastMutation<DraftRequest, Translation, unknown>(
-    (data) => createTranslation(data),
-    {},
-    {
-      onSuccess: (data) => {
-        console.log('성공', data);
-      },
-      onError: () => {},
-    },
-    'create-translation'
-  );
-};
+// export const useCreateTranslation = () => {
+//   return useToastMutation<
+//     DraftRequest,
+//     Translation
+//   >(
+//     (data) => createTranslation(data),
+//     {
+//       pending: '작성 중입니다...',
+//       success: '작성 성공!',
+//       error: '작성 실패 😢',
+//     },
+//     {
+//       onSuccess: (data) => {
+//         console.log('성공', data);
+//         // 추가 작업 예시: setTranslationId(data.id); setModal('success');
+//       },
+//     },
+//     'create-translation'
+//   );
+// };
 export const usePatchTranslation = (id: string) => {
   return useToastMutation<DraftRequest, unknown>(
     (data) => patchTranslation(id, data),
