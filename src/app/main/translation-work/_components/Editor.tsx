@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import 'react-quill-new/dist/quill.snow.css'; // 기본 테마
 
 // ✅ 동적 import로 서버에서 실행되지 않도록 설정
@@ -25,9 +25,7 @@ interface EditorProps {
   setContent: Dispatch<SetStateAction<string | null>>;
 }
 
-const Editor: React.FC<EditorProps> = ({ content, setContent}) => {
-  
-
+const Editor: React.FC<EditorProps> = ({ content, setContent }) => {
   return (
     <div className="w-full p-4">
       <ReactQuill

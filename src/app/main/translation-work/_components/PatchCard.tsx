@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Image from 'next/image';
 import Logo from '@/shared/Img/logo.svg';
@@ -9,20 +9,18 @@ import Navigate from '@/shared/components/modal/navigate';
 import Editor from '../_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
 import { useParams, useRouter } from 'next/navigation';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { ErrorMessage, ErrorResponse, Modal } from '@/types';
-import {
-  createDraftTranslation,
-  getDraftTranslation,
-  getTranLation,
-  modifyTranslation,
-} from '@/api/TransLationApi';
+import { ErrorResponse, Modal } from '@/types';
 import Button, { ButtonCategory } from '@/shared/components/button/Button';
 import { useUnloadWarning } from '@/shared/hooks/useUnloadWarning';
-import { useToastMutation } from '@/shared/hooks/useToastMutation';
+import {
+  useCreateDraft,
+  useGetDraftTranslation,
+  useGetTranslation,
+  usePatchTranslation,
+} from '@/api/Translation/hook';
 
-export default function PatchCard () {
+export default function PatchCard() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState<string | null>(null);
   const [modal, setModal] = useState<Modal>('none');
@@ -35,21 +33,43 @@ export default function PatchCard () {
   const params = useParams();
   const translationId = params.id as string;
 
-  const { data: TranslationData } = useQuery({
-    queryKey: ['Translation', challengeId, translationId],
-    queryFn: ({ queryKey }) => {
-      const [, challengeId] = queryKey;
-      return getTranLation(challengeId, translationId);
-    },
-    enabled: !!challengeId,
-  });
+  const { mutate: createDraftMutation } = useCreateDraft(translationId);
+  const { mutate: modifyTranslationMutation, status: modifyStatus } =
+    usePatchTranslation(translationId);
+  const { data: draftData, status: draftStatus } =
+    useGetDraftTranslation(challengeId);
+  const { data: TranslationData } = useGetTranslation(translationId);
+
+  const onHandleModify = (error: unknown) => {
+    const data = { title, content };
+    modifyTranslationMutation(data);
+    if (modifyStatus === 'success') {
+      setModal('success');
+      return;
+    }
+    if (modifyStatus === 'error') {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      if (
+        axiosError.response?.status === 500 ||
+        axiosError.response?.status === 404
+      ) {
+        setErrorMessage('서버 요청 에러 발생!');
+        setModal('error');
+      } else {
+        setErrorMessage(
+          '제목은 최소 1자 이상 최대 50자 이하로 입력해주세요.\n내용은 1000자 이하로 입력해주세요.'
+        );
+        setModal('error');
+      }
+    }
+  };
 
   // 로컬 스토리지에서 저장되어 있는 Challenge Id를 불러옵니다.
   useEffect(() => {
     const cid = localStorage.getItem('challengeId') as string;
     if (!cid) router.replace('/not-found');
     else setChallengeId(cid);
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (
@@ -64,55 +84,11 @@ export default function PatchCard () {
 
   useUnloadWarning(content !== '' && !(modal === 'success'));
 
-  const { data: draftData } = useQuery({
-    queryKey: ['draft', challengeId],
-    queryFn: ({ queryKey }) => {
-      const [, challengeId] = queryKey;
-      return getDraftTranslation(challengeId as string);
-    },
-  });
-
   useEffect(() => {
-    if (draftData?.status === 200) {
+    if (draftStatus === 'success') {
       setIsDrafted(true);
     }
-  }, [draftData]);
-
-  // 번역물 생성 Mutation
-  const modifyTranslationMutation = useMutation({
-    mutationFn: modifyTranslation,
-    onSuccess: (data) => {
-      setModal('success')
-      console.log('성공', data);
-    },
-    onError: (error) => {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      if(axiosError.status === 500 || axiosError.status === 404){
-        setErrorMessage("서버 요청 에러 발생!");
-        setModal("error");
-      }
-      else{
-        setErrorMessage("제목은 최소 1자 이상 최대 50자 이하로 입력해주세요.\n내용은 1000자 이하로 입력해주세요.");
-        setModal("error");
-      }
-    },
-  });
-
-  // 임시 저장 번역물 생성 Mutation
-  const createDraftMutation = useToastMutation(
-    createDraftTranslation,
-    {
-      pending: '임시저장 중입니다...',
-      success: '임시저장 성공!',
-      error: '임시저장 실패 😢',
-    },
-    {
-      onSuccess: () => {
-        console.log('성공 후 추가 작업');
-      },
-    },
-    'save-translation' // <- toastId (중복 방지용 고유 id)
-  );
+  }, [draftData, draftStatus]);
 
   return (
     <div className="w-screen h-screen flex flex-col items-center p-2">
@@ -120,7 +96,7 @@ export default function PatchCard () {
         <div className="mt-6 flex justify-between h-[80px] items-center">
           <div
             onClick={() => {
-              setModal('forgive')
+              setModal('forgive');
             }}
           >
             <Image
@@ -137,7 +113,7 @@ export default function PatchCard () {
                 category={ButtonCategory.DROP}
                 size={'py-2 flex'}
                 onClick={() => {
-                  setModal('forgive')
+                  setModal('forgive');
                 }}
               >
                 <p className="hidden md:flex">포기</p>
@@ -148,7 +124,7 @@ export default function PatchCard () {
                 category={ButtonCategory.NO}
                 size={'py-2 flex'}
                 onClick={() => {
-                  createDraftMutation.mutate({ title, content, challengeId });
+                  createDraftMutation({ title, content });
                 }}
               >
                 임시저장
@@ -158,14 +134,7 @@ export default function PatchCard () {
               <Button
                 category={ButtonCategory.YES}
                 size={'py-2 flex'}
-                onClick={() => {
-                  modifyTranslationMutation.mutate({
-                    title,
-                    content,
-                    challengeId,
-                    translationId,
-                  });
-                }}
+                onClick={onHandleModify}
               >
                 수정하기
               </Button>
@@ -196,34 +165,34 @@ export default function PatchCard () {
           isOpen={modal === 'drafted'}
           onClose={() => setModal('none')}
           onConfirm={() => {
-            setModal('none')
+            setModal('none');
             setIsDrafted(false);
           }}
         >
           임시저장 되었습니다!
         </Confirm>
         <Confirm
-          isOpen={modal==="error"}
-          onClose={() => setModal("none")}
+          isOpen={modal === 'error'}
+          onClose={() => setModal('none')}
           onConfirm={() => {
-            setModal("none");
+            setModal('none');
           }}
         >
           {errorMessage}
         </Confirm>
         <ConfirmCancel
-          isOpen={modal==="forgive"}
-          onClose={() => setModal("none")}
+          isOpen={modal === 'forgive'}
+          onClose={() => setModal('none')}
           onConfirm={() => {
-            setModal("none")
+            setModal('none');
             router.push(`/main/translation/${translationId}`);
           }}
-          onCancel={() => setModal("none")}
+          onCancel={() => setModal('none')}
         >
           정말 작업을 포기하시겠어요?
         </ConfirmCancel>
         <Navigate
-          isOpen={modal === "success"}
+          isOpen={modal === 'success'}
           onClose={() => {}}
           navigateUrl={`/main/translation/${translationId}`}
           text="작업물 보기"
@@ -255,8 +224,8 @@ export default function PatchCard () {
                 category={ButtonCategory.YES}
                 size={'py-1 flex'}
                 onClick={() => {
-                  setTitle(draftData?.data.data.title);
-                  setContent(draftData?.data.data.content);
+                  setTitle(draftData?.title || '');
+                  setContent(draftData?.content || null);
                   setIsDrafted(false);
                 }}
               >

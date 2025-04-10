@@ -23,7 +23,10 @@ export default function AdminChallengeDetail({ id }: Props) {
       <Nav data={info} />
       <Status data={info} />
       <MiniCard data={info} />
-      <OriginView originUrl={info.originURL} width="100%"></OriginView>
+      <OriginView
+        originUrl={info.challenge.originURL}
+        width="100%"
+      ></OriginView>
       <StatusBottom data={info} />
     </div>
   );

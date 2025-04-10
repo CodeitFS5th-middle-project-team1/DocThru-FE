@@ -8,7 +8,7 @@ import { UseMutateAsyncFunction } from '@tanstack/react-query';
 import { useState } from 'react';
 
 interface FeedBackProps {
-  feedBack: Feedback[] | [];
+  feedBack: Feedback[] | undefined;
   createFeedBack: UseMutateAsyncFunction<
     FetchFeedBackResponse,
     unknown,

@@ -1,5 +1,4 @@
 'use client';
-
 import { Card } from '@/shared/components/card/Card';
 import Search from '@/shared/components/input/search';
 import { useEffect, useState } from 'react';
@@ -18,7 +17,7 @@ const ChallengeMain = () => {
     status: '',
   });
 
-  const { data, isPending } = useToastQuery(
+  const { data } = useToastQuery(
     ['challenges', page, limit, keyword, filters],
     () =>
       fetchChallenges({

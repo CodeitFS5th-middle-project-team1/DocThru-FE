@@ -23,7 +23,7 @@ const NewChallenge: NextPage = () => {
     };
     try {
       await mutateAsync(formattedData);
-    } catch (error: any) {
+    } catch {
       toast.error('입력 오류입니다.', {
         style: {
           whiteSpace: 'pre-wrap',

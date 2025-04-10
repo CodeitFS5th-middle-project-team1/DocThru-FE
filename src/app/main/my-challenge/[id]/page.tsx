@@ -1,11 +1,8 @@
+'use client';
+import { useParams } from 'next/navigation';
 import ClientChallengeDetail from './components/index';
 
-interface Params {
-  params: {
-    id: string;
-  };
-}
-
-export default function Page({ params }: Params) {
-  return <ClientChallengeDetail id={params.id} />;
+export default function Page() {
+  const { id } = useParams() as { id: string };
+  return <ClientChallengeDetail id={id} />;
 }

@@ -10,7 +10,7 @@ import { useToastMutation } from '@/shared/hooks/useToastMutation';
 import { useQueryClient } from '@tanstack/react-query';
 
 export const useGetFeedBackList = (id: string) => {
-  return useToastQuery<FetchFeedBackResponse, unknown, any>(
+  return useToastQuery<FetchFeedBackResponse, unknown>(
     ['FeedBackList', id],
     () => fetchFeedBack(id),
     'FeedBackList-toast'
@@ -43,9 +43,9 @@ export const usePatchFeedBack = (translationId: string) => {
     },
     {
       onSuccess: () => {
-        // queryClient.invalidateQueries({
-        // queryKey: ['FeedBackList', translationId],
-        // });
+        queryClient.invalidateQueries({
+          queryKey: ['FeedBackList', translationId],
+        });
       },
     },
     'Patcjfeedback-toast'

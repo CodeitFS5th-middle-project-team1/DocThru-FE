@@ -34,11 +34,11 @@ export interface CardData {
 export interface CardProps {
   data: CardData;
   status?: 'participating' | 'completed' | 'applied';
-  href?: string;
+
   onClick?: () => void;
 }
 
-export const Card = ({ data, href, status, onClick }: CardProps) => {
+export const Card = ({ data, status, onClick }: CardProps) => {
   const { user } = useAuthStore();
   const router = useRouter();
 
@@ -50,6 +50,7 @@ export const Card = ({ data, href, status, onClick }: CardProps) => {
 
   const handleClick = () => {
     if (onClick) return onClick();
+    localStorage.setItem('challengeId', data.id);
     router.push(`${PATH.challenge}/${data.id}`);
   };
 
@@ -63,7 +64,7 @@ export const Card = ({ data, href, status, onClick }: CardProps) => {
         await deleteChallenge(data.id);
       }
       router.refresh();
-    } catch (error) {
+    } catch {
       toast.error('삭제 중 오류가 발생했습니다.');
     }
   };

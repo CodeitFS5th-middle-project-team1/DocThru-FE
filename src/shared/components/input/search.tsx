@@ -28,7 +28,7 @@ const Search: FC<SearchInputProps> = ({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [value]);
+  }, [value, onSearch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);

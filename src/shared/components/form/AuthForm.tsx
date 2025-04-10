@@ -9,20 +9,19 @@ import Text from '../input/text';
 import Link from 'next/link';
 import { useFormContext, SubmitHandler } from 'react-hook-form';
 
-interface AuthFormData {
+export interface AuthFormData {
   email: string;
   password: string;
   passwordConfirm?: string;
-  nickName?: string;
+  nickName: string;
 }
 
 interface AuthFormProps {
   category: 'login' | 'signup';
   onSubmit: SubmitHandler<AuthFormData>;
-  isPending?: boolean;
 }
 
-const AuthForm = ({ category, onSubmit, isPending }: AuthFormProps) => {
+const AuthForm = ({ category, onSubmit }: AuthFormProps) => {
   const {
     register,
     handleSubmit,

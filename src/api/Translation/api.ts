@@ -11,7 +11,20 @@ export interface FetchTranslationResponse {
   totalCount: number;
   message: string;
 }
-
+export interface DraftResponse {
+  id: string;
+  title: string;
+  content: string;
+  userId: string;
+  challengeId: string;
+  createdAt: string;
+  updatedAt: string;
+  message: string;
+}
+export interface DraftRequest {
+  title: string;
+  content: string | null;
+}
 export const fetchTranslation = async (
   id: string,
   params?: FetchTranslationParams
@@ -30,4 +43,45 @@ export const fetchTranslationById = async (
     `/challenges/${challengeId}/translations/${id}`
   );
   return res.data;
+};
+
+export const createTranslation = async (
+  data: DraftRequest
+): Promise<Translation> => {
+  const challengeId = localStorage.getItem('challengeId');
+  const response = await docThro.post(
+    `/challenges/${challengeId}/translations`,
+    { data }
+  );
+  return response.data;
+};
+
+export const patchTranslation = async (
+  id: string,
+  data: DraftRequest
+): Promise<Translation> => {
+  const challengeId = localStorage.getItem('challengeId');
+
+  const res = await docThro.patch(
+    `/challenges/${challengeId}/translations/${id}`,
+    { data }
+  );
+  return res.data;
+};
+
+export const createDraft = async (
+  id: string,
+  title: string,
+  content: string | null
+): Promise<DraftResponse> => {
+  const res = await docThro.post(`/challenges/${id}/drafts`, {
+    title,
+    content,
+  });
+  return res.data;
+};
+
+export const getDraftTranslation = async (id: string): Promise<Translation> => {
+  const response = await docThro.get(`/challenges/${id}/drafts`);
+  return response.data.data;
 };

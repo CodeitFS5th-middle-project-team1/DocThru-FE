@@ -26,7 +26,7 @@ export const Reply: React.FC<ReplyProps> = ({
 
   const createdAt = dayjs(create).format('YY/MM/DD hh:mm');
 
-  const onHandleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onHandleCancel = () => {
     setFeedback(content);
     setIsOpen(false);
   };
