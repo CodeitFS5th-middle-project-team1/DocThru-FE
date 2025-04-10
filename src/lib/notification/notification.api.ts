@@ -37,8 +37,6 @@ export async function createNotification(
   });
 
   if (!res.ok) {
-    const errorText = await res.text();
-    //  console.error('알림 생성 실패:', errorText);
     throw new Error('Failed to create notification');
   }
 
