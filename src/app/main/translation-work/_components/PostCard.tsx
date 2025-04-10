@@ -46,7 +46,7 @@ export default function PostCard() {
     const axiosError = error as AxiosError<ErrorResponse>;
     console.log(error)
     const data = axiosError.response?.data;
-    let message = '알 수 없는 에러가 발생했어요.';
+    let message = '알 수 없는 이유로 제출하지 못했습니다.';
     if (data && typeof data.message === 'string') {
       // message가 그냥 string일 경우
       message = data.message;
@@ -66,10 +66,10 @@ export default function PostCard() {
       // title, content 필드 오류 처리
       if (messageObj.fieldErrors) {
         const fieldErrors = messageObj.fieldErrors;
-        if (fieldErrors.title?.includes('Required')) {
+        if (fieldErrors.title) {
           message = '제목은 필수 입력 사항입니다.';
         }
-        if (fieldErrors.content?.includes('Required')) {
+        if (fieldErrors.content) {
           message = '내용은 필수 입력 사항입니다.';
         }
       }
@@ -92,11 +92,11 @@ export default function PostCard() {
   useEffect(() => {
     const cid = searchParams.get('challengeId');
     if (!cid || cid.trim() === '') {
-      router.replace('/not-found');
+      router.replace('/main/challenge');
     } else {
       setChallengeId(cid);
     }
-  }, [router]);
+  }, [searchParams, router]);
 
   useEffect(() => {
     if (draftStatus === 'success') {

@@ -8,17 +8,18 @@ import ConfirmCancel from '@/shared/components/modal/confirmCancel';
 import Navigate from '@/shared/components/modal/navigate';
 import Editor from '../_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { AxiosError } from 'axios';
-import { ErrorResponse, Modal } from '@/types';
+import { ErrorMessage, ErrorResponse, Modal, Translation } from '@/types';
 import Button, { ButtonCategory } from '@/shared/components/button/Button';
 import { useUnloadWarning } from '@/shared/hooks/useUnloadWarning';
 import {
   useCreateDraft,
   useGetDraftTranslation,
   useGetTranslation,
-  usePatchTranslation,
 } from '@/api/Translation/hook';
+import { useMutation } from '@tanstack/react-query';
+import { DraftRequest, patchTranslation } from '@/api/Translation/api';
 
 export default function PatchCard() {
   const [title, setTitle] = useState('');
@@ -28,48 +29,75 @@ export default function PatchCard() {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [challengeId, setChallengeId] = useState<string>('');
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const searchParams = useSearchParams();
   const router = useRouter();
   const params = useParams();
   const translationId = params.id as string;
 
   const { mutate: createDraftMutation } = useCreateDraft(translationId);
-  const { mutate: modifyTranslationMutation, status: modifyStatus } =
-    usePatchTranslation(translationId);
   const { data: draftData, status: draftStatus } =
     useGetDraftTranslation(challengeId);
   const { data: TranslationData } = useGetTranslation(translationId);
-
-  const onHandleModify = (error: unknown) => {
-    const data = { title, content };
-    modifyTranslationMutation(data);
-    if (modifyStatus === 'success') {
-      setModal('success');
-      return;
-    }
-    if (modifyStatus === 'error') {
-      const axiosError = error as AxiosError<ErrorResponse>;
+  const modifyTranslationMutation = useMutation<
+  Translation, // 성공 시 반환 타입
+  AxiosError<ErrorResponse>, // 에러 타입
+  DraftRequest // 요청 데이터 타입
+>({
+  mutationFn: (data: DraftRequest) => patchTranslation(translationId, data, challengeId),
+  onSuccess: () => {
+    setModal('success');
+  },
+  onError: (error) => {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    console.log(error)
+    const data = axiosError.response?.data;
+    let message = '알 수 없는 이유로 제출하지 못했습니다.';
+    if (data && typeof data.message === 'string') {
+      // message가 그냥 string일 경우
+      message = data.message;
+    } else if (
+      data &&
+      typeof data.message === 'object' &&
+      data.message !== null
+    ) {
+      const messageObj = data.message as ErrorMessage;
+      // formErrors가 있는 경우
       if (
-        axiosError.response?.status === 500 ||
-        axiosError.response?.status === 404
+        Array.isArray(messageObj.formErrors) &&
+        messageObj.formErrors.length > 0
       ) {
-        setErrorMessage('서버 요청 에러 발생!');
-        setModal('error');
-      } else {
-        setErrorMessage(
-          '제목은 최소 1자 이상 최대 50자 이하로 입력해주세요.\n내용은 1000자 이하로 입력해주세요.'
-        );
-        setModal('error');
+        message = messageObj.formErrors.join('\n');
+      }
+      // title, content 필드 오류 처리
+      if (messageObj.fieldErrors) {
+        const fieldErrors = messageObj.fieldErrors;
+        if (fieldErrors.title) {
+          message = '제목은 필수 입력 사항입니다.';
+        }
+        if (fieldErrors.content) {
+          message = '내용은 필수 입력 사항입니다.';
+        }
       }
     }
+    setErrorMessage(message);
+    setModal('error');
+  },
+});
+
+  const onHandleModify = () => {
+    const data = { title, content };  // { title, content } 객체 생성
+    modifyTranslationMutation.mutate(data);  // data를 전달
   };
 
   // 로컬 스토리지에서 저장되어 있는 Challenge Id를 불러옵니다.
   useEffect(() => {
-    const cid = localStorage.getItem('challengeId') as string;
-    if (!cid) router.replace('/not-found');
-    else setChallengeId(cid);
-  }, [router]);
+    const cid = searchParams.get('challengeId');
+    if (!cid || cid.trim() === '') {
+      router.replace('/main/challenge');
+    } else {
+      setChallengeId(cid);
+    }
+  }, [searchParams, router]);
 
   useEffect(() => {
     if (

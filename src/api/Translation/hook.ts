@@ -1,7 +1,7 @@
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import {
   createDraft,
-  createTranslation,
+
   DraftRequest,
   DraftResponse,
   fetchTranslation,
@@ -9,7 +9,7 @@ import {
   FetchTranslationParams,
   FetchTranslationResponse,
   getDraftTranslation,
-  patchTranslation,
+  // patchTranslation,
 } from './api';
 import { Translation } from '@/types';
 import { useQueries } from '@tanstack/react-query';
@@ -78,23 +78,23 @@ export const useGetTranslationsByIds = (ids?: string[]) => {
 //     'create-translation'
 //   );
 // };
-export const usePatchTranslation = (id: string) => {
-  return useToastMutation<DraftRequest, unknown>(
-    (data) => patchTranslation(id, data),
-    {
-      pending: '수정 중입니다...',
-      success: '수정 성공!',
-      error: '수정 실패 😢',
-    },
-    {
-      onSuccess: () => {
-        console.log('성공');
-      },
-      onError: () => {},
-    },
-    'patch-translation'
-  );
-};
+// export const usePatchTranslation = (id: string) => {
+//   return useToastMutation<DraftRequest, unknown>(
+//     (data) => patchTranslation(id, data),
+//     {
+//       pending: '수정 중입니다...',
+//       success: '수정 성공!',
+//       error: '수정 실패 😢',
+//     },
+//     {
+//       onSuccess: () => {
+//         console.log('성공');
+//       },
+//       onError: () => {},
+//     },
+//     'patch-translation'
+//   );
+// };
 
 export const useCreateDraft = (id: string) => {
   return useToastMutation<DraftRequest, DraftResponse>(
