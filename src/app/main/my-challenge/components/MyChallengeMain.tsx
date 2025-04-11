@@ -14,7 +14,7 @@ import {
 } from '@/api/challenge/ChallengeApi';
 import { Sort } from '@/shared/components/dropdown/Sort';
 import { ApprovalStatus, ApprovalStatusLabels } from '@/types';
-import { ChallengeOrderBy } from '@/lib/api/admin';
+import { ChallengeOrderBy } from '@/api/admin/admin';
 import { Card } from '@/shared/components/card/Card';
 
 const TAB_LIST = [

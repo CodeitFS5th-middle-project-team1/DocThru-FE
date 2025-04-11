@@ -1,6 +1,6 @@
 import { Chip } from '@/shared/components/chip/chip';
 import { ApprovalStatusLabels } from '@/types';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface ChallengeTableProps {
   data: {
@@ -11,10 +11,11 @@ interface ChallengeTableProps {
     people: number;
     createdAt: string;
     deadline: string;
-    status: string; // ApprovalStatusLabels 값 중
+    status: string;
     id: string;
   }[];
 }
+
 export const formatDate = (dateString: string) => {
   if (!dateString) return 'N/A';
 
@@ -22,9 +23,8 @@ export const formatDate = (dateString: string) => {
   const cleaned = dateString.trim().replace(/\s+/g, '').replace(/\.$/, '');
   return cleaned.replace(/\./g, '/');
 };
-const ChallengeTable = ({ data }: ChallengeTableProps) => {
-  const router = useRouter();
 
+const ChallengeTable = ({ data }: ChallengeTableProps) => {
   return (
     <div className="overflow-x-auto relative shadow-md">
       {/*  헤더 */}
@@ -48,8 +48,7 @@ const ChallengeTable = ({ data }: ChallengeTableProps) => {
           {data.map((row, index) => (
             <tr
               key={index}
-              onClick={() => router.push(`/main/challenge/${row.id}`)}
-              className={`grid grid-cols-[0.8fr_1.3fr_1.7fr_0fr_3.5fr_0.2fr_1fr_0.2fr_1.3fr_1.3fr_1.5fr] gap-1 text-[13px] px-3 py-4 border-b border-gray-300 text-gray-400 cursor-pointer hover:text-gray-800 hover:bg-indigo-50 transition-colors duration-200 ${
+              className={`group grid grid-cols-[0.8fr_1.3fr_1.7fr_0fr_3.5fr_0.2fr_1fr_0.2fr_1.3fr_1.3fr_1.5fr] gap-1 text-[13px] px-3 py-4 border-b border-gray-300 text-gray-400 hover:bg-indigo-50 transition-colors duration-200 ${
                 row.status === ApprovalStatusLabels.DELETED
                   ? 'bg-[#F5f5f5]'
                   : 'bg-white'
@@ -59,7 +58,14 @@ const ChallengeTable = ({ data }: ChallengeTableProps) => {
               <td>{row.type}</td>
               <td>{row.category}</td>
               <td></td>
-              <td className="truncate">{row.title}</td>
+              <td className="truncate cursor-pointer">
+                <Link
+                  href={`/admin/challenges/${row.id}`}
+                  className="block w-full h-full text-gray-400 group-hover:text-gray-800"
+                >
+                  {row.title}
+                </Link>
+              </td>
               <td></td>
               <td className="text-center">{row.people}</td>
               <td></td>
