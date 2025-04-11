@@ -12,3 +12,14 @@ dayjs.extend(localeData);
 dayjs.locale('ko');
 
 export default dayjs;
+
+export const debounce = (func: (...args: unknown[]) => void, delay: number) => {
+  let timeout: NodeJS.Timeout;
+
+  return (...args: unknown[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};

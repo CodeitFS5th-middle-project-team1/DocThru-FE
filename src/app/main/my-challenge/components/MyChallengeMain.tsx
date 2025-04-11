@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import { Tab, TabActive, TextPosition } from '@/shared/components/tab/Tab';
-import ChallengeTable from './ChallengeTable';
 import { Challenge } from '@/types';
 import {
   fetchChallengeByParticipating,
@@ -17,6 +16,7 @@ import { ChallengeOrderBy } from '@/api/admin/admin';
 import { Card } from '@/shared/components/card/Card';
 import { useSearchParams } from 'next/navigation';
 import CardSkeleton from '@/shared/components/card/CardSkeleton';
+import ChallengeTable from './ChallengeTable';
 
 const TAB_LIST = [
   { key: 'participating', label: '참여중인 챌린지' },
@@ -230,6 +230,8 @@ const MyChallengeMain = () => {
               지금 바로 챌린지를 신청해보세요!
             </p>
           </div>
+        ) : activeTab === 'applied' ? (
+          <ChallengeTable data={tableData} />
         ) : (
           challenges.map((challenge) => (
             <Card
