@@ -116,7 +116,7 @@ export const Card = ({ data, status, onClick }: CardProps) => {
           </p>
           <Image src={personIcon} alt="person Icon" width={16} height={16} />
           <p className="text-sm font-normal text-custom-gray-600">
-            {data.currentParticipants}/{data.maxParticipants}
+            {data.currentParticipants}/{data.maxParticipants} 참여중
           </p>
         </div>
 
