@@ -19,9 +19,10 @@ export interface AuthFormData {
 interface AuthFormProps {
   category: 'login' | 'signup';
   onSubmit: SubmitHandler<AuthFormData>;
+  isPending?: boolean;
 }
 
-const AuthForm = ({ category, onSubmit }: AuthFormProps) => {
+const AuthForm = ({ category, onSubmit, isPending }: AuthFormProps) => {
   const {
     register,
     handleSubmit,
@@ -97,7 +98,12 @@ const AuthForm = ({ category, onSubmit }: AuthFormProps) => {
         )}
 
         <section>
-          <Button type="submit" category={ButtonCategory.Auth} size="py-3.5">
+          <Button
+            type="submit"
+            category={isPending ? ButtonCategory.DISABLE : ButtonCategory.Auth}
+            size="py-3.5"
+            disabled={isPending}
+          >
             {category === 'login' ? '로그인' : '회원가입'}
           </Button>
         </section>

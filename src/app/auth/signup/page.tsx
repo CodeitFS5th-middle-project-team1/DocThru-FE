@@ -9,10 +9,10 @@ type SignUpFormData = Required<
 >;
 const SignUp: NextPage = () => {
   const methods = useForm<SignUpFormData>();
-  const sign = useSignup();
+  const { mutate, isPending } = useSignup();
 
   const handleSubmit: SubmitHandler<SignUpFormData> = async (data) => {
-    sign.mutate({
+    mutate({
       email: data.email,
       nickName: data.nickName,
       password: data.password,
@@ -22,7 +22,11 @@ const SignUp: NextPage = () => {
   return (
     <>
       <FormProvider {...methods}>
-        <AuthForm category="signup" onSubmit={handleSubmit} />
+        <AuthForm
+          category="signup"
+          onSubmit={handleSubmit}
+          isPending={isPending}
+        />
       </FormProvider>
     </>
   );

@@ -6,14 +6,17 @@ import ChallengeForm, {
 } from '@/shared/components/form/ChallengeForm';
 import { DocumentType, FieldType } from '@/types';
 import { NextPage } from 'next';
+import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 const NewChallenge: NextPage = () => {
   const methods = useForm();
-  const { mutateAsync } = useCreateChallenge();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { mutateAsync, isPending } = useCreateChallenge();
 
   const handleSubmit = async (data: ChallengeFormData) => {
+    setIsProcessing(true);
     const formattedData = {
       ...data,
       deadline: new Date(data.deadline),
@@ -30,13 +33,18 @@ const NewChallenge: NextPage = () => {
           wordBreak: 'break-word',
         },
       });
+      setIsProcessing(false);
     }
   };
 
   return (
     <>
       <FormProvider {...methods}>
-        <ChallengeForm category="create" onSubmit={handleSubmit} />
+        <ChallengeForm
+          category="create"
+          onSubmit={handleSubmit}
+          isPending={isPending || isProcessing}
+        />
       </FormProvider>
     </>
   );

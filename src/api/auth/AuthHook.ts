@@ -7,6 +7,7 @@ import { PATH } from '@/constants';
 
 export const useLogin = () => {
   const { setAuth } = useAuthStore();
+  const router = useRouter();
 
   return useToastMutation(
     loginFn,
@@ -18,9 +19,9 @@ export const useLogin = () => {
       onSuccess: ({ user }) => {
         setAuth(user);
         if (user.role === 'ADMIN') {
-          window.location.href = PATH.admin;
+          router.replace(PATH.admin);
         } else {
-          window.location.href = PATH.challenge;
+          router.replace(PATH.challenge);
         }
       },
     },
@@ -30,6 +31,7 @@ export const useLogin = () => {
 
 export const useLogout = () => {
   const { clearAuth } = useAuthStore();
+  const router = useRouter();
 
   return async () => {
     try {
@@ -39,7 +41,7 @@ export const useLogout = () => {
         'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       toast.success('로그아웃 되었습니다!');
       setTimeout(() => {
-        window.location.href = '/auth/login';
+        router.replace('/auth/login');
       }, 300);
     } catch (err) {
       console.error('❌ 로그아웃 요청 실패:', err);
