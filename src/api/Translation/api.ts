@@ -1,5 +1,6 @@
 import { Translation } from '@/types';
-import { docThro } from '../url';
+import { customFetch } from '../url';
+import { getQueryString } from '@/lib/utill';
 
 export interface FetchTranslationParams {
   page?: number;
@@ -11,6 +12,7 @@ export interface FetchTranslationResponse {
   totalCount: number;
   message: string;
 }
+
 export interface DraftResponse {
   id: string;
   title: string;
@@ -21,53 +23,60 @@ export interface DraftResponse {
   updatedAt: string;
   message: string;
 }
+
 export interface DraftRequest {
   title: string;
   content: string | null;
 }
+
 export const fetchTranslation = async (
   id: string,
   params?: FetchTranslationParams
 ): Promise<FetchTranslationResponse> => {
-  const res = await docThro.get(`/challenges/${id}/translations`, {
-    params: { page: params?.page, limit: params?.limit },
-  });
-  return res.data;
+  const query = getQueryString({ page: params?.page, limit: params?.limit });
+  const res = await customFetch(`/challenges/${id}/translations${query}`);
+  return res.json();
 };
 
 export const fetchTranslationById = async (
   id: string
 ): Promise<Translation> => {
   const challengeId = localStorage.getItem('challengeId');
-  const res = await docThro.get(
+  const res = await customFetch(
     `/challenges/${challengeId}/translations/${id}`
   );
-  return res.data;
+  return res.json();
 };
 
 export const createTranslation = async (
   data: DraftRequest,
-  challengeId: string,
+  challengeId: string
 ): Promise<Translation> => {
-  const response = await docThro.post(
+  const response = await customFetch(
     `/challenges/${challengeId}/translations`,
-    { title: data.title, content: data.content }
+    {
+      method: 'POST',
+      body: JSON.stringify({ title: data.title, content: data.content }),
+      headers: { 'Content-Type': 'application/json' },
+    }
   );
-  console.log('API Response:', response.data); // 응답 로그 출력
-  return response.data;
+  return response.json();
 };
 
 export const patchTranslation = async (
   id: string,
   data: DraftRequest,
-  challengeId: string,
+  challengeId: string
 ): Promise<Translation> => {
-
-  const res = await docThro.patch(
+  const res = await customFetch(
     `/challenges/${challengeId}/translations/${id}`,
-    { title: data.title, content: data.content }
+    {
+      method: 'PATCH',
+      body: JSON.stringify({ title: data.title, content: data.content }),
+      headers: { 'Content-Type': 'application/json' },
+    }
   );
-  return res.data;
+  return res.json();
 };
 
 export const createDraft = async (
@@ -75,14 +84,16 @@ export const createDraft = async (
   title: string,
   content: string | null
 ): Promise<DraftResponse> => {
-  const res = await docThro.post(`/challenges/${id}/drafts`, {
-    title,
-    content,
+  const res = await customFetch(`/challenges/${id}/drafts`, {
+    method: 'POST',
+    body: JSON.stringify({ title, content }),
+    headers: { 'Content-Type': 'application/json' },
   });
-  return res.data;
+  return res.json();
 };
 
 export const getDraftTranslation = async (id: string): Promise<Translation> => {
-  const response = await docThro.get(`/challenges/${id}/drafts`);
-  return response.data.data;
+  const response = await customFetch(`/challenges/${id}/drafts`);
+  const data = await response.json();
+  return data.data;
 };
