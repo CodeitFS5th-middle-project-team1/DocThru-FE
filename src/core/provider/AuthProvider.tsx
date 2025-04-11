@@ -37,6 +37,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const isAdminPage = pathname.startsWith('/admin');
 
+    if (!isLoggedIn && !isPublic) {
+      router.replace(PATH.login);
+    }
+
     if (isLoggedIn && isPublic && isAuthPage && isHome) {
       router.replace(PATH.challenge);
     }

@@ -7,10 +7,10 @@ import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 type LoginFormData = Required<Pick<AuthFormData, 'email' | 'password'>>;
 const Login: NextPage = () => {
   const methods = useForm<LoginFormData>();
-  const login = useLogin();
+  const { mutate, isPending } = useLogin();
 
   const handleSubmit: SubmitHandler<LoginFormData> = async (data) => {
-    login.mutate({
+    mutate({
       email: data.email,
       password: data.password,
     });
@@ -19,7 +19,11 @@ const Login: NextPage = () => {
   return (
     <>
       <FormProvider {...methods}>
-        <AuthForm category="login" onSubmit={handleSubmit} />
+        <AuthForm
+          category="login"
+          onSubmit={handleSubmit}
+          isPending={isPending}
+        />
       </FormProvider>
     </>
   );

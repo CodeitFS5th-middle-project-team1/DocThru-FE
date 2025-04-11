@@ -13,7 +13,18 @@ dayjs.locale('ko');
 
 export default dayjs;
 
+export const debounce = (func: (...args: unknown[]) => void, delay: number) => {
+  let timeout: NodeJS.Timeout;
+
+  return (...args: unknown[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+
 export const getQueryString = (params: Record<string, any>) => {
   const query = new URLSearchParams(params).toString();
   return query ? `?${query}` : '';
+
 };

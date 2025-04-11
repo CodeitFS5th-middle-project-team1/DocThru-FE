@@ -36,7 +36,11 @@ export const FieldTypeLabel: Record<FieldType, string> = {
   [FieldType.CAREER]: 'Career',
 };
 
-const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
+const ChallengeForm = ({
+  category,
+  onSubmit,
+  isPending,
+}: ChallengeFormProps) => {
   const {
     register,
     handleSubmit,
@@ -176,7 +180,12 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
         ></Text>
       </section>
 
-      <Button type="submit" category={ButtonCategory.EDIT} size="py-3.5">
+      <Button
+        type="submit"
+        category={isPending ? ButtonCategory.DISABLE : ButtonCategory.EDIT}
+        size="py-3.5"
+        disabled={isPending}
+      >
         {category === 'edit' ? '수정하기' : '신청하기'}
       </Button>
     </form>

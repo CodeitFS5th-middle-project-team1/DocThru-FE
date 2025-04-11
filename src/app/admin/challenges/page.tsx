@@ -9,6 +9,7 @@ import { Sort } from '@/shared/components/dropdown/Sort';
 import { useQuery } from '@tanstack/react-query';
 import { ChallengeOrderBy, fetchChallengesByAdmin } from '@/api/admin/admin';
 import { ApprovalStatus, ApprovalStatusLabels } from '@/types';
+import { useSearchParams } from 'next/navigation';
 interface ChallengeApiResponse {
   id: string;
   idx: number;
@@ -27,8 +28,11 @@ type Params =
 const AdminChallenge: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortValue, setSortValue] = useState('option1');
-  const [page, setPage] = useState(1);
   const [limit] = useState(10);
+
+  const searchParams = useSearchParams();
+  const initialPage = Number(searchParams.get('page')) || 1;
+  const [page, setPage] = useState(initialPage);
 
   const getParamsFromSortValue = (value: string): Params => {
     const mapping: Record<string, Params> = {

@@ -1,12 +1,10 @@
 'use client';
 
-//import { Card } from '@/shared/components/card/Card';
 import Search from '@/shared/components/input/search';
 import { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import { Tab, TabActive, TextPosition } from '@/shared/components/tab/Tab';
-import ChallengeTable from './ChallengeTable';
 import { Challenge } from '@/types';
 import {
   fetchChallengeByParticipating,
@@ -16,6 +14,9 @@ import { Sort } from '@/shared/components/dropdown/Sort';
 import { ApprovalStatus, ApprovalStatusLabels } from '@/types';
 import { ChallengeOrderBy } from '@/api/admin/admin';
 import { Card } from '@/shared/components/card/Card';
+import { useSearchParams } from 'next/navigation';
+import CardSkeleton from '@/shared/components/card/CardSkeleton';
+import ChallengeTable from './ChallengeTable';
 
 const TAB_LIST = [
   { key: 'participating', label: '참여중인 챌린지' },
@@ -36,11 +37,16 @@ type Params = {
 };
 
 const MyChallengeMain = () => {
-  const [page, setPage] = useState(1);
   const [limit] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
   const [keyword, setKeyword] = useState('');
   const [activeTab, setActiveTab] = useState<TabKey>('participating');
   const [sortValue, setSortValue] = useState('option1');
+
+  const searchParams = useSearchParams();
+  const initialPage = Number(searchParams.get('page')) || 1;
+  const [page, setPage] = useState(initialPage);
+
   const getParamsFromSortValue = (value: string): Params => {
     const mapping: Record<string, Params> = {
       option1: { approvalStatus: 'PENDING' },
@@ -55,7 +61,7 @@ const MyChallengeMain = () => {
   };
   const { approvalStatus, orderBy } = getParamsFromSortValue(sortValue);
 
-  const { data } = useToastQuery(
+  const { data, isPending } = useToastQuery(
     ['my-challenges', page, limit, keyword, activeTab, sortValue],
     () => {
       if (activeTab === 'applied') {
@@ -84,11 +90,20 @@ const MyChallengeMain = () => {
     {
       pending: '불러오는 중...',
       success: '불러오기 완료!',
+    },
+    {
+      keepPreviousData: true,
     }
   );
 
   const challenges = data?.challenges ?? [];
-  const totalPages = Math.ceil((data?.totalCount ?? 1) / limit);
+
+  const handleSearch = (e: string) => {
+    if (keyword !== e) {
+      setKeyword(e);
+      if (page !== 1) setPage(1);
+    }
+  };
 
   const getStatusLabel = (status: string): string => {
     if (Object.values(ApprovalStatus).includes(status as ApprovalStatus)) {
@@ -132,7 +147,16 @@ const MyChallengeMain = () => {
           id: challenge.id,
         }))
       : [];
-  console.table(tableData);
+
+  useEffect(() => {
+    if (data?.totalCount !== undefined) {
+      const nextTotalPages = Math.ceil(data.totalCount / limit);
+      if (nextTotalPages !== totalPages) {
+        setTotalPages(nextTotalPages);
+      }
+    }
+  }, [data?.totalCount, limit, totalPages]);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page]);
@@ -162,10 +186,7 @@ const MyChallengeMain = () => {
               <Search
                 name={'text'}
                 placeholder="챌린지 이름을 검색해보세요"
-                onSearch={(e) => {
-                  setKeyword(e);
-                  setPage(1);
-                }}
+                onSearch={handleSearch}
                 size="w-full"
               />
             </>
@@ -175,10 +196,7 @@ const MyChallengeMain = () => {
                 <Search
                   name={'text'}
                   placeholder="챌린지 이름을 검색해보세요"
-                  onSearch={(e) => {
-                    setKeyword(e);
-                    setPage(1);
-                  }}
+                  onSearch={handleSearch}
                   size="w-full"
                 />
               </div>
@@ -200,7 +218,11 @@ const MyChallengeMain = () => {
       </section>
 
       <section className="flex flex-col gap-6 w-full">
-        {challenges.length === 0 ? (
+        {isPending ? (
+          Array.from({ length: 5 }).map((_, index) => (
+            <CardSkeleton key={index} />
+          ))
+        ) : challenges.length === 0 ? (
           <div className="flex h-screen justify-center items-center">
             <p className="text-center text-gray-500">
               아직 챌린지가 없어요.
@@ -211,21 +233,18 @@ const MyChallengeMain = () => {
         ) : activeTab === 'applied' ? (
           <ChallengeTable data={tableData} />
         ) : (
-          <>
-            {challenges.map((challenge) => (
-              <Card
-                key={challenge.id}
-                data={{
-                  ...challenge,
-                  approvalStatus:
-                    challenge.approvalStatus === 'PENDING'
-                      ? 'PENDING'
-                      : challenge.approvalStatus,
-                }}
-                status={activeTab}
-              />
-            ))}
-          </>
+          challenges.map((challenge) => (
+            <Card
+              key={challenge.id}
+              data={{
+                ...challenge,
+                approvalStatus:
+                  challenge.approvalStatus === 'PENDING'
+                    ? 'PENDING'
+                    : challenge.approvalStatus,
+              }}
+            />
+          ))
         )}
       </section>
 

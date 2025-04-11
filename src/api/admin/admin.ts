@@ -37,7 +37,7 @@ export const fetchChallengesByAdmin = async (
   const { order, page = 1, limit = 10, approvalStatus, keyword } = params;
 
   const baseURL =
-    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5004/api';
+    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
   // URL 쿼리 파라미터
   const queryParams = new URLSearchParams();

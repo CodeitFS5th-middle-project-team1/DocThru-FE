@@ -1,6 +1,7 @@
-import { FC, useState, useEffect, useRef } from 'react';
+import { FC, useState, useMemo } from 'react';
 import Image from 'next/image';
 import search from '@images/search-icon/ic_search.svg';
+import { debounce } from '@/lib/utill';
 
 interface SearchInputProps {
   name: string;
@@ -16,28 +17,18 @@ const Search: FC<SearchInputProps> = ({
   size = 'w-86 md:w-147.5 h-12',
 }) => {
   const [value, setValue] = useState<string>('');
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    timeoutRef.current = setTimeout(() => {
-      onSearch(value);
-    }, 500);
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [value, onSearch]);
+  const debouncedSearch = useMemo(
+    () => debounce(onSearch as (...args: unknown[]) => void, 500),
+    [onSearch]
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
+    debouncedSearch(e.target.value);
   };
 
   const handleSearch = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
     onSearch(value);
   };
 
