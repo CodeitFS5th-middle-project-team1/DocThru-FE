@@ -160,6 +160,7 @@ const ChallengeForm = ({ category, onSubmit }: ChallengeFormProps) => {
       <section className="flex flex-col gap-2">
         <p className="text-sm text-custom-gray-900 font-medium ">내용</p>
         <Text
+          type="textarea"
           name="description"
           placeholder="내용을 입력해주세요"
           register={register}
