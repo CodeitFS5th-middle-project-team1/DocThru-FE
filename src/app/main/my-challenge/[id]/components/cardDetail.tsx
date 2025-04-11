@@ -4,8 +4,9 @@ import personIcon from '@images/person-icon/small.svg';
 import Image from 'next/image';
 import { ChallengeUser } from '@/types';
 import { Chip } from '@shared/components/chip/chip';
-import { JSX } from 'react';
-import { deleteChallenge } from '@/api/challenge/ChallengeApi';
+import { JSX, useState } from 'react';
+import ModalList from '@/shared/components/modal';
+import { useDeleteChallenge } from '@/api/challenge/ChallengeHooks';
 
 interface Props {
   data: ChallengeUser;
@@ -17,12 +18,17 @@ export const MiniCard = ({ data }: Props) => {
   const maxParticipant =
     challenge.maxParticipants === challenge.currentParticipants;
 
-  const handleCancelClick = async () => {
-    try {
-      await deleteChallenge(challenge.id);
-    } catch (error) {
-      console.error('실패:', error);
-    }
+  const { deleteMutation } = useDeleteChallenge(challenge.id);
+
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleCancelClick = () => {
+    setModalOpen(true);
+  };
+
+  const handleConfirmClick = () => {
+    deleteMutation.mutate();
+    setModalOpen(false);
   };
 
   const StatusCancel: Record<string, JSX.Element> = {
@@ -67,6 +73,15 @@ export const MiniCard = ({ data }: Props) => {
           {challenge.currentParticipants}/{challenge.maxParticipants}
         </p>
       </div>
+
+      <ModalList.ConfirmCancel
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onConfirm={handleConfirmClick}
+        onCancel={() => setModalOpen(false)}
+      >
+        <p className="text-center">정말로 챌린지를 취소하시겠습니까?</p>
+      </ModalList.ConfirmCancel>
     </div>
   );
 };

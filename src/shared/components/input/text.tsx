@@ -26,15 +26,15 @@ const Text = <T extends FieldValues>({
 }: TextInputProps<T>) => {
   return (
     <div>
-      {type ? (
-        <input
-          type={type}
+      {type === 'textarea' ? (
+        <textarea
           {...register(name, rules)}
           placeholder={placeholder}
           className={`leading-none resize-none p-[14px] border rounded-[6px] focus:outline-none focus:ring-2 focus:ring-custom-gray-200 ${size}`}
         />
       ) : (
-        <textarea
+        <input
+          type={type}
           {...register(name, rules)}
           placeholder={placeholder}
           className={`leading-none resize-none p-[14px] border rounded-[6px] focus:outline-none focus:ring-2 focus:ring-custom-gray-200 ${size}`}
