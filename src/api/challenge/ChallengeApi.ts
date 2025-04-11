@@ -102,6 +102,7 @@ export const editChallenge = async (id: string, data: ChallengeFormRequest) => {
 };
 
 export const deleteChallenge = async (id: string) => {
+  console.log('deleteChallenge', id);
   const res = await docThro.patch(`/challenges/${id}/remove`);
   return res.data;
 };

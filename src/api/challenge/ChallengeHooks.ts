@@ -10,6 +10,7 @@ import {
   fetchChallengeById,
   approveChallenge,
   rejectChallenge,
+  deleteChallenge,
 } from './ChallengeApi';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -101,4 +102,25 @@ export const useChallengeStatusMutation = (id: string) => {
   );
 
   return { approveMutation, rejectMutation };
+};
+
+export const useDeleteChallenge = (id: string) => {
+  const queryClient = useQueryClient();
+
+  const onSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ['my-challenge', id] });
+  };
+
+  const deleteMutation = useToastMutation<void, void>(
+    () => deleteChallenge(id),
+    {
+      success: '챌린지 삭제 성공!',
+    },
+    {
+      onSuccess,
+    },
+    'deleteChallenge-toast'
+  );
+
+  return { deleteMutation };
 };
