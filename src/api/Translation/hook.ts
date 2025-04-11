@@ -1,7 +1,7 @@
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import {
   createDraft,
-  createTranslation,
+
   DraftRequest,
   DraftResponse,
   fetchTranslation,
@@ -9,7 +9,7 @@ import {
   FetchTranslationParams,
   FetchTranslationResponse,
   getDraftTranslation,
-  patchTranslation,
+  // patchTranslation,
 } from './api';
 import { Translation } from '@/types';
 import { useQueries } from '@tanstack/react-query';
@@ -58,36 +58,43 @@ export const useGetTranslationsByIds = (ids?: string[]) => {
   return { data, isLoading, isError };
 };
 
-export const useCreateTranslation = () => {
-  return useToastMutation<DraftRequest, Translation, unknown>(
-    (data) => createTranslation(data),
-    {},
-    {
-      onSuccess: (data) => {
-        console.log('성공', data);
-      },
-      onError: () => {},
-    },
-    'create-translation'
-  );
-};
-export const usePatchTranslation = (id: string) => {
-  return useToastMutation<DraftRequest, unknown>(
-    (data) => patchTranslation(id, data),
-    {
-      pending: '수정 중입니다...',
-      success: '수정 성공!',
-      error: '수정 실패 😢',
-    },
-    {
-      onSuccess: () => {
-        console.log('성공');
-      },
-      onError: () => {},
-    },
-    'patch-translation'
-  );
-};
+// export const useCreateTranslation = () => {
+//   return useToastMutation<
+//     DraftRequest,
+//     Translation
+//   >(
+//     (data) => createTranslation(data),
+//     {
+//       pending: '작성 중입니다...',
+//       success: '작성 성공!',
+//       error: '작성 실패 😢',
+//     },
+//     {
+//       onSuccess: (data) => {
+//         console.log('성공', data);
+//         // 추가 작업 예시: setTranslationId(data.id); setModal('success');
+//       },
+//     },
+//     'create-translation'
+//   );
+// };
+// export const usePatchTranslation = (id: string) => {
+//   return useToastMutation<DraftRequest, unknown>(
+//     (data) => patchTranslation(id, data),
+//     {
+//       pending: '수정 중입니다...',
+//       success: '수정 성공!',
+//       error: '수정 실패 😢',
+//     },
+//     {
+//       onSuccess: () => {
+//         console.log('성공');
+//       },
+//       onError: () => {},
+//     },
+//     'patch-translation'
+//   );
+// };
 
 export const useCreateDraft = (id: string) => {
   return useToastMutation<DraftRequest, DraftResponse>(
