@@ -16,12 +16,16 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 export async function fetchNotifications(
   userId?: string
 ): Promise<Notification[]> {
+  const accessToken = localStorage.getItem('accessToken');
+
   const url = userId
-    ? `${BASE_URL}/notifications?userId=${userId}` // userId 있으면 쿼리로 붙임
-    : `${BASE_URL}/notifications`; // 없으면 기본 경로 사용
+    ? `${BASE_URL}/notifications?userId=${userId}`
+    : `${BASE_URL}/notifications`;
 
   const res = await fetch(url, {
-    cache: 'no-store',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
     credentials: 'include',
   });
 
@@ -30,8 +34,13 @@ export async function fetchNotifications(
 }
 
 export const deleteNotification = async (id: number) => {
+  const accessToken = localStorage.getItem('accessToken');
+
   const res = await fetch(`${BASE_URL}/notifications/${id}`, {
     method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
     credentials: 'include',
   });
 
