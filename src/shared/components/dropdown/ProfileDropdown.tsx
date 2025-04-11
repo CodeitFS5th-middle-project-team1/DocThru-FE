@@ -70,7 +70,7 @@ const ProfileDropdown = () => {
 
             <button
               onClick={logout}
-              className="text-sm text-gray-600 hover:text-black"
+              className="text-sm text-gray-600 hover:text-black cursor-pointer"
             >
               로그아웃
             </button>
