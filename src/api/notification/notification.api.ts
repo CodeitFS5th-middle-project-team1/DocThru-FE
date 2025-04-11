@@ -17,7 +17,10 @@ export async function fetchNotifications(
   userId?: string
 ): Promise<Notification[]> {
   const accessToken = localStorage.getItem('accessToken');
-  const url = `${BASE_URL}/notifications?userId=${userId}`;
+
+  const url = userId
+    ? `${BASE_URL}/notifications?userId=${userId}`
+    : `${BASE_URL}/notifications`;
 
   const res = await fetch(url, {
     headers: {
