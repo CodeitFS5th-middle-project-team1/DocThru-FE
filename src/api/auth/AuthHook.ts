@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { loginFn, signupFn, logoutFn } from './AuthApi';
 import { useAuthStore } from './AuthStore';
 import { PATH } from '@/constants';
+import { flushSync } from 'react-dom';
 
 export const useLogin = () => {
   const { setAuth } = useAuthStore();
@@ -17,7 +18,9 @@ export const useLogin = () => {
     },
     {
       onSuccess: ({ user }) => {
-        setAuth(user);
+        flushSync(() => {
+          setAuth(user);
+        });
         if (user.role === 'ADMIN') {
           router.replace(PATH.admin);
         } else {
@@ -42,7 +45,7 @@ export const useLogout = () => {
       toast.success('로그아웃 되었습니다!');
       setTimeout(() => {
         router.replace('/auth/login');
-      }, 300);
+      }, 0);
     } catch (err) {
       console.error('❌ 로그아웃 요청 실패:', err);
     }

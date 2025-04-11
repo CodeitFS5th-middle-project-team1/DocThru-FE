@@ -3,7 +3,6 @@ import {
   UseMutationOptions,
   UseMutationResult,
 } from '@tanstack/react-query';
-import { isAxiosError } from 'axios';
 
 import toast from 'react-hot-toast';
 
@@ -50,9 +49,8 @@ export function useToastMutation<
 
       let serverErrorMessage = '문제가 발생했습니다. 다시 시도해주세요.';
 
-      if (isAxiosError(error)) {
-        serverErrorMessage =
-          error.response?.data?.message ?? serverErrorMessage;
+      if (error instanceof Error) {
+        serverErrorMessage = error.message;
       }
 
       toast.error(serverErrorMessage, {
