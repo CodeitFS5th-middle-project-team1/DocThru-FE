@@ -3,7 +3,7 @@ import {
   UseMutationOptions,
   UseMutationResult,
 } from '@tanstack/react-query';
-import { isAxiosError } from 'axios';
+// import { isAxiosError } from 'axios';
 
 import toast from 'react-hot-toast';
 
@@ -48,19 +48,24 @@ export function useToastMutation<
     onError: (error, variables, context) => {
       if (toastId) toast.dismiss(toastId);
 
+      // 사용하는 곳에서 true를 리턴하면 전역 토스트는 건너뜀
+      const isHandled = options?.onError?.(error, variables, context);
+      if (isHandled === true) return;
+
       let serverErrorMessage = '문제가 발생했습니다. 다시 시도해주세요.';
 
-      if (isAxiosError(error)) {
-        serverErrorMessage =
-          error.response?.data?.message ?? serverErrorMessage;
+      if (error instanceof Error) {
+        serverErrorMessage = error.message;
+      } else if (typeof error === 'object' && error && 'message' in error) {
+        serverErrorMessage = (error as any).message;
       }
 
       toast.error(serverErrorMessage, {
         id: toastId,
         duration: 3000,
       });
-      options?.onError?.(error, variables, context);
     },
+
     onSettled: (data, error, variables, context) => {
       options?.onSettled?.(data, error, variables, context);
     },

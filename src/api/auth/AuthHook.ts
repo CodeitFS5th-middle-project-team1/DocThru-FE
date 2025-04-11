@@ -24,6 +24,10 @@ export const useLogin = () => {
           router.replace(PATH.challenge);
         }
       },
+      onError: () => {
+        // 전역에서 또 토스트 띄우지 않도록 방지
+        return true;
+      },
     },
     'login-toast'
   );

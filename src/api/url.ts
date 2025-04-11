@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-
+import { useAuthStore } from '@/api/auth/AuthStore';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 const getAccessToken = () => {
@@ -52,17 +52,29 @@ export const customFetch = async (
       : authHeader;
     setAccessToken(token);
   }
+  // 함수로 분리해서 중복 제거
+  const handleAuthError = (message: string) => {
+    toast.error(message);
+    removeAccessToken(); //localStorage에서 토큰 제거
+    useAuthStore.getState().clearAuth(); // Zustand 유저 상태 초기화
 
+    // if (typeof window !== 'undefined') {
+    //   window.location.href = '/auth/login';
+    // }
+  };
   if (!response.ok) {
-    if (response.status === 401) {
-      toast.error('로그인 제한 시간이 만료되었습니다.');
-      removeAccessToken();
-      if (typeof window !== 'undefined') {
-        window.location.href = '/auth/login';
-      }
-    }
-    // throw to allow calling code to handle other errors
     const errorData = await response.json().catch(() => ({}));
+
+    if (response.status === 401) {
+      handleAuthError(errorData.message || '로그인이 필요합니다.');
+    } else if (response.status === 419) {
+      handleAuthError(errorData.message || '세션이 만료되었습니다.');
+    } else if (response.status === 403) {
+      toast.error(errorData.message || '접근 권한이 없습니다.');
+    } else {
+      toast.error(errorData.message || '요청에 실패했습니다.');
+    }
+
     throw new Error(errorData.message || '요청에 실패했습니다.');
   }
 
