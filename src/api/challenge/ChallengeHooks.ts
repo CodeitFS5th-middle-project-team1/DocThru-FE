@@ -93,7 +93,7 @@ export const useChallengeStatusMutation = (id: string) => {
   const rejectMutation = useToastMutation<string, void>(
     (reason) => rejectChallenge(id, reason),
     {
-      success: '챌린지 거절 성공!',
+      success: '챌린지 거절 완료!',
     },
     {
       onSuccess,
@@ -114,7 +114,7 @@ export const useDeleteChallenge = (id: string) => {
   const deleteMutation = useToastMutation<void, void>(
     () => deleteChallenge(id),
     {
-      success: '챌린지 삭제 성공!',
+      success: '챌린지 삭제 완료!',
     },
     {
       onSuccess,
