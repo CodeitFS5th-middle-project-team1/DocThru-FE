@@ -13,7 +13,9 @@ export const useGetFeedBackList = (id: string) => {
   return useToastQuery<FetchFeedBackResponse, unknown>(
     ['FeedBackList', id],
     () => fetchFeedBack(id),
-    'FeedBackList-toast'
+    'FeedBackList-toast',
+    {},
+    { enabled: !!id }
   );
 };
 

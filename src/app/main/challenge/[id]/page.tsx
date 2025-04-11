@@ -50,7 +50,7 @@ const ChallengeDetail: NextPage = () => {
     ?.filter((t: Translation) => t.likeCount === mostLikeCount)
     .map((t: Translation) => t.id);
 
-  const { data: mostData } = useGetTranslationsByIds(mostRecommendedIds);
+  const { data: mostData } = useGetTranslationsByIds(id, mostRecommendedIds);
 
   const isSingleSlide = mostData?.length === 1;
 
@@ -80,20 +80,7 @@ const ChallengeDetail: NextPage = () => {
 
   return (
     <div className="flex flex-col gap-6 w-full ">
-      <Title
-        isSameUser={isSameUser}
-        title={challenge?.title}
-        document={challenge?.documentType}
-        field={challenge?.field}
-        content={challenge?.description}
-        nickname={challenge?.user.nickname}
-        currentParticipants={challenge?.currentParticipants}
-        deadLine={challenge?.deadline}
-        maxParticipants={challenge?.maxParticipants}
-        originUrl={challenge?.originURL}
-        isParticipantsFull={challenge?.isParticipantsFull}
-        isDeadlineFull={challenge?.isDeadlineFull}
-      />
+      <Title data={challenge} isSameUser={isSameUser} challengeId={id} />
 
       <div className="relative overflow-hidden w-full">
         <div

@@ -50,7 +50,6 @@ export const Card = ({ data, status, onClick }: CardProps) => {
 
   const handleClick = () => {
     if (onClick) return onClick();
-    localStorage.setItem('challengeId', data.id);
     router.push(`${PATH.challenge}/${data.id}`);
   };
 

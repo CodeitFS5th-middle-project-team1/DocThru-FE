@@ -8,7 +8,12 @@ import {
 type ApprovalStatusLabelType = (typeof ApprovalStatusLabels)[ApprovalStatus];
 
 interface ChipProps {
-  label: string | DocumentType | FieldType | ApprovalStatusLabelType;
+  label:
+    | string
+    | DocumentType
+    | FieldType
+    | ApprovalStatusLabelType
+    | undefined;
   className?: string;
 }
 export const Chip: React.FC<ChipProps> = ({ label, className }) => {
@@ -19,6 +24,8 @@ export const Chip: React.FC<ChipProps> = ({ label, className }) => {
   const translatedLabel = (() => {
     if (label === 'BLOG' || label === '블로그') return '블로그';
     if (label === 'OFFICIAL' || label === '공식문서') return '공식문서';
+    if (label === 'NEXTJS' || label === 'Next.js') return 'Next.js';
+    if (label === 'Modern JS' || label === 'MODERNJS') return 'Modern JS';
     return label;
   })();
 
@@ -40,7 +47,7 @@ export const Chip: React.FC<ChipProps> = ({ label, className }) => {
   };
 
   const chipStyle =
-    chipStyles[label] ??
+    chipStyles[translatedLabel ?? ''] ??
     'flex px-3 py-[3px] bg-[#79E16A] text-custom-gray-600 rounded-lg ';
   return <div className={` ${chipStyle} ${className}`}>{translatedLabel}</div>;
 };

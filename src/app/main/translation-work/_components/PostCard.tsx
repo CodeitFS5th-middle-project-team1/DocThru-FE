@@ -12,10 +12,7 @@ import { AxiosError } from 'axios';
 import { ErrorMessage, ErrorResponse, Modal, Translation } from '@/types';
 import Button, { ButtonCategory } from '@/shared/components/button/Button';
 
-import {
-  useCreateDraft,
-  useGetDraftTranslation,
-} from '@/api/Translation/hook';
+import { useCreateDraft, useGetDraftTranslation } from '@/api/Translation/hook';
 import { useUnloadWarning } from '@/shared/hooks/useUnloadWarning';
 import { useMutation } from '@tanstack/react-query';
 import { createTranslation, DraftRequest } from '@/api/Translation/api';
@@ -31,53 +28,53 @@ export default function PostCard() {
   const [challengeId, setChallengeId] = useState<string>('');
   const [translationId, setTranslationId] = useState('');
   useUnloadWarning(title !== '' && !(modal === 'success'));
-  console.log(content)
+
   const createTranslationMutation = useMutation<
-  Translation, // 성공 시 반환 타입
-  AxiosError<ErrorResponse>, // 에러 타입
-  DraftRequest // 요청 데이터 타입
->({
-  mutationFn: (data: DraftRequest) => createTranslation(data, challengeId),
-  onSuccess: (data) => {
-    setTranslationId(data.id);
-    setModal('success');
-  },
-  onError: (error) => {
-    const axiosError = error as AxiosError<ErrorResponse>;
-    console.log(error)
-    const data = axiosError.response?.data;
-    let message = '알 수 없는 이유로 제출하지 못했습니다.';
-    if (data && typeof data.message === 'string') {
-      // message가 그냥 string일 경우
-      message = data.message;
-    } else if (
-      data &&
-      typeof data.message === 'object' &&
-      data.message !== null
-    ) {
-      const messageObj = data.message as ErrorMessage;
-      // formErrors가 있는 경우
-      if (
-        Array.isArray(messageObj.formErrors) &&
-        messageObj.formErrors.length > 0
+    Translation, // 성공 시 반환 타입
+    AxiosError<ErrorResponse>, // 에러 타입
+    DraftRequest // 요청 데이터 타입
+  >({
+    mutationFn: (data: DraftRequest) => createTranslation(data, challengeId),
+    onSuccess: (data) => {
+      setTranslationId(data.id);
+      setModal('success');
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<ErrorResponse>;
+
+      const data = axiosError.response?.data;
+      let message = '알 수 없는 이유로 제출하지 못했습니다.';
+      if (data && typeof data.message === 'string') {
+        // message가 그냥 string일 경우
+        message = data.message;
+      } else if (
+        data &&
+        typeof data.message === 'object' &&
+        data.message !== null
       ) {
-        message = messageObj.formErrors.join('\n');
-      }
-      // title, content 필드 오류 처리
-      if (messageObj.fieldErrors) {
-        const fieldErrors = messageObj.fieldErrors;
-        if (fieldErrors.title) {
-          message = '제목은 필수 입력 사항입니다.';
+        const messageObj = data.message as ErrorMessage;
+        // formErrors가 있는 경우
+        if (
+          Array.isArray(messageObj.formErrors) &&
+          messageObj.formErrors.length > 0
+        ) {
+          message = messageObj.formErrors.join('\n');
         }
-        if (fieldErrors.content) {
-          message = '내용은 필수 입력 사항입니다.';
+        // title, content 필드 오류 처리
+        if (messageObj.fieldErrors) {
+          const fieldErrors = messageObj.fieldErrors;
+          if (fieldErrors.title) {
+            message = '제목은 필수 입력 사항입니다.';
+          }
+          if (fieldErrors.content) {
+            message = '내용은 필수 입력 사항입니다.';
+          }
         }
       }
-    }
-    setErrorMessage(message);
-    setModal('error');
-  },
-});
+      setErrorMessage(message);
+      setModal('error');
+    },
+  });
 
   const { data: draftData, status: draftStatus } =
     useGetDraftTranslation(challengeId);
@@ -85,8 +82,8 @@ export default function PostCard() {
   // 로컬 스토리지에서 저장되어 있는 Challenge Id를 불러옵니다.
 
   const onHandleCreate = () => {
-    const data = { title, content };  // { title, content } 객체 생성
-    createTranslationMutation.mutate(data);  // data를 전달
+    const data = { title, content }; // { title, content } 객체 생성
+    createTranslationMutation.mutate(data); // data를 전달
   };
 
   useEffect(() => {
@@ -102,7 +99,6 @@ export default function PostCard() {
     if (draftStatus === 'success') {
       setIsDrafted(true);
     }
-    console.log(draftData, 'draftData');
   }, [draftData, draftStatus]);
 
   return (
@@ -202,7 +198,7 @@ export default function PostCard() {
       <Navigate
         isOpen={modal === 'success'}
         onClose={() => {}}
-        navigateUrl={`/main/translation/${translationId}`}
+        navigateUrl={`/main/translation/${translationId}?challengeId=${challengeId}`}
         text="작업물 보기"
       >
         제출되었습니다!

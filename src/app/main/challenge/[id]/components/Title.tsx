@@ -1,7 +1,7 @@
 import { Chip } from '@/shared/components/chip/chip';
 import { Container } from '@/shared/components/container/Container';
 import { Divider } from '@/shared/components/Divider';
-import { DocumentType, FieldType } from '@/types';
+import { Challenge } from '@/types';
 import profile from '@images/profile-icon/member.svg';
 import menu from '@images/menu-icon/Meatballs.svg';
 import deadline from '@images/deadLine-icon/small-white.svg';
@@ -10,52 +10,34 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 interface TitleProps {
-  title?: string;
-  document?: DocumentType;
-  field?: FieldType;
-  content?: string;
-  nickname?: string;
-  currentParticipants?: number;
-  maxParticipants?: number;
-  deadLine?: string;
-  originUrl?: string;
+  data: Challenge | undefined;
   isSameUser?: boolean;
-  isParticipantsFull?: boolean;
-  isDeadlineFull?: boolean;
+  challengeId: string;
 }
 
 export const Title: React.FC<TitleProps> = ({
-  title = '',
-  document = '',
-  field = '',
-  content = '',
-  nickname = '',
-  currentParticipants = 0,
-  maxParticipants = 0,
-  deadLine = '',
-  originUrl = '/',
+  challengeId,
   isSameUser = false,
-  isParticipantsFull = false,
-  isDeadlineFull = false,
+  data,
 }) => {
   const [openMenu, setOpenMenu] = useState(false);
   return (
     <div className="w-full ">
       <div className="w-full flex flex-col gap-6 sm:flex-row justify-center items-center">
         <div className="w-full flex flex-col gap-4">
-          {isParticipantsFull && (
+          {data?.isDeadlineFull && (
             <div className="w-fit flex gap-1 bg-custom-gray-800 rounded-3xl px-4 py-2 text-white items-center M-14-0">
-              <Image src={deadline} alt="deadline" />
-              모집이 완료된 상대에요
+              <Image src={deadline} alt="deadline" /> 모집이 완료된 상태에요
             </div>
           )}
-          {isDeadlineFull && (
+          {data?.isParticipantsFull && (
             <div className="w-fit flex gap-1 bg-custom-gray-200 rounded-3xl px-4 py-2 text-custom-gray-800 items-center M-14-0">
-              <Image src={person} alt="" /> 챌린지가 마감 되었어요
+              <Image src={person} alt="person" />
+              챌린지가 마감 되었어요
             </div>
           )}
           <div className="flex SB-24-0 justify-between">
-            {title}
+            {data?.title}
             {isSameUser && (
               <div className="relative">
                 <div
@@ -79,20 +61,21 @@ export const Title: React.FC<TitleProps> = ({
             )}
           </div>
           <div className="flex flex-row gap-2">
-            <Chip label={document} />
-            <Chip label={field} />
+            <Chip label={data?.documentType} />
+            <Chip label={data?.field} />
           </div>
-          <div className="">{content}</div>
+          <div className="">{data?.description}</div>
           <div className="flex gap-2 items-center">
             <Image src={profile} alt="profile" />
-            {nickname}
+            {data?.user.nickname}
           </div>
         </div>
         <Container
-          currentParticipants={currentParticipants}
-          deadLine={deadLine}
-          maxParticipants={maxParticipants}
-          originUrl={originUrl}
+          id={challengeId}
+          currentParticipants={data?.currentParticipants}
+          deadLine={data?.deadline}
+          maxParticipants={data?.maxParticipants}
+          originUrl={data?.originURL}
         />
       </div>
 

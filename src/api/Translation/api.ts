@@ -39,9 +39,9 @@ export const fetchTranslation = async (
 };
 
 export const fetchTranslationById = async (
-  id: string
+  id: string,
+  challengeId: string
 ): Promise<Translation> => {
-  const challengeId = localStorage.getItem('challengeId');
   const res = await customFetch(
     `/challenges/${challengeId}/translations/${id}`
   );

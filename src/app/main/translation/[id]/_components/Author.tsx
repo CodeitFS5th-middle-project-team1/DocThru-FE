@@ -10,6 +10,7 @@ interface AuthorProps {
   likeCount?: number;
   user?: { id: string; nickname: string };
   create?: Date | string;
+  likeClick: () => void;
 }
 
 export const Author: React.FC<AuthorProps> = ({
@@ -17,6 +18,7 @@ export const Author: React.FC<AuthorProps> = ({
   like = false,
   create,
   likeCount = 0,
+  likeClick,
 }) => {
   const formatted = dayjs(create).format('YY/MM/DD');
   return (
@@ -32,6 +34,7 @@ export const Author: React.FC<AuthorProps> = ({
               className="cursor-pointer"
               src={like ? likeActive : likeInactive}
               alt="likeIcon"
+              onClick={likeClick}
             />
             <span>{likeCount.toLocaleString()}</span>
           </div>
