@@ -22,9 +22,20 @@ export const debounce = (func: (...args: unknown[]) => void, delay: number) => {
       func(...args);
     }, delay);
   };
+};
 
-export const getQueryString = (params: Record<string, any>) => {
-  const query = new URLSearchParams(params).toString();
+export const getQueryString = (
+  params: Record<string, string | number | boolean | null | undefined>
+): string => {
+  const stringParams: Record<string, string> = {};
+
+  for (const key in params) {
+    const value = params[key];
+    if (value !== undefined && value !== null) {
+      stringParams[key] = String(value);
+    }
+  }
+
+  const query = new URLSearchParams(stringParams).toString();
   return query ? `?${query}` : '';
-
 };

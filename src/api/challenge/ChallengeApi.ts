@@ -30,13 +30,28 @@ export interface ChallengeFormRequest {
 }
 
 const buildQuery = (params: FetchChallengeParams): string => {
-  const cleanParams = Object.fromEntries(
-    Object.entries(params).filter(([_, value]) => {
-      if (Array.isArray(value)) return value.length > 0;
-      return value !== undefined && value !== null && value !== '';
-    })
-  );
-  return `?${new URLSearchParams(cleanParams as any).toString()}`;
+  const entries: [string, string][] = [];
+
+  for (const [key, value] of Object.entries(params)) {
+    if (
+      value === undefined ||
+      value === null ||
+      value === '' ||
+      (Array.isArray(value) && value.length === 0)
+    ) {
+      continue; // skip
+    }
+
+    if (Array.isArray(value)) {
+      for (const v of value) {
+        entries.push([key, String(v)]);
+      }
+    } else {
+      entries.push([key, String(value)]);
+    }
+  }
+
+  return entries.length ? `?${new URLSearchParams(entries).toString()}` : '';
 };
 
 export const fetchChallenges = async (
