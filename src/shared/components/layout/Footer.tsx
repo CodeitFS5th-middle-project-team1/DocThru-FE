@@ -13,17 +13,30 @@ export default function Footer() {
         {/* 오른쪽 링크 */}
         <div className="flex flex-col items-end space-y-1 text-xs text-gray-500">
           <div className="flex space-x-4 text-sm text-gray-400">
-            <a href="#" className="hover:text-white transition">
+            <a
+              href="https://github.com/CodeitFS5th-middle-project-team1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition"
+            >
               GitHub
             </a>
-            <a href="#" className="hover:text-white transition">
+            <a
+              href="/main/privacy-policy"
+              className="hover:text-white transition"
+            >
               Privacy
             </a>
-            <a href="#" className="hover:text-white transition">
+            <a
+              href="https://mail.google.com/mail/?view=cm&to=service@docthru.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition"
+            >
               Contact
             </a>
           </div>
-          <span className="hidden md:inline font-mono text-xs text-gray-500">
+          <span className="hidden md:inline font-mono text-xs text-gray-5s00">
             Built by 김승우 · 최은비 · 이동혁 · 김조순 · 김희성 · 윤민호
           </span>
         </div>
