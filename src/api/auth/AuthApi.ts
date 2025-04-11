@@ -1,4 +1,4 @@
-import { docThro } from '../url';
+import { customFetch } from '../url';
 import { SetUser } from './AuthStore';
 
 export interface LoginPayload {
@@ -21,20 +21,35 @@ export interface SignupPayload {
 export const loginFn = async (
   payload: LoginPayload
 ): Promise<LoginResponse> => {
-  const res = await docThro.post<LoginResponse>('/auth/login', payload);
-  return res.data;
+  const res = await customFetch('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res.json();
 };
 
 export const signupFn = async (
   payload: SignupPayload
 ): Promise<LoginResponse> => {
-  const res = await docThro.post<LoginResponse>('/auth/signup', payload);
-  return res.data;
+  const res = await customFetch('/auth/signup', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res.json();
 };
 
 export const logoutFn = async (): Promise<void> => {
-  //로그아웃 함수 추가 ( 통일성 위해서 axios 사용했습니다.)
-  await docThro.post('/auth/logout', null, {
-    withCredentials: true, // HttpOnly 쿠키 포함
+  await customFetch('/auth/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: null,
   });
 };

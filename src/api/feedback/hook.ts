@@ -29,7 +29,7 @@ export const useCreateFeedBack = (id: string) => {
         queryClient.invalidateQueries({ queryKey: ['FeedBackList', id] });
       },
     },
-    'createfeedback-toast'
+    'createFeedback-toast'
   );
 };
 
@@ -48,6 +48,6 @@ export const usePatchFeedBack = (translationId: string) => {
         });
       },
     },
-    'Patcjfeedback-toast'
+    'patchFeedback-toast'
   );
 };
