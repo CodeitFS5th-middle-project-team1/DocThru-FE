@@ -119,9 +119,8 @@ export default function PatchCard() {
   }, [draftData, draftStatus]);
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center p-2">
-      <div className="max-w-[1000px] w-full h-full">
-        <div className="mt-6 flex justify-between h-[80px] items-center">
+    <div className="relative max-w-[1000px] w-full h-full">
+      <div className="mt-6 flex justify-between h-[80px] items-center">
           <div
             onClick={() => {
               setModal('forgive');
@@ -228,7 +227,7 @@ export default function PatchCard() {
           수정되었습니다!
         </Navigate>
         {isDrafted && (
-          <div className="border border-[#262626] rounded-[8px] fixed left-1/2 top-[90%] transform -translate-x-1/2 z-30 max-w-[750px] w-[95%] flex justify-between items-center px-5">
+          <div className="border border-[#262626] rounded-[8px] absolute left-1/2 top-[90%] transform -translate-x-1/2 z-30 max-w-[750px] w-[95%] flex justify-between items-center px-5">
             <div className="flex gap-5 items-center">
               <div
                 onClick={() => {
@@ -262,7 +261,6 @@ export default function PatchCard() {
             </div>
           </div>
         )}
-      </div>
     </div>
   );
 }

@@ -15,7 +15,7 @@ const TranslationWorkModify: NextPage = () => {
     <div
       className={`${showOriginal ? 'flex md:justify-center md:flex-row flex-col-reverse' : 'block'} h-screen`}
     >
-      <div className="flex md:flex-1 flex-2/3 justify-center overflow-y-auto px-3">
+      <div className="flex md:flex-1 flex-2/3 justify-center overflow-y-auto px-3" style={{ height: '100vh', position: 'relative' }}>
         <PatchCard />
       </div>
       {showOriginal && (
