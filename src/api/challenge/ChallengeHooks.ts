@@ -8,7 +8,10 @@ import {
   createChallenge,
   editChallenge,
   fetchChallengeById,
+  approveChallenge,
+  rejectChallenge,
 } from './ChallengeApi';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const useGetChallenge = (id: string) => {
   return useToastQuery<Challenge, Challenge>(
@@ -66,4 +69,36 @@ export const useEditChallenge = (id: string) => {
     },
     'challenge-toast'
   );
+};
+
+export const useChallengeStatusMutation = (id: string) => {
+  const queryClient = useQueryClient();
+
+  const onSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ['my-challenge', id] });
+  };
+
+  const approveMutation = useToastMutation<void, void>(
+    () => approveChallenge(id),
+    {
+      success: '챌린지 승인 성공!',
+    },
+    {
+      onSuccess,
+    },
+    'approveChallenge-toast'
+  );
+
+  const rejectMutation = useToastMutation<string, void>(
+    (reason) => rejectChallenge(id, reason),
+    {
+      success: '챌린지 거절 성공!',
+    },
+    {
+      onSuccess,
+    },
+    'rejectChallenge-toast'
+  );
+
+  return { approveMutation, rejectMutation };
 };

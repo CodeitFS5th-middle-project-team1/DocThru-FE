@@ -3,10 +3,7 @@ import { ChallengeUser } from '@/types';
 import { NextPage } from 'next';
 import { JSX, useState } from 'react';
 import { ApprovalStatus } from '@/types';
-import {
-  approveChallenge,
-  rejectChallenge,
-} from '@/api/challenge/ChallengeApi';
+import { useChallengeStatusMutation } from '@/api/challenge/ChallengeHooks';
 
 interface Props {
   data: ChallengeUser;
@@ -14,34 +11,25 @@ interface Props {
 
 const StatusBottom: NextPage<Props> = ({ data }) => {
   const challenge = data.challenge;
-  const [modalOpen, setModalOpen] = useState(false);
-  const [status, setStatus] = useState<ApprovalStatus>(
-    challenge.approvalStatus
+  const { approveMutation, rejectMutation } = useChallengeStatusMutation(
+    challenge.id
   );
-  const [_reason, setReason] = useState(challenge.rejectedReason || '');
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleRejectClick = () => {
     setModalOpen(true);
   };
 
-  const handleApproveClick = async () => {
-    try {
-      await approveChallenge(challenge.id);
-      setStatus(ApprovalStatus.APPROVED);
-    } catch (error) {
-      console.error('승인 실패:', error);
-    }
+  const handleApproveClick = () => {
+    approveMutation.mutate();
   };
 
-  const handleRejectSubmit = async (text: string) => {
-    try {
-      await rejectChallenge(challenge.id, text);
-      setReason(text);
-      setStatus(ApprovalStatus.REJECTED);
-      setModalOpen(false);
-    } catch (error) {
-      console.error('거절 실패:', error);
-    }
+  const handleRejectSubmit = (text: string) => {
+    rejectMutation.mutate(text, {
+      onSuccess: () => {
+        setModalOpen(false);
+      },
+    });
   };
 
   const StatusBottom: Record<ApprovalStatus, JSX.Element> = {
@@ -71,7 +59,7 @@ const StatusBottom: NextPage<Props> = ({ data }) => {
 
   return (
     <>
-      {StatusBottom[status]}
+      {StatusBottom[challenge.approvalStatus]}
 
       <ModalList.Send
         isOpen={modalOpen}
