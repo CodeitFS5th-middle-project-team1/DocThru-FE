@@ -1,5 +1,5 @@
 import { Feedback } from '@/types';
-import { docThro } from '../url';
+import { customFetch } from '../url';
 
 export interface FetchFeedBackResponse {
   feedbacks: Feedback[];
@@ -16,16 +16,24 @@ export interface PatchFeedbackParams {
 export const fetchFeedBack = async (
   id: string
 ): Promise<FetchFeedBackResponse> => {
-  const res = await docThro.get(`/translations/${id}/feedbacks`);
-  return res.data;
+  const res = await customFetch(`/translations/${id}/feedbacks`, {
+    method: 'GET',
+  });
+  return res.json();
 };
 
 export const createFeedBack = async (
   id: string,
   content: string
 ): Promise<FetchFeedBackResponse> => {
-  const res = await docThro.post(`/translations/${id}/feedbacks`, { content });
-  return res.data;
+  const res = await customFetch(`/translations/${id}/feedbacks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ content }),
+  });
+  return res.json();
 };
 
 export const patchFeedBack = async (
@@ -33,9 +41,15 @@ export const patchFeedBack = async (
   feedBackId: string,
   content: string
 ): Promise<FetchFeedBackResponse> => {
-  const res = await docThro.patch(
+  const res = await customFetch(
     `/translations/${translationId}/feedbacks/${feedBackId}`,
-    { content }
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content }),
+    }
   );
-  return res.data;
+  return res.json();
 };

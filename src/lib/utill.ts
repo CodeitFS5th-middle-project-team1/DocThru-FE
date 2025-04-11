@@ -12,3 +12,8 @@ dayjs.extend(localeData);
 dayjs.locale('ko');
 
 export default dayjs;
+
+export const getQueryString = (params: Record<string, any>) => {
+  const query = new URLSearchParams(params).toString();
+  return query ? `?${query}` : '';
+};
