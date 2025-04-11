@@ -32,21 +32,20 @@ export const Tab = ({ position, isActive, children, ...props }: TabProps) => {
   const TextColorStyle = TabColorStyle[isActive];
   const borderStyle =
     position === TextPosition.MIDDLE && isActive === TabActive.ON
-      ? 'border-b-2 border-black'
+      ? 'border-b-2 border-custom-gray-800'
       : '';
+  const fullClassName =
+    `cursor-pointer ${baseStyle} ${TextColorStyle} ${borderStyle}`.trim();
 
   if (position === 'top') {
     return (
-      <button className={`${baseStyle} ${TextColorStyle}`} {...props}>
+      <button className={fullClassName} {...props}>
         {children}
       </button>
     );
   }
   return (
-    <button
-      className={`${baseStyle} ${TextColorStyle}  ${borderStyle}`}
-      {...props}
-    >
+    <button className={fullClassName} {...props}>
       {children}
     </button>
   );
