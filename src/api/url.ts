@@ -1,55 +1,70 @@
-import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const url =
-  process.env.NEXT_PUBLIC_API_URL || //배포 환경
-  'http://localhost:5000/api'; // 개발 환경
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
-export const docThro = axios.create({
-  baseURL: url,
-  headers: {
+const getAccessToken = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('accessToken');
+  }
+  return null;
+};
+
+const setAccessToken = (token: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('accessToken', token);
+  }
+};
+
+const removeAccessToken = () => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('accessToken');
+  }
+};
+
+//fetch
+export const customFetch = async (
+  input: string,
+  options: RequestInit = {}
+): Promise<Response> => {
+  const token = getAccessToken();
+
+  const headers: Record<string, string> = {
     'X-Requested-With': 'XMLHttpRequest',
-  },
-  withCredentials: true,
-});
+    ...(options.headers as Record<string, string>),
+  };
 
-docThro.interceptors.request.use(
-  (config) => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
 
-docThro.interceptors.response.use(
-  (response) => {
-    const authHeader =
-      response.headers['authorization'] || response.headers['Authorization'];
-    if (authHeader) {
-      const token = authHeader.startsWith('Bearer ')
-        ? authHeader.split(' ')[1]
-        : authHeader;
+  const response = await fetch(`${API_URL}${input}`, {
+    ...options,
+    credentials: 'include',
+    headers,
+  });
 
-      localStorage.setItem('accessToken', token);
-    }
-    return response;
-  },
+  const authHeader =
+    response.headers.get('authorization') ||
+    response.headers.get('Authorization');
+  if (authHeader) {
+    const token = authHeader.startsWith('Bearer ')
+      ? authHeader.split(' ')[1]
+      : authHeader;
+    setAccessToken(token);
+  }
 
-  async (error) => {
-    if (error.response?.status === 401) {
+  if (!response.ok) {
+    if (response.status === 401) {
       toast.error('로그인 제한 시간이 만료되었습니다.');
-
+      removeAccessToken();
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('accessToken');
         window.location.href = '/auth/login';
       }
     }
-
-    return Promise.reject(error);
+    // throw to allow calling code to handle other errors
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || '요청에 실패했습니다.');
   }
-);
+
+  return response;
+};

@@ -22,4 +22,9 @@ export const debounce = (func: (...args: unknown[]) => void, delay: number) => {
       func(...args);
     }, delay);
   };
+
+export const getQueryString = (params: Record<string, any>) => {
+  const query = new URLSearchParams(params).toString();
+  return query ? `?${query}` : '';
+
 };
