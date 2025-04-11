@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from 'react';
+import { FC, useState, useRef } from 'react';
 import Image from 'next/image';
 import search from '@images/search-icon/ic_search.svg';
 
@@ -17,18 +17,6 @@ const Search: FC<SearchInputProps> = ({
 }) => {
   const [value, setValue] = useState<string>('');
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    timeoutRef.current = setTimeout(() => {
-      onSearch(value);
-    }, 500);
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [value, onSearch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
