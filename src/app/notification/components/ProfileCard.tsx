@@ -7,6 +7,7 @@ export default function ProfileCard() {
   const hasHydrated = useHydrated();
 
   if (!hasHydrated) return null;
+  const isAdmin = user?.role === 'ADMIN';
   if (!user)
     return <div className="text-center mt-10">로그인이 필요합니다.</div>;
 
@@ -22,7 +23,11 @@ export default function ProfileCard() {
         </p>
         <p>
           <strong>Role:</strong>{' '}
-          {user.role === 'ADMIN' ? '관리자' : '일반 사용자'}
+          {isAdmin
+            ? '관리자'
+            : user.rank === 'EXPERT'
+              ? '전문가'
+              : '일반 사용자'}
         </p>
       </div>
     </div>
