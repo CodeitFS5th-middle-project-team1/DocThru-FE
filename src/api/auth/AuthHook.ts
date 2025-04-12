@@ -66,6 +66,10 @@ export const useSignup = () => {
       onSuccess: () => {
         router.push('/auth/login');
       },
+      onError: () => {
+        // 전역 토스트 중복 방지
+        return true;
+      },
     },
     'signup-toast'
   );

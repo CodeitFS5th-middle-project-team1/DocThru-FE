@@ -62,20 +62,25 @@ export const customFetch = async (
     //   window.location.href = '/auth/login';
     // }
   };
+  const getSafeMessage = (data: any, fallback: string) => {
+    if (!data) return fallback;
+    if (typeof data === 'string') return data;
+    if (typeof data.message === 'string') return data.message;
+    return JSON.stringify(data);
+  };
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
+    const message = getSafeMessage(errorData, '요청에 실패했습니다.');
 
-    if (response.status === 401) {
-      handleAuthError(errorData.message || '로그인이 필요합니다.');
-    } else if (response.status === 419) {
-      handleAuthError(errorData.message || '세션이 만료되었습니다.');
+    if ([401, 419].includes(response.status)) {
+      handleAuthError(message);
     } else if (response.status === 403) {
-      toast.error(errorData.message || '접근 권한이 없습니다.');
+      toast.error(message);
     } else {
-      toast.error(errorData.message || '요청에 실패했습니다.');
+      toast.error(message);
     }
 
-    throw new Error(errorData.message || '요청에 실패했습니다.');
+    throw new Error(message); // 항상 string만 throw
   }
 
   return response;
