@@ -117,6 +117,7 @@ export const useCreateDraft = (id: string) => {
         console.log('성공 후 추가 작업');
       },
     },
-    'save-translation' // <- toastId (중복 방지용 고유 id)
+    'save-translation', // <- toastId (중복 방지용 고유 id)
+    '임시저장 실패! 😢'
   );
 };
