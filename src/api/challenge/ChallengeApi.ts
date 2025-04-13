@@ -108,6 +108,18 @@ export const editChallenge = async (id: string, data: ChallengeFormRequest) => {
   return res.json();
 };
 
+export const editChallengeByAdmin = async (
+  id: string,
+  data: ChallengeFormRequest
+) => {
+  const res = await customFetch(`/challenges/${id}/admin/modify`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+};
+
 export const deleteChallenge = async (id: string) => {
   const res = await customFetch(`/challenges/${id}/remove`, {
     method: 'PATCH',
@@ -115,9 +127,13 @@ export const deleteChallenge = async (id: string) => {
   return res.json();
 };
 
-export const deleteChallengeByAdmin = async (id: string) => {
-  const res = await customFetch(`/challenges/${id}/removeForce`, {
+export const deleteChallengeByAdmin = async (id: string, reason: string) => {
+  const res = await customFetch(`/challenges/${id}/admin/removeForce`, {
     method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ deletedReason: reason }),
   });
   return res.json();
 };

@@ -1,14 +1,16 @@
 'use client';
 import { Card } from '@/shared/components/card/Card';
 import Search from '@/shared/components/input/search';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 import { Filter } from '@/shared/components/dropdown/Filter';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import { fetchChallenges } from '@/api/challenge/ChallengeApi';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import CardSkeleton from '@/shared/components/card/CardSkeleton';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
+import { useDeleteChallengeByAdmin } from '@/api/challenge/ChallengeHooks';
+import { PATH } from '@/constants';
 
 const ChallengeMain = () => {
   const [keyword, setKeyword] = useState('');
@@ -21,6 +23,7 @@ const ChallengeMain = () => {
   const isMobile = useMediaQuery('(max-width: 344px)');
   const displayCount = isMobile ? 4 : 5;
 
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialPage = Number(searchParams.get('page')) || 1;
   const [page, setPage] = useState(initialPage);
@@ -45,6 +48,12 @@ const ChallengeMain = () => {
       keepPreviousData: true,
     }
   );
+
+  const { deleteMutation } = useDeleteChallengeByAdmin();
+
+  const handleDelete = (id: string, reason: string) => {
+    deleteMutation.mutate({ id, reason });
+  };
 
   const challenges = data?.challenges ?? [];
   const totalCount = data?.totalCount ?? 0;
@@ -107,6 +116,10 @@ const ChallengeMain = () => {
                     ? 'PENDING'
                     : challenge.approvalStatus,
               }}
+              onEdit={(id) => {
+                router.push(`${PATH.challenge}/${id}/edit`);
+              }}
+              onDelete={handleDelete}
             />
           ))
         )}

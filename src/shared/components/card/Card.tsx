@@ -10,11 +10,6 @@ import { PATH } from '@/constants';
 import Button, { ButtonCategory } from '../button/Button';
 import { CardSelector } from './CardSelector';
 import { useAuthStore } from '@/api/auth/AuthStore';
-import {
-  deleteChallenge,
-  deleteChallengeByAdmin,
-} from '@/api/challenge/ChallengeApi';
-import toast from 'react-hot-toast';
 
 export interface CardData {
   id: string;
@@ -34,11 +29,18 @@ export interface CardData {
 export interface CardProps {
   data: CardData;
   status?: 'participating' | 'completed' | 'applied';
-
   onClick?: () => void;
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string, reason: string) => void;
 }
 
-export const Card = ({ data, status, onClick }: CardProps) => {
+export const Card = ({
+  data,
+  status,
+  onClick,
+  onEdit,
+  onDelete,
+}: CardProps) => {
   const { user } = useAuthStore();
   const router = useRouter();
 
@@ -51,21 +53,6 @@ export const Card = ({ data, status, onClick }: CardProps) => {
   const handleClick = () => {
     if (onClick) return onClick();
     router.push(`${PATH.challenge}/${data.id}`);
-  };
-
-  const handleEdit = () => router.push(`${PATH.challenge}/${data.id}/edit`);
-
-  const handleDelete = async () => {
-    try {
-      if (isAdmin) {
-        await deleteChallengeByAdmin(data.id);
-      } else {
-        await deleteChallenge(data.id);
-      }
-      router.refresh();
-    } catch {
-      toast.error('삭제 중 오류가 발생했습니다.');
-    }
   };
 
   const handleRoute = () => {
@@ -101,9 +88,12 @@ export const Card = ({ data, status, onClick }: CardProps) => {
             <Chip label={data.documentType} />
           </div>
         </div>
-        {isShowSelector && (
+        {isShowSelector && onDelete && onEdit && (
           <>
-            <CardSelector onEdit={handleEdit} onDelete={handleDelete} />
+            <CardSelector
+              onEdit={() => onEdit(data.id)}
+              onDelete={(reason) => onDelete(data.id, reason)}
+            />
           </>
         )}
       </section>
