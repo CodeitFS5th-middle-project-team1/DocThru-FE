@@ -17,6 +17,7 @@ import { Card } from '@/shared/components/card/Card';
 import { useSearchParams } from 'next/navigation';
 import CardSkeleton from '@/shared/components/card/CardSkeleton';
 import ChallengeTable from './ChallengeTable';
+import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 
 const TAB_LIST = [
   { key: 'participating', label: '참여중인 챌린지' },
@@ -37,12 +38,13 @@ type Params = {
 };
 
 const MyChallengeMain = () => {
-  const [limit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [keyword, setKeyword] = useState('');
   const [activeTab, setActiveTab] = useState<TabKey>('participating');
   const [sortValue, setSortValue] = useState('option1');
 
+  const isMobile = useMediaQuery('(max-width: 344px)');
+  const limit = activeTab === 'applied' ? 10 : isMobile ? 4 : 5;
   const searchParams = useSearchParams();
   const initialPage = Number(searchParams.get('page')) || 1;
   const [page, setPage] = useState(initialPage);
@@ -219,7 +221,7 @@ const MyChallengeMain = () => {
 
       <section className="flex flex-col gap-6 w-full">
         {isPending ? (
-          Array.from({ length: 5 }).map((_, index) => (
+          Array.from({ length: limit }).map((_, index) => (
             <CardSkeleton key={index} />
           ))
         ) : challenges.length === 0 ? (
