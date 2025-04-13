@@ -52,39 +52,34 @@ export default function PatchCard() {
       setModal('success');
     },
     onError: (error) => {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      const data = axiosError.response?.data;
-      let message = '알 수 없는 이유로 제출하지 못했습니다.';
-      if (data && typeof data.message === 'string') {
-        // message가 그냥 string일 경우
-        message = data.message;
-      } else if (
-        data &&
-        typeof data.message === 'object' &&
-        data.message !== null
-      ) {
-        const messageObj = data.message as ErrorMessage;
-        // formErrors가 있는 경우
-        if (
-          Array.isArray(messageObj.formErrors) &&
-          messageObj.formErrors.length > 0
-        ) {
-          message = messageObj.formErrors.join('\n');
-        }
-        // title, content 필드 오류 처리
-        if (messageObj.fieldErrors) {
-          const fieldErrors = messageObj.fieldErrors;
-          if (fieldErrors.title) {
-            message = '제목은 필수 입력 사항입니다.';
-          }
-          if (fieldErrors.content) {
-            message = '내용은 필수 입력 사항입니다.';
+      let message = error.message ?? '알 수 없는 이유로 제출하지 못했습니다.';
+    
+      try {
+        const parsed = JSON.parse(error.message); // 👈 핵심
+        const rawMessage = parsed.message;
+    
+        if (typeof rawMessage === 'string') {
+          message = rawMessage;
+        } else if (typeof rawMessage === 'object' && rawMessage !== null) {
+          const fieldErrors = rawMessage.fieldErrors;
+          const formErrors = rawMessage.formErrors;
+    
+          if (fieldErrors?.title?.length > 0) {
+            message = fieldErrors.title[0];
+          } else if (fieldErrors?.content?.length > 0) {
+            message = fieldErrors.content[0];
+          } else if (formErrors?.length > 0) {
+            message = formErrors.join('\n');
           }
         }
+      } catch (e) {
+        console.error('❌ 에러 파싱 실패:', e);
       }
+    
+      console.log('🔥 최종 메시지:', message);
       setErrorMessage(message);
       setModal('error');
-    },
+    }
   });
 
   const onHandleModify = () => {
