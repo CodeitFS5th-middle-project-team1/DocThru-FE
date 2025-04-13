@@ -8,8 +8,8 @@ import Navigate from '@/shared/components/modal/navigate';
 import Editor from '../_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
 import { useRouter, useSearchParams } from 'next/navigation';
-import axios, { AxiosError } from 'axios';
-import { ErrorMessage, ErrorResponse, Modal, Translation } from '@/types';
+import { AxiosError } from 'axios';
+import { ErrorResponse, Modal, Translation } from '@/types';
 import Button, { ButtonCategory } from '@/shared/components/button/Button';
 
 import { useCreateDraft, useGetDraftTranslation } from '@/api/Translation/hook';

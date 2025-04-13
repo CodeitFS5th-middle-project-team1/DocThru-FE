@@ -10,7 +10,7 @@ import Editor from '../_components/Editor';
 import Confirm from '@/shared/components/modal/confirm';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { AxiosError } from 'axios';
-import { ErrorMessage, ErrorResponse, Modal, Translation } from '@/types';
+import { ErrorResponse, Modal, Translation } from '@/types';
 import Button, { ButtonCategory } from '@/shared/components/button/Button';
 import { useUnloadWarning } from '@/shared/hooks/useUnloadWarning';
 import {
