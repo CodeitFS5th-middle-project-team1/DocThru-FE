@@ -47,6 +47,10 @@ export function useToastMutation<
     onError: (error, variables, context) => {
       if (toastId) toast.dismiss(toastId);
 
+      // 사용하는 곳에서 true를 리턴하면 전역 토스트는 건너뜀
+      const isHandled = options?.onError?.(error, variables, context);
+      if (isHandled === true) return;
+
       let serverErrorMessage = '문제가 발생했습니다. 다시 시도해주세요.';
 
       if (error instanceof Error) {
@@ -59,6 +63,7 @@ export function useToastMutation<
       });
       options?.onError?.(error, variables, context);
     },
+
     onSettled: (data, error, variables, context) => {
       options?.onSettled?.(data, error, variables, context);
     },

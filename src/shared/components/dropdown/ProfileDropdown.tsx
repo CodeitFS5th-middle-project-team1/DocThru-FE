@@ -54,7 +54,13 @@ const ProfileDropdown = () => {
               >
                 {user.nickname}
               </p>
-              <p className="text-xs text-gray-500">{user.role}</p>
+              <p className="text-xs text-gray-500">
+                {isAdmin
+                  ? '관리자'
+                  : user.rank === 'EXPERT'
+                    ? '전문가'
+                    : '일반 사용자'}
+              </p>
             </div>
           </div>
           <hr className="my-2" />

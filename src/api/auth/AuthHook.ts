@@ -27,6 +27,10 @@ export const useLogin = () => {
           router.replace(PATH.challenge);
         }
       },
+      onError: () => {
+        // 전역에서 또 토스트 띄우지 않도록 방지
+        return true;
+      },
     },
     'login-toast'
   );
@@ -64,6 +68,10 @@ export const useSignup = () => {
     {
       onSuccess: () => {
         router.push('/auth/login');
+      },
+      onError: () => {
+        // 전역 토스트 중복 방지
+        return true;
       },
     },
     'signup-toast'

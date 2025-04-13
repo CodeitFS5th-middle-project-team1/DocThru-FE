@@ -2,6 +2,7 @@
 @import 'react-quill-new/dist/quill.snow.css';
 
 /*여기에 폰트 넣으시면 됩니다.*/
+@import '@fontsource/jetbrains-mono';
 @font-face {
   font-family: 'pretendard';
   font-style: normal;
@@ -41,6 +42,10 @@
 @layer base {
   body {
     font-family: 'pretendard', 'quantico';
+    background-color: #f5f5f5;
+  }
+  .dev-font {
+    font-family: 'JetBrains Mono', monospace;
   }
   *,
   ::after,
@@ -59,6 +64,44 @@
   * 가운데 숫자는 font-size
   * 마지막 숫자는 line-height
 */
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #facc15;
+  }
+}
+
+.glow {
+  text-shadow:
+    0 0 4px #facc15,
+    0 0 10px #facc15;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15); /* 반투명한 회색 */
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
 .SB-24-0 {
   font-weight: 600;
   font-size: 24px;

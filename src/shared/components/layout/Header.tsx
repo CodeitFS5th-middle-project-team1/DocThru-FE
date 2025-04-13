@@ -42,7 +42,7 @@ const Header = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center">
+    <div className="w-full bg-white flex flex-col items-center justify-center border-b border-solid border-[#E5E5E5]">
       <div className="max-w-[1200px] w-full h-15 bg-white flex items-center justify-between md:px-6 px-4  lg:py-[14px]">
         <div className="flex gap-6">
           <Image
@@ -80,7 +80,7 @@ const Header = () => {
         )}
       </div>
 
-      <Divider />
+      {/* <Divider /> */}
     </div>
   );
 };

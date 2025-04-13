@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-
+import { useAuthStore } from '@/api/auth/AuthStore';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 const getAccessToken = () => {
@@ -52,18 +52,35 @@ export const customFetch = async (
       : authHeader;
     setAccessToken(token);
   }
+  // 함수로 분리해서 중복 제거
+  const handleAuthError = (message: string) => {
+    toast.error(message);
+    removeAccessToken(); //localStorage에서 토큰 제거
+    useAuthStore.getState().clearAuth(); // Zustand 유저 상태 초기화
 
+    // if (typeof window !== 'undefined') {
+    //   window.location.href = '/auth/login';
+    // }
+  };
+  const getSafeMessage = (data: any, fallback: string) => {
+    if (!data) return fallback;
+    if (typeof data === 'string') return data;
+    if (typeof data.message === 'string') return data.message;
+    return JSON.stringify(data);
+  };
   if (!response.ok) {
-    if (response.status === 401) {
-      toast.error('로그인 제한 시간이 만료되었습니다.');
-      removeAccessToken();
-      if (typeof window !== 'undefined') {
-        window.location.href = '/auth/login';
-      }
-    }
-    // throw to allow calling code to handle other errors
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || '요청에 실패했습니다.');
+    const message = getSafeMessage(errorData, '요청에 실패했습니다.');
+
+    if ([401, 419].includes(response.status)) {
+      handleAuthError(message);
+    } else if (response.status === 403) {
+      toast.error(message);
+    } else {
+      toast.error(message);
+    }
+
+    throw new Error(message); // 항상 string만 throw
   }
 
   return response;
