@@ -2,7 +2,6 @@
 import Logo from '@/shared/Img/logo.svg';
 import Image from 'next/image';
 //import BassBell from '@/shared/Img/bell-icon/bass.svg';
-import { Divider } from '../Divider';
 import { useRouter } from 'next/navigation';
 import { PATH } from '@/constants';
 import { useAuthStore, useHydrated } from '@/api/auth/AuthStore';
