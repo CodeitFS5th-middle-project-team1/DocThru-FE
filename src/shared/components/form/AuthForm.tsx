@@ -12,7 +12,7 @@ import { useFormContext, SubmitHandler } from 'react-hook-form';
 export interface AuthFormData {
   email: string;
   password: string;
-  passwordConfirm?: string;
+  passwordConfirm: string;
   nickName: string;
 }
 

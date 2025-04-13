@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('accessToken')?.value;
   const isAdminPage = pathname.startsWith('/admin');
   const isPublic = publicPaths.includes(pathname);
-  console.log('🔥 middleware 실행:', pathname);
+  console.log('🔥 middleware 실행: ', pathname, 'token: ', token);
   if (isPublic) {
     return NextResponse.next();
   }
@@ -49,5 +49,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/auth/:path*', '/main/:path*', '/admin/:path*', '/admin'],
+  matcher: ['/((?!_next|favicon.ico|images|icons|.*\\.svg).*)'],
 };
