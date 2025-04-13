@@ -4,12 +4,12 @@ import { usePatchFeedBack } from '@/api/feedback/hook';
 import { Reply } from '@/shared/components/Reply';
 import { TextBox } from '@/shared/components/TextBox';
 import { Feedback } from '@/types';
-import { UseMutateAsyncFunction } from '@tanstack/react-query';
+import { UseMutateFunction } from '@tanstack/react-query';
 import { useState } from 'react';
 
 interface FeedBackProps {
   feedBack: Feedback[] | undefined;
-  createFeedBack: UseMutateAsyncFunction<
+  createFeedBack: UseMutateFunction<
     FetchFeedBackResponse,
     unknown,
     string,
@@ -28,21 +28,12 @@ export const FeedBack: React.FC<FeedBackProps> = ({
   const [content, setContent] = useState<string>('');
   const visibleItems = showAll ? feedBack || [] : (feedBack || []).slice(0, 3);
   const hendleClick = async () => {
-    try {
-      if (content === '') return;
-      await createFeedBack(content);
-      setContent('');
-    } catch (error) {
-      console.log(error);
-    }
+    if (content === '') return;
+    createFeedBack(content);
+    setContent('');
   };
   const hendlePatch = async (id: string, content: string) => {
-    try {
-      console.log(content);
-      await patchFeedBack({ feedBackId: id, content });
-    } catch (error) {
-      console.error(error);
-    }
+    await patchFeedBack({ feedBackId: id, content });
   };
   const hendleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);

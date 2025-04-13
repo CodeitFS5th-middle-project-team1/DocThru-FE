@@ -10,17 +10,20 @@ import { fetchChallengeById } from '@/api/challenge/ChallengeApi';
 export default function PostMain() {
   const [showOriginal, setShowOriginal] = useState(false);
   const searchParams = useSearchParams();
-  const [originUrl, setOriginUrl] = useState("https://nextjs-ko.org/docs");
+  const [originUrl, setOriginUrl] = useState('https://nextjs-ko.org/docs');
   useEffect(() => {
     const cid = searchParams.get('challengeId') as string;
     getChallengeOrigin(cid);
   }, [searchParams]);
 
-  async function getChallengeOrigin (id: string) {
-    const result = await fetchChallengeById(id);
-    setOriginUrl(result.originURL);
+  async function getChallengeOrigin(id: string) {
+    try {
+      const result = await fetchChallengeById(id);
+      setOriginUrl(result.originURL);
+    } catch (error) {
+      console.error('원문 데이터를 불러오지 못했습니다:', error);
+    }
   }
-
   return (
     <div
       className={`${showOriginal ? 'flex md:justify-center md:flex-row flex-col-reverse' : 'block'} h-screen`}

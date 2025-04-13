@@ -18,7 +18,9 @@ export const useGetChallenge = (id: string) => {
   return useToastQuery<Challenge, Challenge>(
     ['challenge', id],
     () => fetchChallengeById(id),
-    'challenge-toast'
+    'challenge-toast',
+    {},
+    { enabled: !!id }
   );
 };
 
@@ -26,7 +28,9 @@ export const useGetMyChallenge = (id: string) => {
   return useToastQuery<ChallengeUser, unknown>(
     ['my-challenge', id],
     () => fetchMyChallenge(id),
-    'challenge-toast'
+    'challenge-toast',
+    {},
+    { enabled: !!id }
   );
 };
 

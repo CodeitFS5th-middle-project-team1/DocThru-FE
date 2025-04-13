@@ -13,6 +13,7 @@ interface ListItemsProps {
   user: { nickname: string };
   likeCount: number;
   size: number;
+  challengeId: string;
 }
 
 export const ListItems: React.FC<ListItemsProps> = ({
@@ -21,6 +22,7 @@ export const ListItems: React.FC<ListItemsProps> = ({
   user,
   likeCount,
   size,
+  challengeId,
 }) => {
   const router = useRouter();
   return (
@@ -53,7 +55,10 @@ export const ListItems: React.FC<ListItemsProps> = ({
           </div>
           <div
             onClick={() => {
-              if (id) router.push(`${PATH.translation}/${id}`);
+              if (id)
+                router.push(
+                  `${PATH.translation}/${id}?challengeId=${challengeId}`
+                );
             }}
             className="flex gap-0.5 justify-center items-center cursor-pointer"
           >

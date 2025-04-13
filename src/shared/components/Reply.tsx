@@ -3,6 +3,7 @@ import profile from '@images/profile-icon/member.svg';
 import modify from '@images/menu-icon/Meatballs.svg';
 import { useState } from 'react';
 import dayjs from 'dayjs';
+import { useAuthStore } from '@/api/auth/AuthStore';
 
 interface ReplyProps {
   user: { nickName: string; img?: string };
@@ -23,7 +24,7 @@ export const Reply: React.FC<ReplyProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>(content);
-
+  const { user: you } = useAuthStore();
   const createdAt = dayjs(create).format('YY/MM/DD hh:mm');
 
   const onHandleCancel = () => {
@@ -35,9 +36,10 @@ export const Reply: React.FC<ReplyProps> = ({
     if (!feedback) return;
     setFeedback(feedback);
     setIsOpen(false);
-    console.log(id, '1', feedback);
     onClick?.(id, feedback);
   };
+
+  const isSameUser = you?.id === userId;
   return (
     <div className="w-full h-full bg-custom-gray-50 rounded-xl p-4 overflow-hidden">
       <div className="w-full flex flex-row justify-between pb-4">
@@ -49,7 +51,7 @@ export const Reply: React.FC<ReplyProps> = ({
           </div>
         </div>
         {!isOpen ? (
-          userId !== undefined && (
+          isSameUser && (
             <div
               onClick={() => setIsOpen(true)}
               className="R-16-0 cursor-pointer"

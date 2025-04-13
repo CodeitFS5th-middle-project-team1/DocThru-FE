@@ -1,7 +1,6 @@
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import {
   createDraft,
-
   DraftRequest,
   DraftResponse,
   fetchTranslation,
@@ -22,31 +21,40 @@ export const useGetTranslationList = (
   return useToastQuery<FetchTranslationResponse, unknown>(
     ['translationList', id, params?.page, params?.limit],
     () => fetchTranslation(id, params),
-    'TranslationList-toast'
+    'TranslationList-toast',
+    {},
+    { enabled: !!id }
   );
 };
 
-export const useGetTranslation = (id: string) => {
+export const useGetTranslation = (id: string, challengeId: string) => {
   return useToastQuery<Translation, unknown>(
-    ['translation', id],
-    () => fetchTranslationById(id),
-    'Translation-toast'
+    ['translation', id, challengeId],
+    () => fetchTranslationById(id, challengeId),
+    'Translation-toast',
+    {},
+    { enabled: !!id && !!challengeId }
   );
 };
 export const useGetDraftTranslation = (id: string) => {
   return useToastQuery<Translation, unknown>(
     ['getDraftTranslation', id],
     () => getDraftTranslation(id),
-    'getDraftTranslation-toast'
+    'getDraftTranslation-toast',
+    {},
+    { enabled: !!id }
   );
 };
 
-export const useGetTranslationsByIds = (ids?: string[]) => {
+export const useGetTranslationsByIds = (
+  challengeId: string,
+  ids?: string[]
+) => {
   const queries = useQueries({
     queries:
       ids?.map((id) => ({
         queryKey: ['translation', id],
-        queryFn: () => fetchTranslationById(id),
+        queryFn: () => fetchTranslationById(id, challengeId),
         enabled: !!id,
       })) ?? [],
   });

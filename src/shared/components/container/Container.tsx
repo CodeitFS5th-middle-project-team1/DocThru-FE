@@ -7,10 +7,11 @@ import Button, { ButtonCategory } from '../button/Button';
 
 export interface ContainerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  originUrl: string;
-  deadLine: string;
-  currentParticipants: number;
-  maxParticipants: number;
+  originUrl: string | undefined;
+  deadLine: string | undefined;
+  currentParticipants: number | undefined;
+  maxParticipants: number | undefined;
+  id: string;
 }
 
 export const Container = ({
@@ -18,6 +19,7 @@ export const Container = ({
   deadLine,
   currentParticipants,
   maxParticipants,
+  id,
   ...props
 }: ContainerProps) => {
   const overDeadLine = dayjs(deadLine).isBefore(dayjs());
@@ -60,7 +62,7 @@ export const Container = ({
             <Button
               category={ButtonCategory.TO_DO_WORK}
               size="text-center py-3"
-              href="/main/translation-work"
+              href={`/main/translation-work?challengeId=${id}`}
             >
               작업 도전하기
             </Button>
