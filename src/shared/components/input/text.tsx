@@ -30,14 +30,14 @@ const Text = <T extends FieldValues>({
         <textarea
           {...register(name, rules)}
           placeholder={placeholder}
-          className={`leading-none resize-none p-[14px] border rounded-[6px] focus:outline-none focus:ring-2 focus:ring-custom-gray-200 ${size}`}
+          className={`leading-none resize-none p-[14px] bg-white border rounded-[6px] focus:outline-none focus:ring-2 focus:ring-custom-gray-200 ${size}`}
         />
       ) : (
         <input
           type={type}
           {...register(name, rules)}
           placeholder={placeholder}
-          className={`leading-none resize-none p-[14px] border rounded-[6px] focus:outline-none focus:ring-2 focus:ring-custom-gray-200 ${size}`}
+          className={`leading-none resize-none p-[14px] bg-white border rounded-[6px] focus:outline-none focus:ring-2 focus:ring-custom-gray-200 ${size}`}
         />
       )}
       {errorMessage && (

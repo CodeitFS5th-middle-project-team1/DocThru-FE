@@ -10,7 +10,7 @@ export default function ChallengeHead() {
   const isAdmin = user.role === 'ADMIN';
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center bg-custom-gray-50">
       <p className="text-xl text-custom-gray-800 font-semibold ">챌린지 목록</p>
       {!isAdmin && (
         <div className="flex">

@@ -62,7 +62,7 @@ const ChallengeMain = () => {
   }, [page]);
 
   return (
-    <div className="flex flex-col gap-6 ">
+    <div className="flex flex-col gap-6 bg-custom-gray-50">
       <section className="flex gap-3">
         <div className="flex items-center">
           <Filter

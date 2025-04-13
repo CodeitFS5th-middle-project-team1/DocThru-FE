@@ -81,7 +81,7 @@ export const Card = ({ data, status, onClick }: CardProps) => {
   return (
     <div
       onClick={handleClick}
-      className="flex flex-col  w-full justify-center items-center rounded-2xl border-2 border-custom-gray-800 gap-4 p-6 cursor-pointer  transition-transform duration-300 hover:scale-105 "
+      className="flex flex-col  w-full justify-center items-center rounded-2xl border-2 border-custom-gray-800 gap-4 p-6 cursor-pointer  transition-transform duration-300 hover:scale-105 bg-white"
     >
       <section className="flex w-full justify-between relative">
         <div className="flex flex-col gap-4 ">
