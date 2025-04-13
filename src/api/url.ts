@@ -83,6 +83,13 @@ export const customFetch = async (
   };
 
   if (!response.ok) {
+    const contentType = response.headers.get('Content-Type');
+
+    if (contentType && contentType.includes('text/html')) {
+      handleAuthError('로그인이 필요합니다.');
+      throw new Error('로그인이 필요합니다.');
+    }
+
     const errorData = (await response
       .json()
       .catch(() => ({}))) as ErrorResponse;
