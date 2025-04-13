@@ -1,6 +1,6 @@
 'use client';
 import { FetchFeedBackResponse } from '@/api/feedback/api';
-import { usePatchFeedBack } from '@/api/feedback/hook';
+import { useDeleteFeedBack, usePatchFeedBack } from '@/api/feedback/hook';
 import { Reply } from '@/shared/components/Reply';
 import { TextBox } from '@/shared/components/TextBox';
 import { Feedback } from '@/types';
@@ -24,6 +24,7 @@ export const FeedBack: React.FC<FeedBackProps> = ({
   id,
 }) => {
   const { mutateAsync: patchFeedBack } = usePatchFeedBack(id);
+  const { mutateAsync: deleteFeedBack } = useDeleteFeedBack(id);
   const [showAll, setShowAll] = useState(false);
   const [content, setContent] = useState<string>('');
   const visibleItems = showAll ? feedBack || [] : (feedBack || []).slice(0, 3);
@@ -34,6 +35,9 @@ export const FeedBack: React.FC<FeedBackProps> = ({
   };
   const hendlePatch = async (id: string, content: string) => {
     await patchFeedBack({ feedBackId: id, content });
+  };
+  const hendleDelete = async (id: string) => {
+    await deleteFeedBack({ feedBackId: id });
   };
   const hendleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
@@ -51,7 +55,8 @@ export const FeedBack: React.FC<FeedBackProps> = ({
             content={d.content}
             create={d.createdAt}
             user={{ nickName: d.userNickname, img: d.userProfileImg }}
-            onClick={hendlePatch}
+            onEdit={hendlePatch}
+            onDelete={hendleDelete}
           />
         );
       })}
