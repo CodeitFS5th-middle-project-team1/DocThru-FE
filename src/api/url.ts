@@ -62,14 +62,30 @@ export const customFetch = async (
     //   window.location.href = '/auth/login';
     // }
   };
-  const getSafeMessage = (data: any, fallback: string) => {
+  // 오류 없는 타입 정의
+  type ErrorResponse =
+    | string
+    | { message?: string }
+    | Record<string, unknown>
+    | null
+    | undefined;
+
+  const getSafeMessage = (data: ErrorResponse, fallback: string): string => {
     if (!data) return fallback;
     if (typeof data === 'string') return data;
-    if (typeof data.message === 'string') return data.message;
+    if (
+      typeof data === 'object' &&
+      data !== null &&
+      typeof data.message === 'string'
+    )
+      return data.message;
     return JSON.stringify(data);
   };
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
+    const errorData = (await response
+      .json()
+      .catch(() => ({}))) as ErrorResponse;
     const message = getSafeMessage(errorData, '요청에 실패했습니다.');
 
     if ([401, 419].includes(response.status)) {
