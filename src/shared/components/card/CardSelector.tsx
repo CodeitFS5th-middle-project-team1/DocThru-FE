@@ -7,9 +7,11 @@ import SendModal from '../modal/send';
 export const CardSelector = ({
   onEdit,
   onDelete,
+  disableDeleteModal = false,
 }: {
   onEdit: () => void;
   onDelete: (reason: string) => void;
+  disableDeleteModal?: boolean;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -48,8 +50,13 @@ export const CardSelector = ({
             <li
               onClick={(e) => {
                 e.stopPropagation();
-                setIsDeleteModalOpen(true);
-                setIsOpen(false);
+                if (disableDeleteModal) {
+                  onDelete('');
+                  setIsOpen(false);
+                } else {
+                  setIsDeleteModalOpen(true);
+                  setIsOpen(false);
+                }
               }}
               className="py-3 px-11 text-custom-gray-500  cursor-pointer "
             >

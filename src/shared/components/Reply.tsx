@@ -62,6 +62,7 @@ export const Reply: React.FC<ReplyProps> = ({
             <CardSelector
               onEdit={() => setIsOpen(true)}
               onDelete={onHandleDelete}
+              disableDeleteModal={true}
             />
           )
         ) : (
