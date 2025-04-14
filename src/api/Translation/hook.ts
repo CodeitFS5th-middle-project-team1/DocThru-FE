@@ -113,9 +113,7 @@ export const useCreateDraft = (id: string) => {
       error: '임시저장 실패 😢',
     },
     {
-      onSuccess: () => {
-        console.log('성공 후 추가 작업');
-      },
+      onSuccess: () => {},
     },
     'save-translation' // <- toastId (중복 방지용 고유 id)
   );

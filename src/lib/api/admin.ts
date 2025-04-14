@@ -41,14 +41,11 @@ export const fetchChallengesByAdmin = async (
 
   // URL 쿼리 파라미터
   const queryParams = new URLSearchParams();
-  console.log('정렬 조건:', order);
   if (order) queryParams.append('orderBy', order);
   if (page) queryParams.append('page', page.toString());
   if (limit) queryParams.append('limit', limit.toString());
   if (approvalStatus) queryParams.append('approvalStatus', approvalStatus);
   if (keyword) queryParams.append('keyword', keyword);
-  const finalUrl = `${baseURL}/challenges/manage?${queryParams.toString()}`;
-  console.log('요청 URL:', finalUrl);
   // 액세스 토큰 가져오기
   let token = '';
   if (typeof window !== 'undefined') {
@@ -77,6 +74,5 @@ export const fetchChallengesByAdmin = async (
   }
 
   const data = await response.json();
-  console.log('API 응답 데이터:', data);
   return data;
 };
