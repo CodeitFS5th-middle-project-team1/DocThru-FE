@@ -17,6 +17,7 @@ async function verifyToken(token: string): Promise<JwtPayload | null> {
     const { payload } = await jwtVerify<JwtPayload>(token, secret);
     return payload;
   } catch (error) {
+    console.error('[JWT Verify Error]', error);
     return null;
   }
 }
