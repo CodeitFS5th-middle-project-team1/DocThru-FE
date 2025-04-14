@@ -4,6 +4,8 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import localeData from 'dayjs/plugin/localeData';
 import 'dayjs/locale/ko';
+import toast from 'react-hot-toast';
+import { ToastId } from '@/constants';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -38,4 +40,40 @@ export const getQueryString = (
 
   const query = new URLSearchParams(stringParams).toString();
   return query ? `?${query}` : '';
+};
+
+type ToastType = 'loading' | 'success' | 'error';
+
+interface ShowToastOptions {
+  type: ToastType;
+  message: string;
+  id?: ToastId;
+  disableToast?: boolean;
+}
+
+export const showToast = ({
+  type,
+  message,
+  id,
+  disableToast = false,
+}: ShowToastOptions) => {
+  if (disableToast) return;
+
+  if (id) {
+    toast.dismiss(id); // 기존 같은 ID 토스트 닫기 (중복 방지)
+  }
+
+  const options = id ? { id, duration: 1000 } : { duration: 1000 };
+
+  switch (type) {
+    case 'loading':
+      toast.loading(message, options);
+      break;
+    case 'success':
+      toast.success(message, options);
+      break;
+    case 'error':
+      toast.error(message, options);
+      break;
+  }
 };

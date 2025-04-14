@@ -1,10 +1,10 @@
 'use client';
 
 import { AuthState, useAuthStore, useHydrated } from '@/api/auth/AuthStore';
-import { PATH } from '@/constants';
+import { PATH, TOAST_ID } from '@/constants';
+import { showToast } from '@/lib/utill';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { createContext, useContext, useEffect } from 'react';
-import toast from 'react-hot-toast';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const publicPaths = ['/', PATH.login, PATH.signup, PATH.challenge];
 const homePaths = ['/'];
@@ -20,6 +20,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [handledMessage, setHandledMessage] = useState<string | null>(null);
   const { user, setAuth, clearAuth } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
@@ -40,15 +41,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const isAdminPage = pathname.startsWith('/admin');
 
     const message = searchParams.get('message');
+
+    if (!message) return;
+
+    const cleanedUrl = `${window.location.pathname}${window.location.hash}`;
+    router.replace(cleanedUrl);
+    setHandledMessage(message);
+
     if (message) {
       if (message === 'needLogin') {
-        toast.error('로그인이 필요합니다.');
+        showToast({
+          type: 'error',
+          message: '로그인이 필요합니다.',
+          id: TOAST_ID.AUTH,
+        });
       } else if (message === 'adminOnly') {
-        toast.error('관리자 권한이 필요합니다.');
+        showToast({
+          type: 'error',
+          message: '관리자 권한이 필요합니다.',
+          id: TOAST_ID.AUTH,
+        });
+      } else if (message === 'logoutSuccess') {
+        showToast({
+          type: 'error',
+          message: '로그아웃 되었습니다!',
+          id: TOAST_ID.AUTH,
+        });
       }
-
-      const cleanedUrl = `${window.location.pathname}${window.location.hash}`;
-      router.replace(cleanedUrl);
     }
 
     if (!isLoggedIn && !isPublic) {
@@ -71,6 +90,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     isHome,
     searchParams,
     user?.role,
+    handledMessage,
   ]);
 
   if (!hydrated) {

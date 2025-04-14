@@ -1,10 +1,10 @@
 import { useRouter } from 'next/navigation';
 import { useToastMutation } from '@/shared/hooks/useToastMutation';
-import toast from 'react-hot-toast';
 import { loginFn, signupFn, logoutFn } from './AuthApi';
 import { useAuthStore } from './AuthStore';
-import { PATH } from '@/constants';
+import { PATH, TOAST_ID } from '@/constants';
 import { flushSync } from 'react-dom';
+import { showToast } from '@/lib/utill';
 
 export const useLogin = () => {
   const { setAuth } = useAuthStore();
@@ -32,7 +32,7 @@ export const useLogin = () => {
         return true;
       },
     },
-    'login-toast'
+    TOAST_ID.AUTH
   );
 };
 
@@ -42,13 +42,12 @@ export const useLogout = () => {
 
   return async () => {
     try {
-      await logoutFn();
+      await logoutFn({ disableToast: true });
       clearAuth();
       document.cookie =
         'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      toast.success('로그아웃 되었습니다!');
       setTimeout(() => {
-        router.replace('/auth/login');
+        router.replace('/auth/login?message=logoutSuccess');
       }, 0);
     } catch (err) {
       console.error('❌ 로그아웃 요청 실패:', err);
@@ -74,6 +73,6 @@ export const useSignup = () => {
         return true;
       },
     },
-    'signup-toast'
+    TOAST_ID.AUTH
   );
 };

@@ -1,3 +1,5 @@
+import { ToastId } from '@/constants';
+import { showToast } from '@/lib/utill';
 import {
   useQuery,
   UseQueryOptions,
@@ -40,8 +42,9 @@ export function useToastQuery<
 >(
   queryKey: TQueryKey,
   queryFn: () => Promise<TQueryFnData>,
-  toastId?: string,
+  toastId?: ToastId,
   toastMessages?: ToastMessages,
+  disableToast: boolean = false,
   options: ToastQueryOptions<TQueryFnData, TError, TData, TQueryKey> = {}
 ): UseQueryResult<TData, TError> {
   const {
@@ -59,7 +62,14 @@ export function useToastQuery<
       ...restOptions,
       onSuccess: (data: TData) => {
         if (toastId) toast.dismiss(toastId);
-        if (toastMessages?.success) toast.success(toastMessages.success);
+        if (toastMessages?.success) {
+          showToast({
+            type: 'success',
+            message: toastMessages.success,
+            id: toastId,
+            disableToast,
+          });
+        }
         userOnSuccess?.(data);
       },
       onError: (error: TError, variables: TQueryKey, context: unknown) => {
@@ -70,7 +80,12 @@ export function useToastQuery<
           serverErrorMessage = error.message;
         }
 
-        toast.error(serverErrorMessage);
+        showToast({
+          type: 'error',
+          message: serverErrorMessage,
+          id: toastId,
+          disableToast,
+        });
         userOnError?.(error, variables, context);
       },
       onSettled: (

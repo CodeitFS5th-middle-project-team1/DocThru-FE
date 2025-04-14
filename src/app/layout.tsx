@@ -25,15 +25,15 @@ export default function RootLayout({
       <body>
         <ToastProvider />
         <ReactQueryProvider>
-          <AuthProvider>
-            <Suspense fallback={<div>로딩 중...</div>}>
+          <Suspense fallback={<div>로딩 중...</div>}>
+            <AuthProvider>
               {isAuthPage || isLandingPage ? (
                 <>{children}</>
               ) : (
                 <Layout>{children}</Layout>
               )}
-            </Suspense>
-          </AuthProvider>
+            </AuthProvider>
+          </Suspense>
         </ReactQueryProvider>
       </body>
     </html>

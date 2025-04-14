@@ -8,7 +8,6 @@ import { DocumentType, FieldType } from '@/types';
 import { NextPage } from 'next';
 import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
 const NewChallenge: NextPage = () => {
   const methods = useForm();
@@ -27,12 +26,6 @@ const NewChallenge: NextPage = () => {
     try {
       await mutateAsync(formattedData);
     } catch {
-      toast.error('입력 오류입니다.', {
-        style: {
-          whiteSpace: 'pre-wrap',
-          wordBreak: 'break-word',
-        },
-      });
       setIsProcessing(false);
     }
   };

@@ -1,3 +1,4 @@
+import { TOAST_ID } from '@/constants';
 import { customFetch } from '../url';
 
 export interface LikeRequest {
@@ -16,6 +17,7 @@ export const createLike = async (id: string): Promise<CreateLikeResponse> => {
     headers: {
       'Content-Type': 'application/json',
     },
+    toastId: TOAST_ID.TRANSLATION,
   });
   return res.json();
 };
@@ -26,6 +28,7 @@ export const deleteLike = async (id: string): Promise<CreateLikeResponse> => {
     headers: {
       'Content-Type': 'application/json',
     },
+    toastId: TOAST_ID.TRANSLATION,
   });
   return res.json();
 };

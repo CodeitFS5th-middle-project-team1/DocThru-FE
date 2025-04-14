@@ -13,6 +13,7 @@ import {
 import { Translation } from '@/types';
 import { useQueries } from '@tanstack/react-query';
 import { useToastMutation } from '@/shared/hooks/useToastMutation';
+import { TOAST_ID } from '@/constants';
 
 export const useGetTranslationList = (
   id: string,
@@ -21,8 +22,9 @@ export const useGetTranslationList = (
   return useToastQuery<FetchTranslationResponse, unknown>(
     ['translationList', id, params?.page, params?.limit],
     () => fetchTranslation(id, params),
-    'TranslationList-toast',
+    TOAST_ID.TRANSLATION,
     {},
+    false,
     { enabled: !!id }
   );
 };
@@ -31,8 +33,9 @@ export const useGetTranslation = (id: string, challengeId: string) => {
   return useToastQuery<Translation, unknown>(
     ['translation', id, challengeId],
     () => fetchTranslationById(id, challengeId),
-    'Translation-toast',
+    TOAST_ID.TRANSLATION,
     {},
+    false,
     { enabled: !!id && !!challengeId }
   );
 };
@@ -40,8 +43,9 @@ export const useGetDraftTranslation = (id: string) => {
   return useToastQuery<Translation, unknown>(
     ['getDraftTranslation', id],
     () => getDraftTranslation(id),
-    'getDraftTranslation-toast',
+    TOAST_ID.TRANSLATION,
     {},
+    false,
     { enabled: !!id }
   );
 };
@@ -115,7 +119,7 @@ export const useCreateDraft = (id: string) => {
     {
       onSuccess: () => {},
     },
-    'save-translation', // <- toastId (중복 방지용 고유 id)
+    TOAST_ID.TRANSLATION, // <- toastId (중복 방지용 고유 id)
     '임시저장 실패! 😢'
   );
 };

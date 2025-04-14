@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import CardSkeleton from '@/shared/components/card/CardSkeleton';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 import { useDeleteChallengeByAdmin } from '@/api/challenge/ChallengeHooks';
-import { PATH } from '@/constants';
+import { PATH, TOAST_ID } from '@/constants';
 
 const ChallengeMain = () => {
   const [keyword, setKeyword] = useState('');
@@ -39,11 +39,12 @@ const ChallengeMain = () => {
         fields: filters.fields,
         status: filters.status,
       }),
-    'challenge-toast',
+    TOAST_ID.MAIN_CHALLENGE,
     {
       pending: '불러오는 중...',
       success: '불러오기 완료!',
     },
+    false,
     {
       keepPreviousData: true,
     }

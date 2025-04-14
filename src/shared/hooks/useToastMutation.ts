@@ -1,3 +1,5 @@
+import { ToastId } from '@/constants';
+import { showToast } from '@/lib/utill';
 import {
   useMutation,
   UseMutationOptions,
@@ -21,28 +23,35 @@ export function useToastMutation<
   mutationFn: (variables: TVariables) => Promise<TData>,
   toastMessages?: ToastMessages,
   options?: UseMutationOptions<TData, TError, TVariables, TContext>,
-  toastId?: string,
-  handledMessage?: string
+  toastId?: ToastId,
+  handledMessage?: string,
+  disableToast: boolean = false
 ): UseMutationResult<TData, TError, TVariables, TContext> {
   return useMutation<TData, TError, TVariables, TContext>({
     mutationFn,
     ...options,
     onMutate: async (variables) => {
       if (toastId) toast.dismiss(toastId);
-      if (toastMessages?.pending)
-        toast.loading(toastMessages.pending, {
+      if (toastMessages?.pending) {
+        showToast({
+          type: 'loading',
+          message: toastMessages.pending,
           id: toastId,
-          duration: 3000,
+          disableToast,
         });
+      }
       return options?.onMutate?.(variables);
     },
     onSuccess: (data, variables, context) => {
       if (toastId) toast.dismiss(toastId);
-      if (toastMessages?.success)
-        toast.success(toastMessages.success, {
+      if (toastMessages?.success) {
+        showToast({
+          type: 'success',
+          message: toastMessages.success,
           id: toastId,
-          duration: 3000,
+          disableToast,
         });
+      }
       options?.onSuccess?.(data, variables, context);
     },
     onError: (error, variables, context) => {
@@ -60,9 +69,11 @@ export function useToastMutation<
         serverErrorMessage = error.message;
       }
 
-      toast.error(serverErrorMessage, {
+      showToast({
+        type: 'error',
+        message: serverErrorMessage,
         id: toastId,
-        duration: 3000,
+        disableToast,
       });
       options?.onError?.(error, variables, context);
     },
