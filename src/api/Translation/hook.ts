@@ -34,11 +34,11 @@ export const useGetTranslationListAll = (
   params: FetchTranslationParams
 ) => {
   return useToastQuery<FetchTranslationResponse, unknown>(
-    ['translationList', id, params?.page, params?.limit],
+    ['translationListAll', id, params?.page, params?.limit],
     () => fetchTranslation(id, params),
-    'TranslationList-toast',
+    TOAST_ID.TRANSLATION,
     {},
-    { enabled: !!id && !!totalCount }
+    !!id && !!totalCount
   );
 };
 
@@ -83,7 +83,7 @@ export const useDeleteTranslation = () => {
         console.error(error);
       },
     },
-    'deleteTranslation-toast'
+    TOAST_ID.TRANSLATION
   );
 };
 
