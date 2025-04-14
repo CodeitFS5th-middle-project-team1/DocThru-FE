@@ -1,7 +1,6 @@
 import { useAuthStore } from '@/api/auth/AuthStore';
 import { showToast } from '@/lib/utill';
 import { TOAST_ID, ToastId } from '@/constants';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 const getAccessToken = () => {
   if (typeof window !== 'undefined') {
@@ -39,7 +38,7 @@ export const customFetch = async (
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_URL}${input}`, {
+  const response = await fetch(`${input}`, {
     ...options,
     credentials: 'include',
     headers,
