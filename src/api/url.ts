@@ -38,7 +38,9 @@ export const customFetch = async (
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${input}`, {
+  const url = input.startsWith('/api') ? input : `/api${input}`;
+
+  const response = await fetch(url, {
     ...options,
     credentials: 'include',
     headers,
