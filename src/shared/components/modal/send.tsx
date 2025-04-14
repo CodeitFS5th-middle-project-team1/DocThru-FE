@@ -43,7 +43,10 @@ const SendModal: React.FC<SendModalProps> = ({
     >
       <div className="flex flex-row justify-between">
         <h2 className="text-xl font-bold">{title}</h2>
-        <button onClick={onClose} className="hover:bg-custom-gray-100">
+        <button
+          onClick={onClose}
+          className="hover:bg-custom-gray-100 cursor-pointer"
+        >
           <Image src={close} alt="모달 닫기 이미지"></Image>
         </button>
       </div>
@@ -60,7 +63,7 @@ const SendModal: React.FC<SendModalProps> = ({
       <div className="w-full">
         <button
           onClick={() => onSend(content)}
-          className="w-full h-12 bg-custom-gray-800 text-white rounded-xl hover:bg-custom-gray-700"
+          className="w-full h-12 bg-custom-gray-800 text-white rounded-xl hover:bg-custom-gray-700 cursor-pointer"
         >
           전송
         </button>

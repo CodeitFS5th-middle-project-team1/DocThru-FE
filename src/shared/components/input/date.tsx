@@ -19,7 +19,7 @@ const Date = <T extends FieldValues>({
         type="date"
         {...register(name)}
         placeholder={placeholder}
-        className={`mb-3 h-12 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 ${size}`}
+        className={`mb-3 h-12 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 ${size}`}
       />
     </div>
   );

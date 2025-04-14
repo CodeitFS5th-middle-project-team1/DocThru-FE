@@ -2,15 +2,17 @@ import Image from 'next/image';
 import selectorIcon from '@images/menu-icon/Meatballs.svg';
 import { useState } from 'react';
 import { useAuthStore } from '@/api/auth/AuthStore';
+import SendModal from '../modal/send';
 
 export const CardSelector = ({
   onEdit,
   onDelete,
 }: {
   onEdit: () => void;
-  onDelete: () => void;
+  onDelete: (reason: string) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { user } = useAuthStore();
 
   const toggleMenu = (e: React.MouseEvent) => {
@@ -44,7 +46,11 @@ export const CardSelector = ({
               수정하기
             </li>
             <li
-              onClick={handleAction(onDelete)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDeleteModalOpen(true);
+                setIsOpen(false);
+              }}
               className="py-3 px-11 text-custom-gray-500  cursor-pointer "
             >
               삭제하기
@@ -52,6 +58,28 @@ export const CardSelector = ({
           </ul>
         )}
       </div>
+
+      {isDeleteModalOpen && (
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            if (e.nativeEvent.stopImmediatePropagation) {
+              e.nativeEvent.stopImmediatePropagation();
+            }
+          }}
+        >
+          <SendModal
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+            onSend={(reason) => {
+              onDelete(reason);
+              setIsDeleteModalOpen(false);
+            }}
+            title="삭제 사유"
+            placeholder="삭제 사유를 입력해주세요"
+          />
+        </div>
+      )}
     </>
   );
 };

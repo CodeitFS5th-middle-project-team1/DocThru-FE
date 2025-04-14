@@ -26,11 +26,16 @@ const Confirm: React.FC<ConfirmModalProps> = ({
       height={height}
       justifyContent="justify-end"
     >
-      <div className="w-full flex justify-center" style={{ whiteSpace: 'pre-line' }}>{children}</div>
+      <div
+        className="w-full flex justify-center"
+        style={{ whiteSpace: 'pre-line' }}
+      >
+        {children}
+      </div>
       <div className="mt-11 flex justify-end">
         <button
           onClick={onConfirm}
-          className="px-4 h-12 py-2 bg-custom-gray-800 rounded-xl text-white hover:bg-custom-gray-700"
+          className="px-4 h-12 py-2 bg-custom-gray-800 rounded-xl text-white hover:bg-custom-gray-700 cursor-pointer"
         >
           확인
         </button>
