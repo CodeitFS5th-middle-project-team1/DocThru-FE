@@ -18,6 +18,7 @@ import { useSearchParams } from 'next/navigation';
 import CardSkeleton from '@/shared/components/card/CardSkeleton';
 import ChallengeTable from './ChallengeTable';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
+import { TOAST_ID } from '@/constants';
 
 const TAB_LIST = [
   { key: 'participating', label: '참여중인 챌린지' },
@@ -88,11 +89,12 @@ const MyChallengeMain = () => {
               : undefined,
       });
     },
-    'challenge-toast',
+    TOAST_ID.MAIN_CHALLENGE,
     {
       pending: '불러오는 중...',
       success: '불러오기 완료!',
     },
+    false,
     {
       keepPreviousData: true,
     }

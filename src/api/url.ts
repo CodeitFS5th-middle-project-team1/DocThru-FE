@@ -1,5 +1,6 @@
-import toast from 'react-hot-toast';
 import { useAuthStore } from '@/api/auth/AuthStore';
+import { showToast } from '@/lib/utill';
+import { TOAST_ID, ToastId } from '@/constants';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 const getAccessToken = () => {
@@ -24,9 +25,10 @@ const removeAccessToken = () => {
 //fetch
 export const customFetch = async (
   input: string,
-  options: RequestInit = {}
+  options: RequestInit & { disableToast?: boolean; toastId?: ToastId } = {}
 ): Promise<Response> => {
   const token = getAccessToken();
+  const { disableToast = false } = options;
 
   const headers: Record<string, string> = {
     'X-Requested-With': 'XMLHttpRequest',
@@ -53,8 +55,18 @@ export const customFetch = async (
     setAccessToken(token);
   }
   // 함수로 분리해서 중복 제거
-  const handleAuthError = (message: string, shouldRedirect = true) => {
-    toast.error(message);
+  const handleAuthError = (
+    message: string,
+    shouldRedirect = true,
+    toastId?: ToastId
+  ) => {
+    if (!disableToast) {
+      showToast({
+        type: 'error',
+        message,
+        id: toastId ?? TOAST_ID.SERVER,
+      });
+    }
     removeAccessToken();
     useAuthStore.getState().clearAuth();
 
@@ -98,11 +110,23 @@ export const customFetch = async (
 
     if ([401, 419].includes(response.status)) {
       // 로그인 경로가 아닌 경우 리다이렉트
-      handleAuthError(message, !isAuthRoute);
+      handleAuthError(message, !isAuthRoute, options.toastId);
     } else if (response.status === 403) {
-      toast.error(message);
+      if (!disableToast) {
+        showToast({
+          type: 'error',
+          message,
+          id: options.toastId ?? TOAST_ID.SERVER,
+        });
+      }
     } else {
-      toast.error(message);
+      if (!disableToast) {
+        showToast({
+          type: 'error',
+          message,
+          id: options.toastId ?? TOAST_ID.SERVER,
+        });
+      }
     }
 
     throw new Error(message);

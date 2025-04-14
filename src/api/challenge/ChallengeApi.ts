@@ -1,4 +1,5 @@
 import { customFetch } from '@/api/url';
+import { TOAST_ID } from '@/constants';
 import { Challenge, ChallengeUser, DocumentType, FieldType } from '@/types';
 
 export interface FetchChallengeParams {
@@ -57,7 +58,9 @@ const buildQuery = (params: FetchChallengeParams): string => {
 export const fetchChallenges = async (
   params: FetchChallengeParams
 ): Promise<FetchChallengeResponse> => {
-  const res = await customFetch(`/challenges${buildQuery(params)}`);
+  const res = await customFetch(`/challenges${buildQuery(params)}`, {
+    toastId: TOAST_ID.MAIN_CHALLENGE,
+  });
   return res.json();
 };
 
@@ -65,7 +68,8 @@ export const fetchChallengeByParticipating = async (
   params: FetchChallengeParams
 ): Promise<FetchChallengeResponse> => {
   const res = await customFetch(
-    `/challenges/participating${buildQuery(params)}`
+    `/challenges/participating${buildQuery(params)}`,
+    { toastId: TOAST_ID.MAIN_CHALLENGE }
   );
   return res.json();
 };
@@ -73,19 +77,25 @@ export const fetchChallengeByParticipating = async (
 export const fetchChallengeByUser = async (
   params: FetchChallengeParams
 ): Promise<FetchChallengeResponse> => {
-  const res = await customFetch(`/challenges/user${buildQuery(params)}`);
+  const res = await customFetch(`/challenges/user${buildQuery(params)}`, {
+    toastId: TOAST_ID.MAIN_CHALLENGE,
+  });
   return res.json();
 };
 
 export const fetchChallengeByAdmin = async (
   params: FetchChallengeParams
 ): Promise<FetchChallengeResponse> => {
-  const res = await customFetch(`/challenges/manage${buildQuery(params)}`);
+  const res = await customFetch(`/challenges/manage${buildQuery(params)}`, {
+    toastId: TOAST_ID.MAIN_CHALLENGE,
+  });
   return res.json();
 };
 
 export const fetchChallengeById = async (id: string): Promise<Challenge> => {
-  const res = await customFetch(`/challenges/${id}`);
+  const res = await customFetch(`/challenges/${id}`, {
+    toastId: TOAST_ID.MAIN_CHALLENGE,
+  });
   const data = await res.json();
   return data.challenge;
 };
@@ -95,6 +105,7 @@ export const createChallenge = async (data: ChallengeFormRequest) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
+    toastId: TOAST_ID.MAIN_CHALLENGE,
   });
   return res.json();
 };
@@ -104,6 +115,7 @@ export const editChallenge = async (id: string, data: ChallengeFormRequest) => {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
+    toastId: TOAST_ID.MAIN_CHALLENGE,
   });
   return res.json();
 };
@@ -116,6 +128,7 @@ export const editChallengeByAdmin = async (
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
+    toastId: TOAST_ID.MAIN_CHALLENGE,
   });
   return res.json();
 };
@@ -123,6 +136,7 @@ export const editChallengeByAdmin = async (
 export const deleteChallenge = async (id: string) => {
   const res = await customFetch(`/challenges/${id}/remove`, {
     method: 'PATCH',
+    toastId: TOAST_ID.MAIN_CHALLENGE,
   });
   return res.json();
 };
@@ -134,12 +148,15 @@ export const deleteChallengeByAdmin = async (id: string, reason: string) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ deletedReason: reason }),
+    toastId: TOAST_ID.MAIN_CHALLENGE,
   });
   return res.json();
 };
 
 export const fetchMyChallenge = async (id: string): Promise<ChallengeUser> => {
-  const res = await customFetch(`/challenges/${id}`);
+  const res = await customFetch(`/challenges/${id}`, {
+    toastId: TOAST_ID.MAIN_CHALLENGE,
+  });
   return res.json();
 };
 
@@ -151,11 +168,13 @@ export const rejectChallenge = async (
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ rejectedReason: reason }),
+    toastId: TOAST_ID.MAIN_CHALLENGE,
   });
 };
 
 export const approveChallenge = async (id: string): Promise<void> => {
   await customFetch(`/challenges/${id}/admin/approve`, {
     method: 'PATCH',
+    toastId: TOAST_ID.MAIN_CHALLENGE,
   });
 };

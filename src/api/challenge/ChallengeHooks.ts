@@ -14,13 +14,15 @@ import {
   deleteChallengeByAdmin,
 } from './ChallengeApi';
 import { useQueryClient } from '@tanstack/react-query';
+import { TOAST_ID } from '@/constants';
 
 export const useGetChallenge = (id: string) => {
   return useToastQuery<Challenge, Challenge>(
     ['challenge', id],
     () => fetchChallengeById(id),
-    'challenge-toast',
+    TOAST_ID.MAIN_CHALLENGE,
     {},
+    false,
     { enabled: !!id }
   );
 };
@@ -29,8 +31,9 @@ export const useGetMyChallenge = (id: string) => {
   return useToastQuery<ChallengeUser, unknown>(
     ['my-challenge', id],
     () => fetchMyChallenge(id),
-    'challenge-toast',
+    TOAST_ID.MAIN_CHALLENGE,
     {},
+    false,
     { enabled: !!id }
   );
 };
@@ -51,7 +54,7 @@ export const useCreateChallenge = () => {
         }, 1500);
       },
     },
-    'challenge-toast'
+    TOAST_ID.MAIN_CHALLENGE
   );
 };
 
@@ -73,7 +76,7 @@ export const useEditChallenge = (id: string) => {
         }, 1500);
       },
     },
-    'challenge-toast'
+    TOAST_ID.MAIN_CHALLENGE
   );
 };
 
@@ -92,7 +95,7 @@ export const useChallengeStatusMutation = (id: string) => {
     {
       onSuccess,
     },
-    'approveChallenge-toast'
+    TOAST_ID.MAIN_CHALLENGE
   );
 
   const rejectMutation = useToastMutation<string, void>(
@@ -103,7 +106,7 @@ export const useChallengeStatusMutation = (id: string) => {
     {
       onSuccess,
     },
-    'rejectChallenge-toast'
+    TOAST_ID.MAIN_CHALLENGE
   );
 
   return { approveMutation, rejectMutation };
@@ -124,7 +127,7 @@ export const useDeleteChallenge = (id: string) => {
     {
       onSuccess,
     },
-    'deleteChallenge-toast'
+    TOAST_ID.MAIN_CHALLENGE
   );
 
   return { deleteMutation };
@@ -146,7 +149,7 @@ export const useDeleteChallengeByAdmin = () => {
     {
       onSuccess,
     },
-    'deleteChallengeByAdmin-toast'
+    TOAST_ID.MAIN_CHALLENGE
   );
 
   return { deleteMutation };

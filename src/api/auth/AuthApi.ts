@@ -1,3 +1,4 @@
+import { TOAST_ID } from '@/constants';
 import { customFetch } from '../url';
 import { SetUser } from './AuthStore';
 
@@ -27,6 +28,7 @@ export const loginFn = async (
     headers: {
       'Content-Type': 'application/json',
     },
+    toastId: TOAST_ID.AUTH,
   });
   return res.json();
 };
@@ -40,16 +42,20 @@ export const signupFn = async (
     headers: {
       'Content-Type': 'application/json',
     },
+    toastId: TOAST_ID.AUTH,
   });
   return res.json();
 };
 
-export const logoutFn = async (): Promise<void> => {
+export const logoutFn = async (options?: {
+  disableToast?: boolean;
+}): Promise<void> => {
   await customFetch('/auth/logout', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: null,
+    ...options,
   });
 };

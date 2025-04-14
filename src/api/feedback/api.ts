@@ -1,5 +1,6 @@
 import { Feedback } from '@/types';
 import { customFetch } from '../url';
+import { TOAST_ID } from '@/constants';
 
 export interface FetchFeedBackResponse {
   feedbacks: Feedback[];
@@ -22,6 +23,7 @@ export const fetchFeedBack = async (
 ): Promise<FetchFeedBackResponse> => {
   const res = await customFetch(`/translations/${id}/feedbacks`, {
     method: 'GET',
+    toastId: TOAST_ID.TRANSLATION,
   });
   return res.json();
 };
@@ -36,6 +38,7 @@ export const createFeedBack = async (
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ content }),
+    toastId: TOAST_ID.TRANSLATION,
   });
   return res.json();
 };
@@ -53,6 +56,7 @@ export const patchFeedBack = async (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ content }),
+      toastId: TOAST_ID.TRANSLATION,
     }
   );
   return res.json();
@@ -61,11 +65,12 @@ export const patchFeedBack = async (
 export const deleteFeedBack = async (
   translationId: string,
   feedBackId: string
-): Promise<FetchFeedBackResponse> => {  
+): Promise<FetchFeedBackResponse> => {
   const res = await customFetch(
     `/translations/${translationId}/feedbacks/${feedBackId}`,
     {
       method: 'DELETE',
+      toastId: TOAST_ID.TRANSLATION,
     }
   );
   return res.json();

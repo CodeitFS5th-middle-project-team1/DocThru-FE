@@ -10,13 +10,15 @@ import {
 } from './api';
 import { useToastMutation } from '@/shared/hooks/useToastMutation';
 import { useQueryClient } from '@tanstack/react-query';
+import { TOAST_ID } from '@/constants';
 
 export const useGetFeedBackList = (id: string) => {
   return useToastQuery<FetchFeedBackResponse, unknown>(
     ['FeedBackList', id],
     () => fetchFeedBack(id),
-    'FeedBackList-toast',
+    TOAST_ID.TRANSLATION,
     {},
+    false,
     { enabled: !!id }
   );
 };
@@ -33,7 +35,7 @@ export const useCreateFeedBack = (id: string) => {
         queryClient.invalidateQueries({ queryKey: ['FeedBackList', id] });
       },
     },
-    'createFeedback-toast'
+    TOAST_ID.TRANSLATION
   );
 };
 
@@ -52,7 +54,7 @@ export const usePatchFeedBack = (translationId: string) => {
         });
       },
     },
-    'patchFeedback-toast'
+    TOAST_ID.TRANSLATION
   );
 };
 
@@ -70,6 +72,6 @@ export const useDeleteFeedBack = (translationId: string) => {
         });
       },
     },
-    'deleteFeedback-toast'
+    TOAST_ID.TRANSLATION
   );
 };

@@ -33,14 +33,14 @@ const Search: FC<SearchInputProps> = ({
   };
 
   return (
-    <div className="relative bg-white">
+    <div className="relative ">
       <input
         type="search"
         name={name}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
-        className={`pl-9 rounded-3xl pr-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-custom-gray-300 ${size}`}
+        className={`pl-9 rounded-3xl pr-4 py-2 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-custom-gray-300 ${size}`}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
       />
       <button

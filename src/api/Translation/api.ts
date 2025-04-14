@@ -1,6 +1,7 @@
 import { Translation } from '@/types';
 import { customFetch } from '../url';
 import { getQueryString } from '@/lib/utill';
+import { TOAST_ID } from '@/constants';
 
 export interface FetchTranslationParams {
   page?: number;
@@ -34,7 +35,9 @@ export const fetchTranslation = async (
   params?: FetchTranslationParams
 ): Promise<FetchTranslationResponse> => {
   const query = getQueryString({ page: params?.page, limit: params?.limit });
-  const res = await customFetch(`/challenges/${id}/translations${query}`);
+  const res = await customFetch(`/challenges/${id}/translations${query}`, {
+    toastId: TOAST_ID.TRANSLATION,
+  });
   return res.json();
 };
 
@@ -43,7 +46,8 @@ export const fetchTranslationById = async (
   challengeId: string
 ): Promise<Translation> => {
   const res = await customFetch(
-    `/challenges/${challengeId}/translations/${id}`
+    `/challenges/${challengeId}/translations/${id}`,
+    { toastId: TOAST_ID.TRANSLATION }
   );
   return res.json();
 };
@@ -58,6 +62,7 @@ export const createTranslation = async (
       method: 'POST',
       body: JSON.stringify({ title: data.title, content: data.content }),
       headers: { 'Content-Type': 'application/json' },
+      toastId: TOAST_ID.TRANSLATION,
     }
   );
   return response.json();
@@ -74,6 +79,7 @@ export const patchTranslation = async (
       method: 'PATCH',
       body: JSON.stringify({ title: data.title, content: data.content }),
       headers: { 'Content-Type': 'application/json' },
+      toastId: TOAST_ID.TRANSLATION,
     }
   );
   return res.json();
@@ -88,12 +94,15 @@ export const createDraft = async (
     method: 'POST',
     body: JSON.stringify({ title, content }),
     headers: { 'Content-Type': 'application/json' },
+    toastId: TOAST_ID.TRANSLATION,
   });
   return res.json();
 };
 
 export const getDraftTranslation = async (id: string): Promise<Translation> => {
-  const response = await customFetch(`/challenges/${id}/drafts`);
+  const response = await customFetch(`/challenges/${id}/drafts`, {
+    toastId: TOAST_ID.TRANSLATION,
+  });
   const data = await response.json();
   return data.data;
 };
