@@ -46,7 +46,7 @@ const Navigate: React.FC<NavigateModalProps> = ({
       <div className="flex justify-center">
         <button
           onClick={handleNavigate}
-          className="w-38 h-10 bg-custom-gray-800 text-white rounded-xl hover:bg-custom-gray-700"
+          className="w-38 h-10 bg-custom-gray-800 text-white rounded-xl hover:bg-custom-gray-700 cursor-pointer"
         >
           {text}
         </button>

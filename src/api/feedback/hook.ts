@@ -1,6 +1,8 @@
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import {
   createFeedBack,
+  deleteFeedBack,
+  DeleteFeedbackParams,
   fetchFeedBack,
   FetchFeedBackResponse,
   patchFeedBack,
@@ -51,5 +53,23 @@ export const usePatchFeedBack = (translationId: string) => {
       },
     },
     'patchFeedback-toast'
+  );
+};
+
+export const useDeleteFeedBack = (translationId: string) => {
+  const queryClient = useQueryClient();
+  return useToastMutation<DeleteFeedbackParams, FetchFeedBackResponse>(
+    ({ feedBackId }) => deleteFeedBack(translationId, feedBackId),
+    {
+      success: '피드백 삭제 성공',
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['FeedBackList', translationId],
+        });
+      },
+    },
+    'deleteFeedback-toast'
   );
 };

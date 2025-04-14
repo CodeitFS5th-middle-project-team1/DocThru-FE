@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import profile from '@images/profile-icon/member.svg';
-import modify from '@images/menu-icon/Meatballs.svg';
+// import modify from '@images/menu-icon/Meatballs.svg';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 import { useAuthStore } from '@/api/auth/AuthStore';
+import { CardSelector } from './card/CardSelector';
 
 interface ReplyProps {
   user: { nickName: string; img?: string };
@@ -11,7 +12,8 @@ interface ReplyProps {
   create: string;
   content: string;
   userId?: string;
-  onClick?: (id: string, content: string) => void;
+  onEdit?: (id: string, content: string) => void;
+  onDelete?: (id: string) => void;
 }
 
 export const Reply: React.FC<ReplyProps> = ({
@@ -20,7 +22,8 @@ export const Reply: React.FC<ReplyProps> = ({
   id,
   content,
   userId,
-  onClick,
+  onEdit,
+  onDelete,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>(content);
@@ -36,12 +39,16 @@ export const Reply: React.FC<ReplyProps> = ({
     if (!feedback) return;
     setFeedback(feedback);
     setIsOpen(false);
-    onClick?.(id, feedback);
+    onEdit?.(id, feedback);
+  };
+  const onHandleDelete = () => {
+    if (!id) return;
+    onDelete?.(id);
   };
 
   const isSameUser = you?.id === userId;
   return (
-    <div className="w-full h-full bg-custom-gray-50 rounded-xl p-4 overflow-hidden">
+    <div className="w-full h-full bg-custom-gray-50 rounded-xl p-4">
       <div className="w-full flex flex-row justify-between pb-4">
         <div className=" flex flex-row gap-2">
           <Image src={user.img ? user.img : profile} alt="profile" />
@@ -52,12 +59,10 @@ export const Reply: React.FC<ReplyProps> = ({
         </div>
         {!isOpen ? (
           isSameUser && (
-            <div
-              onClick={() => setIsOpen(true)}
-              className="R-16-0 cursor-pointer"
-            >
-              <Image src={modify} alt="modify" />
-            </div>
+            <CardSelector
+              onEdit={() => setIsOpen(true)}
+              onDelete={onHandleDelete}
+            />
           )
         ) : (
           <div className="flex gap-1 SB-14-0">

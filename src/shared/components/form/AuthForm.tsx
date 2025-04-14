@@ -8,6 +8,7 @@ import Password from '../input/password';
 import Text from '../input/text';
 import Link from 'next/link';
 import { useFormContext, SubmitHandler } from 'react-hook-form';
+import { PATH } from '@/constants';
 
 export interface AuthFormData {
   email: string;
@@ -34,8 +35,8 @@ const AuthForm = ({ category, onSubmit, isPending }: AuthFormProps) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <section>
         <Link
-          href={'/'}
-          className="flex justify-center items-center pt-32 gap-3.5"
+          href={PATH.challenge}
+          className="flex justify-center items-center pt-32 gap-3.5 "
         >
           <Image src={mainLogo} alt="main logo" />
         </Link>

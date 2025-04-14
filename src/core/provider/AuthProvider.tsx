@@ -2,8 +2,9 @@
 
 import { AuthState, useAuthStore, useHydrated } from '@/api/auth/AuthStore';
 import { PATH } from '@/constants';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { createContext, useContext, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 const publicPaths = ['/', PATH.login, PATH.signup, PATH.challenge];
 const homePaths = ['/'];
@@ -22,6 +23,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, setAuth, clearAuth } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const hydrated = useHydrated();
 
   const isLoggedIn = !!user;
@@ -37,6 +39,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const isAdminPage = pathname.startsWith('/admin');
 
+    const message = searchParams.get('message');
+    if (message) {
+      if (message === 'needLogin') {
+        toast.error('로그인이 필요합니다.');
+      } else if (message === 'adminOnly') {
+        toast.error('관리자 권한이 필요합니다.');
+      }
+
+      const cleanedUrl = `${window.location.pathname}${window.location.hash}`;
+      router.replace(cleanedUrl);
+    }
+
     if (!isLoggedIn && !isPublic) {
       router.replace(PATH.login);
     }
@@ -47,9 +61,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (isLoggedIn && isAdminPage && user?.role !== 'ADMIN') {
       router.replace(PATH.challenge);
-      return;
     }
-  }, [hydrated, isLoggedIn, isPublic, pathname, router, isHome, user?.role]);
+  }, [
+    hydrated,
+    isLoggedIn,
+    isPublic,
+    pathname,
+    router,
+    isHome,
+    searchParams,
+    user?.role,
+  ]);
+
+  if (!hydrated) {
+    return <div>로딩 중...</div>;
+  }
 
   return (
     <AuthContext.Provider

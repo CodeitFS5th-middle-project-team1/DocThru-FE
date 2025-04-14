@@ -45,7 +45,7 @@ const Pagination = ({
         />
       </button>
 
-      <div>
+      <div className="flex gap-1.5">
         {pageNumbers.map((page) => (
           <button
             key={page}
@@ -54,7 +54,7 @@ const Pagination = ({
               ${
                 page === currentPage
                   ? 'bg-custom-gray-800 text-custom-yellow-brand'
-                  : 'bg-white text-custom-gray-400 hover:text-custom-gray-800 hover:font-semibold'
+                  : ' text-custom-gray-400 hover:text-custom-gray-800 hover:font-semibold'
               }`}
           >
             {page}

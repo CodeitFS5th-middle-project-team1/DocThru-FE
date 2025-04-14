@@ -53,16 +53,15 @@ export const customFetch = async (
     setAccessToken(token);
   }
   // 함수로 분리해서 중복 제거
-  const handleAuthError = (message: string) => {
+  const handleAuthError = (message: string, shouldRedirect = true) => {
     toast.error(message);
-    removeAccessToken(); //localStorage에서 토큰 제거
-    useAuthStore.getState().clearAuth(); // Zustand 유저 상태 초기화
+    removeAccessToken();
+    useAuthStore.getState().clearAuth();
 
-    // if (typeof window !== 'undefined') {
-    //   window.location.href = '/auth/login';
-    // }
+    if (shouldRedirect && typeof window !== 'undefined') {
+      window.location.href = '/auth/login'; // 토큰 만료시 로그인 페이지로 리다이렉트
+    }
   };
-  // 오류 없는 타입 정의
   type ErrorResponse =
     | string
     | { message?: string }
@@ -83,20 +82,30 @@ export const customFetch = async (
   };
 
   if (!response.ok) {
+    const contentType = response.headers.get('Content-Type');
+
+    if (contentType && contentType.includes('text/html')) {
+      handleAuthError('로그인이 필요합니다.');
+      throw new Error('로그인이 필요합니다.');
+    }
+
     const errorData = (await response
       .json()
       .catch(() => ({}))) as ErrorResponse;
     const message = getSafeMessage(errorData, '요청에 실패했습니다.');
 
+    const isAuthRoute = input.includes('/auth'); // 로그인, 회원가입 경로 확인
+
     if ([401, 419].includes(response.status)) {
-      handleAuthError(message);
+      // 로그인 경로가 아닌 경우 리다이렉트
+      handleAuthError(message, !isAuthRoute);
     } else if (response.status === 403) {
       toast.error(message);
     } else {
       toast.error(message);
     }
 
-    throw new Error(message); // 항상 string만 throw
+    throw new Error(message);
   }
 
   return response;

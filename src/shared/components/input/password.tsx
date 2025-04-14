@@ -51,12 +51,12 @@ const Password = <T extends FieldValues>({
   }
 
   return (
-    <div className="inline-block relative">
+    <div className="inline-block relative ">
       <input
         type={showPassword ? 'text' : 'password'}
         {...register(name, validationMessages)}
         placeholder={placeholder}
-        className={`p-3.5 pr-9 border rounded-xl focus:outline-none focus:ring-1 ${size} ${
+        className={`p-3.5 pr-9 border  bg-white rounded-xl focus:outline-none focus:ring-1 ${size} ${
           errors && errors[name]
             ? 'border-red-500 focus:ring-red-500'
             : 'border-custom-gray-200 focus:ring-custom-gray-200'

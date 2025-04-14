@@ -19,7 +19,6 @@ export const Participation: React.FC<ParticipationProps> = ({
   page,
   maxPage = 0,
 }) => {
-  console.log(List);
   return (
     <div className="flex flex-col border-2 border-custom-gray-800 px-6 py-4 rounded-2xl min-h-[165px]">
       <div className="flex justify-between items-center ">
