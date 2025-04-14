@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://docthru-be-wstf.onrender.com/api/:path*"
+    }
+  ]
+}
