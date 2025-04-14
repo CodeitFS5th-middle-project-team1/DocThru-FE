@@ -32,7 +32,7 @@ export const OriginView = ({
         src={originUrl}
         width="100%"
         height="100%"
-        title="원본 보기"
+        title="원문 보기"
         className={`${className}`}
       />
     </div>

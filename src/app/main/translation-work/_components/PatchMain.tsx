@@ -10,13 +10,13 @@ import { fetchChallengeById } from '@/api/challenge/ChallengeApi';
 export default function PatchMain() {
   const [showOriginal, setShowOriginal] = useState(false);
   const searchParams = useSearchParams();
-  const [originUrl, setOriginUrl] = useState("https://nextjs-ko.org/docs");
+  const [originUrl, setOriginUrl] = useState('https://nextjs-ko.org/docs');
   useEffect(() => {
     const cid = searchParams.get('challengeId') as string;
     getChallengeOrigin(cid);
   }, [searchParams]);
 
-  async function getChallengeOrigin (id: string) {
+  async function getChallengeOrigin(id: string) {
     const result = await fetchChallengeById(id);
     setOriginUrl(result.originURL);
   }
