@@ -10,7 +10,7 @@ export default function AuthLayout({
   return (
     <ReactQueryProvider>
       <ToastProvider />
-      <section className="flex flex-col justify-center items-center px-4 md:px-28  gap-10 ">
+      <section className="flex flex-col h-screen  items-center px-4 md:px-28  bg-[#f5f5f5] ">
         {children}
       </section>
     </ReactQueryProvider>

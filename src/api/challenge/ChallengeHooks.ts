@@ -11,6 +11,7 @@ import {
   approveChallenge,
   rejectChallenge,
   deleteChallenge,
+  deleteChallengeByAdmin,
 } from './ChallengeApi';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -124,6 +125,28 @@ export const useDeleteChallenge = (id: string) => {
       onSuccess,
     },
     'deleteChallenge-toast'
+  );
+
+  return { deleteMutation };
+};
+
+export const useDeleteChallengeByAdmin = () => {
+  const queryClient = useQueryClient();
+
+  const onSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ['challenges'] });
+    queryClient.invalidateQueries({ queryKey: ['my-challenges'] });
+  };
+
+  const deleteMutation = useToastMutation<{ id: string; reason: string }, void>(
+    ({ id, reason }) => deleteChallengeByAdmin(id, reason),
+    {
+      success: '챌린지 삭제 완료!',
+    },
+    {
+      onSuccess,
+    },
+    'deleteChallengeByAdmin-toast'
   );
 
   return { deleteMutation };

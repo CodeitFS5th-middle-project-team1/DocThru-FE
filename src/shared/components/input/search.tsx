@@ -33,7 +33,7 @@ const Search: FC<SearchInputProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative bg-white">
       <input
         type="search"
         name={name}

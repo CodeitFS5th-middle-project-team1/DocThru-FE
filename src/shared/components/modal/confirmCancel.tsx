@@ -37,13 +37,13 @@ const ConfirmCancel: React.FC<ConfirmCancelModalProps> = ({
       <div className="flex justify-center space-x-2">
         <button
           onClick={onCancel}
-          className="w-22.5 h-10 bg-white text-custom-gray-800 rounded-xl border border-custom-gray-800 hover:bg-custom-gray-100"
+          className="w-22.5 h-10 bg-white text-custom-gray-800 rounded-xl border border-custom-gray-800 hover:bg-custom-gray-100 cursor-pointer"
         >
           아니오
         </button>
         <button
           onClick={onConfirm}
-          className="w-22.5 h-10 bg-custom-gray-800 text-white rounded-xl hover:bg-custom-gray-700"
+          className="w-22.5 h-10 bg-custom-gray-800 text-white rounded-xl hover:bg-custom-gray-700 cursor-pointer"
         >
           확인
         </button>

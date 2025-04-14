@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 interface ModalProps {
   isOpen: boolean;
@@ -19,7 +20,14 @@ const ModalBase: React.FC<ModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  return (
+  // 타입 안전하게 container 설정
+  const container: HTMLElement | null =
+    typeof window !== 'undefined' ? document.body : null;
+
+  // 서버에서는 포털을 안 그리게 early return
+  if (!container) return null;
+
+  return ReactDOM.createPortal(
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* 배경 */}
       <div className="fixed inset-0 bg-black opacity-50" onClick={onClose} />
@@ -30,7 +38,8 @@ const ModalBase: React.FC<ModalProps> = ({
       >
         {children}
       </div>
-    </div>
+    </div>,
+    container
   );
 };
 

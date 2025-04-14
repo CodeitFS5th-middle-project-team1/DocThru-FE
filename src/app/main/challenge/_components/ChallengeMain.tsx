@@ -6,12 +6,13 @@ import Pagination from './Pagination';
 import { Filter } from '@/shared/components/dropdown/Filter';
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import { fetchChallenges } from '@/api/challenge/ChallengeApi';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import CardSkeleton from '@/shared/components/card/CardSkeleton';
+import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
+import { useDeleteChallengeByAdmin } from '@/api/challenge/ChallengeHooks';
+import { PATH } from '@/constants';
 
 const ChallengeMain = () => {
-  const [limit] = useState(10);
-  const [totalPages, setTotalPages] = useState(1);
   const [keyword, setKeyword] = useState('');
   const [filters, setFilters] = useState({
     fields: [] as string[],
@@ -19,16 +20,20 @@ const ChallengeMain = () => {
     status: '',
   });
 
+  const isMobile = useMediaQuery('(max-width: 344px)');
+  const displayCount = isMobile ? 4 : 5;
+
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialPage = Number(searchParams.get('page')) || 1;
   const [page, setPage] = useState(initialPage);
 
   const { data, isPending } = useToastQuery(
-    ['challenges', page, limit, keyword, filters],
+    ['challenges', page, displayCount, keyword, filters],
     () =>
       fetchChallenges({
         page,
-        limit: 10,
+        limit: displayCount,
         keyword,
         documentType: filters.documentType,
         fields: filters.fields,
@@ -44,7 +49,15 @@ const ChallengeMain = () => {
     }
   );
 
+  const { deleteMutation } = useDeleteChallengeByAdmin();
+
+  const handleDelete = (id: string, reason: string) => {
+    deleteMutation.mutate({ id, reason });
+  };
+
   const challenges = data?.challenges ?? [];
+  const totalCount = data?.totalCount ?? 0;
+  const totalPages = Math.ceil(totalCount / displayCount);
 
   const handleSearch = (e: string) => {
     if (keyword !== e) {
@@ -54,20 +67,11 @@ const ChallengeMain = () => {
   };
 
   useEffect(() => {
-    if (data?.totalCount !== undefined) {
-      const nextTotalPages = Math.ceil(data.totalCount / limit);
-      if (nextTotalPages !== totalPages) {
-        setTotalPages(nextTotalPages);
-      }
-    }
-  }, [data?.totalCount, limit, totalPages]);
-
-  useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page]);
 
   return (
-    <div className="flex flex-col gap-6 ">
+    <div className="flex flex-col gap-6 bg-custom-gray-50">
       <section className="flex gap-3">
         <div className="flex items-center">
           <Filter
@@ -90,7 +94,7 @@ const ChallengeMain = () => {
 
       <section className="flex flex-col gap-6 w-full">
         {isPending ? (
-          Array.from({ length: 5 }).map((_, index) => (
+          Array.from({ length: displayCount }).map((_, index) => (
             <CardSkeleton key={index} />
           ))
         ) : challenges.length === 0 ? (
@@ -112,6 +116,10 @@ const ChallengeMain = () => {
                     ? 'PENDING'
                     : challenge.approvalStatus,
               }}
+              onEdit={(id) => {
+                router.push(`${PATH.challenge}/${id}/edit`);
+              }}
+              onDelete={handleDelete}
             />
           ))
         )}
