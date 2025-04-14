@@ -115,6 +115,7 @@ export const useCreateDraft = (id: string) => {
     {
       onSuccess: () => {},
     },
-    'save-translation' // <- toastId (중복 방지용 고유 id)
+    'save-translation', // <- toastId (중복 방지용 고유 id)
+    '임시저장 실패! 😢'
   );
 };

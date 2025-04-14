@@ -21,7 +21,8 @@ export function useToastMutation<
   mutationFn: (variables: TVariables) => Promise<TData>,
   toastMessages?: ToastMessages,
   options?: UseMutationOptions<TData, TError, TVariables, TContext>,
-  toastId?: string
+  toastId?: string,
+  handledMessage?: string
 ): UseMutationResult<TData, TError, TVariables, TContext> {
   return useMutation<TData, TError, TVariables, TContext>({
     mutationFn,
@@ -53,7 +54,9 @@ export function useToastMutation<
 
       let serverErrorMessage = '문제가 발생했습니다. 다시 시도해주세요.';
 
-      if (error instanceof Error) {
+      if (typeof handledMessage === 'string') {
+        serverErrorMessage = handledMessage;
+      } else if (error instanceof Error) {
         serverErrorMessage = error.message;
       }
 
