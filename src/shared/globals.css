@@ -1,0 +1,484 @@
+@import 'tailwindcss';
+@import 'react-quill-new/dist/quill.snow.css';
+
+/*여기에 폰트 넣으시면 됩니다.*/
+@import '@fontsource/jetbrains-mono';
+@font-face {
+  font-family: 'pretendard';
+  font-style: normal;
+  src: url('./fonts/PretendardVariable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'quantico';
+  font-style: normal;
+  src: url('./fonts/Quantico/Quantico-Bold.woff2') format('woff2');
+  src: url('./fonts/Quantico/Quantico-BoldItalic.woff2') format('woff2');
+  src: url('./fonts/Quantico/Quantico-Italic.woff2') format('woff2');
+  src: url('./fonts/Quantico/Quantico-Regular.woff2') format('woff2');
+  unicode-range: U+0061-007A, U+0041-005A;
+}
+
+@theme {
+  --breakpoint-s: 344px;
+  --breakpoint-m: 744px;
+  --color-custom-black: #000000;
+  --color-custom-red: #f24744;
+  --color-custom-red-brand: #ffe7e7;
+  --color-custom-yellow-brand: #ffc107;
+  --color-custom-white: #ffffff;
+  --color-custom-white-brand: #f1f2f5;
+  --color-custom-gray-900: #171717;
+  --color-custom-gray-800: #262626;
+  --color-custom-gray-700: #404040;
+  --color-custom-gray-600: #525252;
+  --color-custom-gray-500: #737373;
+  --color-custom-gray-400: #a3a3a3;
+  --color-custom-gray-300: #d4d4d4;
+  --color-custom-gray-200: #e5e5e5;
+  --color-custom-gray-100: #e8ebed;
+  --color-custom-gray-50: #fafafa;
+}
+
+@layer base {
+  body {
+    font-family: 'pretendard', 'quantico';
+  }
+  .dev-font {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+/**font 설정 
+  * B: Bold  = weight: 700
+  * SB: SemiBold = weight: 600
+  * M: Medium = weight: 500
+  * R: Regular = weight: 400
+  * 가운데 숫자는 font-size
+  * 마지막 숫자는 line-height
+*/
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #facc15;
+  }
+}
+
+.glow {
+  text-shadow:
+    0 0 4px #facc15,
+    0 0 10px #facc15;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15); /* 반투명한 회색 */
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.SB-24-0 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-22-0 {
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-22-0 {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-20-0 {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-20-0 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-20-0 {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-18-0 {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-18-0 {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-18-0 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-18-0 {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-16-0 {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-16-0 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-16-0 {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-16-0 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-14-0 {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-14-0 {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-14-0 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-14-0 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-13-0 {
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-13-0 {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-13-0 {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-13-0 {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.B-12-0 {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.SB-12-0 {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.M-12-0 {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-12-0 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.R-16-160 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: 0%;
+}
+.R-16-130 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  letter-spacing: 0%;
+}
+.R-14-160 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 160%;
+  letter-spacing: 0%;
+}
+.R-14-130 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0%;
+}
+
+/* Quill 에디터 전체 테두리 제거 */
+.ql-container {
+  border: none !important;
+}
+
+.ql-toolbar {
+  border: none !important;
+}
+
+.ql-editor {
+  border: none !important;
+  outline: none !important; /* 포커스 시에도 테두리 안 나오게 */
+}
+
+.ql-editor ol[data-list='bullet'] {
+  @apply list-disc pl-6;
+}
+
+.ql-editor ol[data-list='bullet'] > li {
+  @apply mb-1 leading-relaxed;
+}
+
+/* --- Ordered 리스트 --- */
+.ql-editor ol[data-list='ordered'] {
+  @apply list-decimal pl-6;
+}
+
+.ql-editor ol[data-list='ordered'] > li {
+  @apply mb-1 leading-relaxed;
+}
+
+/* --- Indent --- */
+.ql-indent-1 {
+  @apply pl-6;
+}
+.ql-indent-2 {
+  @apply pl-12;
+}
+.ql-indent-3 {
+  @apply pl-16;
+}
+
+/* --- 정렬 --- */
+.ql-align-center {
+  @apply text-center;
+}
+.ql-align-right {
+  @apply text-right;
+}
+.ql-align-justify {
+  @apply text-justify;
+}
+
+/* --- 텍스트 크기 --- */
+.ql-size-large {
+  @apply text-lg;
+}
+.ql-size-small {
+  @apply text-sm;
+}
+.ql-size-huge {
+  @apply text-2xl;
+}
+
+/* --- 강조 스타일 --- */
+strong {
+  @apply font-bold;
+}
+em {
+  @apply italic;
+}
+u {
+  @apply underline;
+}
+s {
+  @apply line-through;
+}
+
+/* --- Blockquote --- */
+blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 dark:text-gray-400;
+}
+
+/* --- 코드 블럭 --- */
+.ql-code-block-container {
+  @apply bg-gray-100 dark:bg-gray-800 p-4 rounded-md my-4 overflow-x-auto;
+}
+
+.ql-code-block {
+  @apply font-mono text-sm text-gray-800 dark:text-gray-100;
+}
+
+/* --- 기타 --- */
+
+.ql-editor h1 {
+  @apply text-3xl font-bold mb-4;
+}
+
+.ql-editor h2 {
+  @apply text-2xl font-semibold mb-3;
+}
+
+.ql-editor h3 {
+  @apply text-xl font-semibold mb-2;
+}
+
+.ql-editor p {
+  @apply mb-4;
+}
+
+.ql-editor a {
+  @apply text-blue-600 underline hover:text-blue-800;
+}
+
+.ql-editor blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4;
+}
+
+.ql-editor code {
+  @apply font-mono bg-gray-100 text-sm px-1 py-0.5 rounded;
+}
+
+.ql-editor pre {
+  @apply bg-gray-100 p-4 overflow-auto rounded text-sm font-mono;
+}
+
+.ql-editor ul {
+  @apply list-disc pl-6 mb-4;
+}
+
+.ql-editor ol {
+  @apply list-decimal pl-6 mb-4;
+}
+
+.ql-editor li {
+  @apply mb-1;
+}
+
+.ql-editor .ql-indent-1 {
+  @apply ml-4;
+}
+
+.ql-editor .ql-indent-2 {
+  @apply ml-8;
+}
+
+.ql-editor .ql-align-center {
+  @apply text-center;
+}
+
+.ql-editor .ql-align-right {
+  @apply text-right;
+}
+
+.ql-editor .ql-align-justify {
+  @apply text-justify;
+}
+
+.ql-editor .ql-size-small {
+  @apply text-sm;
+}
+
+.ql-editor .ql-size-large {
+  @apply text-lg;
+}
+
+.ql-editor .ql-size-huge {
+  @apply text-2xl;
+}
+
+.ql-editor .ql-font-serif {
+  @apply font-serif;
+}
+
+.ql-editor .ql-font-monospace {
+  @apply font-mono;
+}
+
+.ql-editor strong {
+  @apply font-bold;
+}
+
+.ql-editor em {
+  @apply italic;
+}
+
+.ql-editor s {
+  @apply line-through;
+}
+
+.ql-editor.ql-blank::before {
+  color: #aaa;
+  transition: none !important;
+}
+
+/* 토스트 줄바꿈 적용*/
+.react-hot-toast {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
