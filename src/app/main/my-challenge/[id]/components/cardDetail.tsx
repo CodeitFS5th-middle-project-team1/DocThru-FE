@@ -34,7 +34,7 @@ export const MiniCard = ({ data }: Props) => {
   const StatusCancel: Record<string, JSX.Element> = {
     PENDING: (
       <button
-        className="w-[139px] h-[43px] bg-white border border-[#d4d4d4] rounded-md text-[#737373] hover:bg-custom-gray-100"
+        className="w-[139px] h-[43px] bg-white border border-[#d4d4d4] rounded-md text-[#737373] cursor-pointer hover:bg-custom-gray-100"
         onClick={handleCancelClick}
       >
         취소하기
