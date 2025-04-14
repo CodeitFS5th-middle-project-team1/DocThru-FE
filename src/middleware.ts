@@ -13,8 +13,10 @@ interface JwtPayload {
 
 async function verifyToken(token: string): Promise<JwtPayload | null> {
   try {
+    console.log('verifyToken token', token);
     const secret = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET);
     const { payload } = await jwtVerify<JwtPayload>(token, secret);
+    console.log('verifyToken payload', payload);
     return payload;
   } catch (error) {
     console.error('[JWT Verify Error]', error);
@@ -25,6 +27,7 @@ async function verifyToken(token: string): Promise<JwtPayload | null> {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('accessToken')?.value;
+  console.log('middleware token', token);
   const isAdminPage = pathname.startsWith('/admin');
   const isPublic = publicPaths.includes(pathname);
 
