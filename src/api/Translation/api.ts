@@ -63,6 +63,7 @@ export const createTranslation = async (
       body: JSON.stringify({ title: data.title, content: data.content }),
       headers: { 'Content-Type': 'application/json' },
       toastId: TOAST_ID.TRANSLATION,
+      disableToast: true,
     }
   );
   return response.json();
@@ -80,6 +81,7 @@ export const patchTranslation = async (
       body: JSON.stringify({ title: data.title, content: data.content }),
       headers: { 'Content-Type': 'application/json' },
       toastId: TOAST_ID.TRANSLATION,
+      disableToast: true,
     }
   );
   return res.json();
