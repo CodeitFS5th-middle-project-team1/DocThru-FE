@@ -4,7 +4,6 @@ import { loginFn, signupFn, logoutFn } from './AuthApi';
 import { useAuthStore } from './AuthStore';
 import { PATH, TOAST_ID } from '@/constants';
 import { flushSync } from 'react-dom';
-import { showToast } from '@/lib/utill';
 
 export const useLogin = () => {
   const { setAuth } = useAuthStore();
