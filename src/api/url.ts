@@ -122,7 +122,7 @@ export const customFetch = async (
         showToast({
           type: 'error',
           message,
-          id: options.toastId ?? TOAST_ID.SERVER,
+          id: TOAST_ID.SERVER,
         });
       }
     } else {
@@ -130,7 +130,7 @@ export const customFetch = async (
         showToast({
           type: 'error',
           message,
-          id: options.toastId ?? TOAST_ID.SERVER,
+          id: TOAST_ID.SERVER,
         });
       }
     }
