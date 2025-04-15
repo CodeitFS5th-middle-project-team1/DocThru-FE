@@ -6,24 +6,26 @@ import { useState } from 'react';
 import Pagination from '../../main/challenge/_components/Pagination';
 import ChallengeTable from './components/ChallengeTable';
 import { Sort } from '@/shared/components/dropdown/Sort';
-import { useQuery } from '@tanstack/react-query';
-import { ChallengeOrderBy, fetchChallengesByAdmin } from '@/api/admin/admin';
+// import { useQuery } from '@tanstack/react-query';
+import { ChallengeOrderBy } from '@/api/admin/admin';
+import { useGetChallengeByAdmin } from '@/api/challenge/ChallengeHooks';
 import { ApprovalStatus, ApprovalStatusLabels } from '@/types';
 import { useSearchParams } from 'next/navigation';
-interface ChallengeApiResponse {
-  id: string;
-  idx: number;
-  title: string;
-  documentType: string;
-  field: string;
-  maxParticipants: number;
-  createdAt: string;
-  deadline: string;
-  approvalStatus: string;
-}
-type Params =
-  | { approvalStatus: 'PENDING' | 'APPROVED' | 'REJECTED' }
-  | { order: ChallengeOrderBy };
+
+// interface ChallengeApiResponse {
+//   id: string;
+//   idx: number;
+//   title: string;
+//   documentType: string;
+//   field: string;
+//   maxParticipants: number;
+//   createdAt: string;
+//   deadline: string;
+//   approvalStatus: string;
+// }
+// type Params =
+//   | { approvalStatus: 'PENDING' | 'APPROVED' | 'REJECTED' }
+//   | { order: ChallengeOrderBy };
 
 const AdminChallenge: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,8 +36,8 @@ const AdminChallenge: NextPage = () => {
   const initialPage = Number(searchParams.get('page')) || 1;
   const [page, setPage] = useState(initialPage);
 
-  const getParamsFromSortValue = (value: string): Params => {
-    const mapping: Record<string, Params> = {
+  const getParamsFromSortValue = (value: string) => {
+    const mapping = {
       option1: { approvalStatus: 'PENDING' },
       option2: { approvalStatus: 'APPROVED' },
       option3: { approvalStatus: 'REJECTED' },
@@ -44,7 +46,7 @@ const AdminChallenge: NextPage = () => {
       option6: { order: ChallengeOrderBy.DEADLINE_FIRST },
       option7: { order: ChallengeOrderBy.DEADLINE_LAST },
     };
-    return mapping[value];
+    return mapping[value as keyof typeof mapping] || {};
   };
 
   const queryParams = {
@@ -54,14 +56,7 @@ const AdminChallenge: NextPage = () => {
     ...getParamsFromSortValue(sortValue),
   };
 
-  const { data, isLoading, error } = useQuery<{
-    challenges: ChallengeApiResponse[];
-    totalCount: number;
-  }>({
-    queryKey: ['adminChallenges', queryParams],
-    queryFn: () => fetchChallengesByAdmin(queryParams),
-    staleTime: 5000,
-  });
+  const { data, isLoading, error } = useGetChallengeByAdmin(queryParams);
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
@@ -77,13 +72,21 @@ const AdminChallenge: NextPage = () => {
     setPage(newPage);
   };
 
-  // 상태값 매핑
-  const getStatusLabel = (status: string): string => {
-    if (Object.values(ApprovalStatus).includes(status as ApprovalStatus)) {
-      return ApprovalStatusLabels[status as ApprovalStatus];
-    }
-    return '승인 대기';
-  };
+  const getStatusLabel = (status: string) =>
+    ApprovalStatusLabels[status as ApprovalStatus] || '승인 대기';
+
+  // const transformedData =
+  //   data?.challenges.map((challenge) => ({
+  //     no: challenge.idx,
+  //     type: challenge.documentType,
+  //     category: challenge.field,
+  //     title: challenge.title,
+  //     people: challenge.maxParticipants,
+  //     createdAt: new Date(challenge.createdAt).toLocaleDateString('ko-KR'),
+  //     deadline: new Date(challenge.deadline).toLocaleDateString('ko-KR'),
+  //     status: getStatusLabel(challenge.approvalStatus),
+  //     id: challenge.id,
+  //   })) || [];
 
   const transformedData =
     data?.challenges.map((challenge) => ({

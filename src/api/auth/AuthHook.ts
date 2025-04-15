@@ -23,7 +23,7 @@ export const useLogin = () => {
         if (user.role === 'ADMIN') {
           router.replace(PATH.admin);
         } else {
-          router.replace(PATH.challenge);
+          window.location.replace(PATH.challenge);
         }
       },
       onError: () => {
@@ -44,7 +44,7 @@ export const useLogout = () => {
       await logoutFn({ disableToast: true });
       clearAuth();
       document.cookie =
-        'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure;';
       setTimeout(() => {
         router.replace('/auth/login?message=logoutSuccess');
       }, 0);
