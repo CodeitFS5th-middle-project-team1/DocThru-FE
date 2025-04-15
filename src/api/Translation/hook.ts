@@ -11,7 +11,7 @@ import {
   getDraftTranslation,
 } from './api';
 import { Translation } from '@/types';
-import { useQueries } from '@tanstack/react-query';
+import { useQueries, useQueryClient } from '@tanstack/react-query';
 import { useToastMutation } from '@/shared/hooks/useToastMutation';
 import { TOAST_ID } from '@/constants';
 
@@ -25,20 +25,32 @@ export const useGetTranslationList = (
     TOAST_ID.TRANSLATION,
     {},
     false,
-    { enabled: !!id }
+    {
+      enabled: !!id,
+      staleTime: 1000 * 60 * 5, // 5분 동안 캐시된 데이터 사용
+      refetchOnWindowFocus: false, // 페이지 포커스 시 재요청 방지
+      refetchOnReconnect: false, // 네트워크 재연결 시 재요청 방지
+    }
   );
 };
 export const useGetTranslationListAll = (
   id: string,
   totalCount: number,
-  params: FetchTranslationParams
+  params: FetchTranslationParams,
+  challenge: { isDeadlineFull: boolean }
 ) => {
   return useToastQuery<FetchTranslationResponse, unknown>(
     ['translationListAll', id, params?.page, params?.limit],
     () => fetchTranslation(id, params),
     TOAST_ID.TRANSLATION,
     {},
-    !!id && !!totalCount
+    false,
+    {
+      enabled: !!id && !!totalCount && !!challenge?.isDeadlineFull,
+      staleTime: 1000 * 60 * 5, // 5분 동안 캐시된 데이터 사용
+      refetchOnWindowFocus: false, // 페이지 포커스 시 재요청 방지
+      refetchOnReconnect: false, // 네트워크 재연결 시 재요청 방지
+    }
   );
 };
 
@@ -49,7 +61,12 @@ export const useGetTranslation = (id: string, challengeId: string) => {
     TOAST_ID.TRANSLATION,
     {},
     false,
-    { enabled: !!id && !!challengeId }
+    {
+      enabled: !!id && !!challengeId,
+      staleTime: 1000 * 60 * 5, // 5분 동안 캐시된 데이터 사용
+      refetchOnWindowFocus: false, // 페이지 포커스 시 재요청 방지
+      refetchOnReconnect: false, // 네트워크 재연결 시 재요청 방지
+    }
   );
 };
 export const useGetDraftTranslation = (id: string) => {
@@ -59,7 +76,12 @@ export const useGetDraftTranslation = (id: string) => {
     TOAST_ID.TRANSLATION,
     {},
     false,
-    { enabled: !!id }
+    {
+      enabled: !!id,
+      staleTime: 1000 * 60 * 5, // 5분 동안 캐시된 데이터 사용
+      refetchOnWindowFocus: false, // 페이지 포커스 시 재요청 방지
+      refetchOnReconnect: false, // 네트워크 재연결 시 재요청 방지
+    }
   );
 };
 
@@ -69,6 +91,8 @@ interface DeleteTranslationArgs {
 }
 
 export const useDeleteTranslation = () => {
+  const queryClient = useQueryClient();
+
   return useToastMutation<DeleteTranslationArgs>(
     ({ challengeId, translationId }) =>
       deleteTranslation(translationId, challengeId),
@@ -77,7 +101,13 @@ export const useDeleteTranslation = () => {
       success: '번역물 삭제 완료!',
     },
     {
-      onSuccess: () => {},
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['translationListAll'] });
+        queryClient.invalidateQueries({ queryKey: ['translationList'] });
+        queryClient.invalidateQueries({
+          queryKey: ['challenge'],
+        });
+      },
       onError: (error) => {
         // 여기에 원하는 에러 처리 로직 작성
         console.error(error);
@@ -89,6 +119,7 @@ export const useDeleteTranslation = () => {
 
 export const useGetTranslationsByIds = (
   challengeId: string,
+  challenge: { isDeadlineFull: boolean },
   ids?: string[]
 ) => {
   const queries = useQueries({
@@ -96,7 +127,7 @@ export const useGetTranslationsByIds = (
       ids?.map((id) => ({
         queryKey: ['translation', id],
         queryFn: () => fetchTranslationById(id, challengeId),
-        enabled: !!id,
+        enabled: !!id && !!challenge.isDeadlineFull,
       })) ?? [],
   });
 

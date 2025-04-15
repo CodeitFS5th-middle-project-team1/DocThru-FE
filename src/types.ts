@@ -61,7 +61,13 @@ export interface Translation {
   id: string;
   title: string;
   content: string;
-  user: { id: string; nickname: string };
+  user: {
+    id: string;
+    email: string;
+    nickname: string;
+    rank: string;
+    role: string;
+  };
   challengeId: string;
   likeCount: number;
   isLiked: boolean;

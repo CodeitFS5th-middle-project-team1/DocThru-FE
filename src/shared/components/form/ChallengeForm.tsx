@@ -82,8 +82,8 @@ const ChallengeForm = ({
               message: '제목은 최소 2자 이상이어야 합니다.',
             },
             maxLength: {
-              value: 15,
-              message: '제목은 최대 15자 이하여야 합니다.',
+              value: 30,
+              message: '제목은 최대 30자 이하여야 합니다.',
             },
           }}
           errorMessage={_errors.title?.message}

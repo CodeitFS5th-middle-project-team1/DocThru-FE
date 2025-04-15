@@ -119,7 +119,7 @@ export const Card = ({
                   : ButtonCategory.VIEW_ORIGINAL
               }
               onClick={() => handleRoute()}
-              size="py-2 pl-4 pr-1"
+              size="py-2 pl-6 "
             >
               {status === 'participating' ? '도전 계속하기' : '내 작업물 보기'}
             </Button>
