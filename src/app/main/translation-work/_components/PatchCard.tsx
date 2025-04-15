@@ -18,7 +18,7 @@ import {
   useGetDraftTranslation,
   useGetTranslation,
 } from '@/api/Translation/hook';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DraftRequest, patchTranslation } from '@/api/Translation/api';
 
 export default function PatchCard() {
@@ -33,7 +33,7 @@ export default function PatchCard() {
   const router = useRouter();
   const params = useParams();
   const translationId = params.id as string;
-
+  const queryClient = useQueryClient();
   const { mutate: createDraftMutation } = useCreateDraft(translationId);
   const { data: draftData, status: draftStatus } =
     useGetDraftTranslation(challengeId);
@@ -41,6 +41,7 @@ export default function PatchCard() {
     translationId,
     challengeId
   );
+
   const modifyTranslationMutation = useMutation<
     Translation, // 성공 시 반환 타입
     AxiosError<ErrorResponse>, // 에러 타입
@@ -49,21 +50,22 @@ export default function PatchCard() {
     mutationFn: (data: DraftRequest) =>
       patchTranslation(translationId, data, challengeId),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['translation'] });
       setModal('success');
     },
     onError: (error) => {
       let message = error.message ?? '알 수 없는 이유로 제출하지 못했습니다.';
-    
+
       try {
         const parsed = JSON.parse(error.message); // 👈 핵심
         const rawMessage = parsed.message;
-    
+
         if (typeof rawMessage === 'string') {
           message = rawMessage;
         } else if (typeof rawMessage === 'object' && rawMessage !== null) {
           const fieldErrors = rawMessage.fieldErrors;
           const formErrors = rawMessage.formErrors;
-    
+
           if (fieldErrors?.title?.length > 0) {
             message = fieldErrors.title[0];
           } else if (fieldErrors?.content?.length > 0) {
@@ -75,11 +77,11 @@ export default function PatchCard() {
       } catch (e) {
         console.error('❌ 에러 파싱 실패:', e);
       }
-    
+
       console.log('🔥 최종 메시지:', message);
       setErrorMessage(message);
       setModal('error');
-    }
+    },
   });
 
   const onHandleModify = () => {
@@ -206,7 +208,9 @@ export default function PatchCard() {
         onClose={() => setModal('none')}
         onConfirm={() => {
           setModal('none');
-          router.push(`/main/translation/${translationId}`);
+          router.push(
+            `/main/translation/${translationId}?challengeId=${challengeId}`
+          );
         }}
         onCancel={() => setModal('none')}
       >
@@ -215,7 +219,7 @@ export default function PatchCard() {
       <Navigate
         isOpen={modal === 'success'}
         onClose={() => {}}
-        navigateUrl={`/main/translation/${translationId}`}
+        navigateUrl={`/main/translation/${translationId}?challengeId=${challengeId}`}
         text="작업물 보기"
       >
         수정되었습니다!

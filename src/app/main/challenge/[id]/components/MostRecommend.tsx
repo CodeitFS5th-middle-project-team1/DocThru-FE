@@ -16,17 +16,16 @@ interface MostRecommendProps {
 export const MostRecommend: React.FC<MostRecommendProps> = ({ data }) => {
   const [isViewAll, setIsViewAll] = useState(false);
   const [contentHeight, setContentHeight] = useState('0px');
+  const [isOverflow, setIsOverflow] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (contentRef.current) {
-      if (isViewAll) {
-        setContentHeight(`${contentRef.current.scrollHeight}px`);
-      } else {
-        setContentHeight('180px');
-      }
+      const fullHeight = contentRef.current.scrollHeight;
+      setIsOverflow(fullHeight > 180);
+      setContentHeight(isViewAll ? `${fullHeight}px` : '180px');
     }
-  }, [isViewAll]);
+  }, [isViewAll, data]);
   return (
     <div className="flex flex-col w-full h-full  mb-6 bg-custom-gray-50 rounded-2xl border-2 border-custrom-gray-100  ">
       <div className="flex gap-1 w-fit px-4 py-2  bg-custom-gray-800 rounded-tl-2xl rounded-br-2xl M-14-0 text-white">
@@ -65,15 +64,17 @@ export const MostRecommend: React.FC<MostRecommendProps> = ({ data }) => {
           />
         </div>
       </div>
-      <div
-        onClick={() => {
-          setIsViewAll(!isViewAll);
-        }}
-        className="flex justify-center cursor-pointer pt-[6.5px] gap-1 M-16-0"
-      >
-        {isViewAll ? '접기' : '더보기'}
-        <Image src={isViewAll ? up : down} alt="arrow" />
-      </div>
+      {isOverflow && (
+        <div
+          onClick={() => {
+            setIsViewAll(!isViewAll);
+          }}
+          className="flex justify-center cursor-pointer pt-[6.5px] gap-1 M-16-0"
+        >
+          {isViewAll ? '접기' : '더보기'}
+          <Image src={isViewAll ? up : down} alt="arrow" />
+        </div>
+      )}
     </div>
   );
 };

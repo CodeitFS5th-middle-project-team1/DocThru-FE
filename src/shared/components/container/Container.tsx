@@ -4,6 +4,7 @@ import Image from 'next/image';
 import dayjs from '@/lib/utill';
 import { ButtonHTMLAttributes } from 'react';
 import Button, { ButtonCategory } from '../button/Button';
+import { Translation } from '@/types';
 
 export interface ContainerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -12,6 +13,7 @@ export interface ContainerProps
   currentParticipants: number | undefined;
   maxParticipants: number | undefined;
   id: string;
+  isUserTranslationPresent?: Translation;
 }
 
 export const Container = ({
@@ -20,6 +22,7 @@ export const Container = ({
   currentParticipants,
   maxParticipants,
   id,
+  isUserTranslationPresent,
   ...props
 }: ContainerProps) => {
   const overDeadLine = dayjs(deadLine).isBefore(dayjs());
@@ -45,7 +48,7 @@ export const Container = ({
             size="text-center py-2"
             href={originUrl}
           >
-            원본 보기
+            원문 보기
           </Button>
         </div>
         <div className="flex w-40 md:w-56 xl:w-60">
@@ -57,6 +60,14 @@ export const Container = ({
               {...props}
             >
               작업 도전하기
+            </Button>
+          ) : !!isUserTranslationPresent ? (
+            <Button
+              category={ButtonCategory.TO_DO_WORK}
+              size="text-center py-3"
+              href={`/main/translation-work/${isUserTranslationPresent.id}?challengeId=${id}`}
+            >
+              작업 이어하기
             </Button>
           ) : (
             <Button

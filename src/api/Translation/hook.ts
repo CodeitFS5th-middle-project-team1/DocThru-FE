@@ -1,6 +1,7 @@
 import { useToastQuery } from '@/shared/hooks/useToastQuery';
 import {
   createDraft,
+  deleteTranslation,
   DraftRequest,
   DraftResponse,
   fetchTranslation,
@@ -8,7 +9,6 @@ import {
   FetchTranslationParams,
   FetchTranslationResponse,
   getDraftTranslation,
-  // patchTranslation,
 } from './api';
 import { Translation } from '@/types';
 import { useQueries } from '@tanstack/react-query';
@@ -26,6 +26,19 @@ export const useGetTranslationList = (
     {},
     false,
     { enabled: !!id }
+  );
+};
+export const useGetTranslationListAll = (
+  id: string,
+  totalCount: number,
+  params: FetchTranslationParams
+) => {
+  return useToastQuery<FetchTranslationResponse, unknown>(
+    ['translationListAll', id, params?.page, params?.limit],
+    () => fetchTranslation(id, params),
+    TOAST_ID.TRANSLATION,
+    {},
+    !!id && !!totalCount
   );
 };
 
@@ -47,6 +60,30 @@ export const useGetDraftTranslation = (id: string) => {
     {},
     false,
     { enabled: !!id }
+  );
+};
+
+interface DeleteTranslationArgs {
+  challengeId: string;
+  translationId: string;
+}
+
+export const useDeleteTranslation = () => {
+  return useToastMutation<DeleteTranslationArgs>(
+    ({ challengeId, translationId }) =>
+      deleteTranslation(translationId, challengeId),
+    {
+      pending: '번역물 삭제 중입니다...',
+      success: '번역물 삭제 완료!',
+    },
+    {
+      onSuccess: () => {},
+      onError: (error) => {
+        // 여기에 원하는 에러 처리 로직 작성
+        console.error(error);
+      },
+    },
+    TOAST_ID.TRANSLATION
   );
 };
 

@@ -87,6 +87,17 @@ export const patchTranslation = async (
   return res.json();
 };
 
+export const deleteTranslation = async (
+  id: string,
+  challengeId: string
+): Promise<Translation> => {
+  const res = await customFetch(
+    `/challenges/${challengeId}/translations/${id}`,
+    { method: 'DELETE' }
+  );
+  return res.json();
+};
+
 export const createDraft = async (
   id: string,
   title: string,
