@@ -1,6 +1,6 @@
 import PatchCard from './PatchCard';
 import { OriginView } from '@/shared/components/OriginView';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import OutImg from '@/shared/Img/ic_out_circle.svg';
 import Image from 'next/image';
 import ListImg from '@/shared/Img/ic_list.svg';
@@ -29,9 +29,7 @@ export default function PatchMain() {
         className="flex md:flex-1 flex-2/3 justify-center overflow-y-auto px-3"
         style={{ height: '100vh', position: 'relative' }}
       >
-        <Suspense>
-          <PatchCard />
-        </Suspense>
+        <PatchCard />
       </div>
       {showOriginal && (
         <div className="relative md:flex-1 flex-1/3 md:w-1/2 w-[100%] h-full border-r border-gray-300 overflow-y-auto">

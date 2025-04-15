@@ -4,6 +4,8 @@ import { useGetMyChallenge } from '@/api/challenge/ChallengeHooks';
 import { MiniCard } from './cardDetail';
 import Status from './status';
 import { OriginView } from '@/shared/components/OriginView';
+import { showToast } from '@/lib/utill';
+import { TOAST_ID } from '@/constants';
 
 interface Props {
   id: string;
@@ -11,9 +13,15 @@ interface Props {
 
 export default function ClientChallengeDetail({ id }: Props) {
   const { data, isLoading, isError } = useGetMyChallenge(id);
+  if (isLoading || isError || !data) {
+    showToast({
+      type: 'loading',
+      message: '로딩중',
+      id: TOAST_ID.ADMIN,
+    });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError || !data) return <div>Error loading challenge</div>;
+    return <div></div>;
+  }
 
   return (
     <div>
