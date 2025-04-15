@@ -34,24 +34,23 @@ export const Title: React.FC<TitleProps> = ({
           onClick={() => setOpenMenu(!openMenu)}
         >
           <Image src={menu} alt="menu" />
-          {isAdmin ||
-            (isSameUser && (
-              <div className="flex flex-col R-16-0 absolute right-0  whitespace-nowrap z-10">
-                <button
-                  className="p-2 bg-white rounded-t-lg shadow-md hover: hover:bg-custom-gray-300 transition-colors duration-150 cursor-pointer"
-                  onClick={onModify}
-                >
-                  수정하기
-                </button>
-                <Divider />
-                <button
-                  className="p-2 bg-white rounded-b-lg shadow-md hover: hover:bg-custom-gray-300 transition-colors duration-150 cursor-pointer"
-                  onClick={onDelete}
-                >
-                  삭제하기
-                </button>
-              </div>
-            ))}
+          {(isAdmin || isSameUser) && (
+            <div className="flex flex-col R-16-0 absolute right-0  whitespace-nowrap z-10">
+              <button
+                className="p-2 bg-white rounded-t-lg shadow-md hover: hover:bg-custom-gray-300 transition-colors duration-150 cursor-pointer"
+                onClick={onModify}
+              >
+                수정하기
+              </button>
+              <Divider />
+              <button
+                className="p-2 bg-white rounded-b-lg shadow-md hover: hover:bg-custom-gray-300 transition-colors duration-150 cursor-pointer"
+                onClick={onDelete}
+              >
+                삭제하기
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex flex-row gap-2">
