@@ -35,7 +35,7 @@ export default function PatchCard() {
   const params = useParams();
   const translationId = params.id as string;
   const queryClient = useQueryClient();
-  const { mutate: createDraftMutation } = useCreateDraft(translationId);
+  const { mutate: createDraftMutation } = useCreateDraft(challengeId);
   const { data: draftData, status: draftStatus } =
     useGetDraftTranslation(challengeId);
   const { data: TranslationData } = useGetTranslation(
