@@ -41,10 +41,10 @@ const AdminChallenge: NextPage = () => {
       option1: { approvalStatus: 'PENDING' },
       option2: { approvalStatus: 'APPROVED' },
       option3: { approvalStatus: 'REJECTED' },
-      option4: { order: ChallengeOrderBy.CREATED_FIRST },
-      option5: { order: ChallengeOrderBy.CREATED_LAST },
-      option6: { order: ChallengeOrderBy.DEADLINE_FIRST },
-      option7: { order: ChallengeOrderBy.DEADLINE_LAST },
+      option4: { orderBy: ChallengeOrderBy.CREATED_FIRST },
+      option5: { orderBy: ChallengeOrderBy.CREATED_LAST },
+      option6: { orderBy: ChallengeOrderBy.DEADLINE_FIRST },
+      option7: { orderBy: ChallengeOrderBy.DEADLINE_LAST },
     };
     return mapping[value as keyof typeof mapping] || {};
   };
