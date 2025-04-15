@@ -31,6 +31,7 @@ export async function middleware(request: NextRequest) {
   try {
     decodedToken = decodeJwt(token) as JwtPayload;
   } catch (error) {
+    console.warn('JWT decode 실패:', error);
     return redirectWithMessage(request, PATH.login, 'needLogin');
   }
 
