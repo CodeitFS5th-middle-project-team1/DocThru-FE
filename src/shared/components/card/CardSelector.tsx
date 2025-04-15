@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import selectorIcon from '@images/menu-icon/Meatballs.svg';
 import { useEffect, useRef, useState } from 'react';
@@ -29,8 +30,6 @@ export const CardSelector = ({
     setIsOpen(false);
   };
 
-  if (!user) return null;
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -47,6 +46,8 @@ export const CardSelector = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
+
+  if (!user) return null;
 
   return (
     <>
