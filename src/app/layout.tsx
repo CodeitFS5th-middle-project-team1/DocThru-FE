@@ -7,6 +7,8 @@ import Layout from '@/shared/components/layout/Layout';
 import { usePathname } from 'next/navigation';
 import ReactQueryProvider from '@/core/provider/ReactQueryProvider';
 import { AuthProvider } from '@/core/provider/AuthProvider';
+import { Suspense } from 'react';
+import Loading from './loading';
 
 export default function RootLayout({
   children,
@@ -24,13 +26,15 @@ export default function RootLayout({
       <body>
         <ToastProvider />
         <ReactQueryProvider>
-          <AuthProvider>
-            {isAuthPage || isLandingPage ? (
-              <>{children}</>
-            ) : (
-              <Layout>{children}</Layout>
-            )}
-          </AuthProvider>
+          <Suspense fallback={<Loading />}>
+            <AuthProvider>
+              {isAuthPage || isLandingPage ? (
+                <>{children}</>
+              ) : (
+                <Layout>{children}</Layout>
+              )}
+            </AuthProvider>
+          </Suspense>
         </ReactQueryProvider>
       </body>
     </html>
