@@ -20,6 +20,7 @@ import {
 } from '@/api/Translation/hook';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DraftRequest, patchTranslation } from '@/api/Translation/api';
+import toast from 'react-hot-toast';
 
 export default function PatchCard() {
   const [title, setTitle] = useState('');
@@ -84,7 +85,25 @@ export default function PatchCard() {
     },
   });
 
+
+  const getContentLengthWithTags = (content: string): number => {
+    return content.length;
+  };
+  
+  const strippedContent = content?.replace(/<[^>]*>/g, '');
+  const cleanContent = strippedContent?.replace(/\s+/g, ' ').trim();
+  const length = getContentLengthWithTags(cleanContent || '');
+
   const onHandleModify = () => {
+    if (!title.trim()) return toast.error('제목을 입력해 주세요.');
+    if (title.trim().length < 2 || title.trim().length >= 50) {
+      return toast.error('제목은 2자 이상 50자 이하로 입력해 주세요.');
+    }
+    if (!content) return toast.error('본문내용을 입력해 주세요.');
+
+    if (length > 2000) {
+      return toast.error('전체 본문 내용은 2000자 이하로 작성해 주세요.');
+    }
     const data = { title, content }; // { title, content } 객체 생성
     modifyTranslationMutation.mutate(data); // data를 전달
   };
