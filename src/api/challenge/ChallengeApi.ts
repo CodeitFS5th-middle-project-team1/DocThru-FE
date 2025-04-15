@@ -15,7 +15,7 @@ export interface FetchChallengeParams {
   orderBy?: string;
 }
 
-interface FetchChallengeResponse {
+export interface FetchChallengeResponse {
   challenges: Challenge[];
   totalCount: number;
 }
@@ -30,7 +30,7 @@ export interface ChallengeFormRequest {
   description: string;
 }
 
-const buildQuery = (params: FetchChallengeParams): string => {
+export const buildQuery = (params: FetchChallengeParams): string => {
   const entries: [string, string][] = [];
 
   for (const [key, value] of Object.entries(params)) {

@@ -12,6 +12,9 @@ import {
   rejectChallenge,
   deleteChallenge,
   deleteChallengeByAdmin,
+  fetchChallengeByAdmin,
+  FetchChallengeParams,
+  FetchChallengeResponse,
 } from './ChallengeApi';
 import { useQueryClient } from '@tanstack/react-query';
 import { TOAST_ID } from '@/constants';
@@ -24,6 +27,20 @@ export const useGetChallenge = (id: string) => {
     {},
     false,
     { enabled: !!id }
+  );
+};
+export const useGetChallengeByAdmin = (params: FetchChallengeParams) => {
+  return useToastQuery<FetchChallengeResponse, FetchChallengeResponse>(
+    ['challengeAdmin', params],
+    () =>
+      fetchChallengeByAdmin({
+        orderBy: params.orderBy,
+        approvalStatus: params.approvalStatus,
+        page: params.page,
+        keyword: params.keyword,
+        limit: params.limit,
+      }),
+    TOAST_ID.ADMIN
   );
 };
 
