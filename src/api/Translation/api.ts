@@ -108,6 +108,7 @@ export const createDraft = async (
     body: JSON.stringify({ title, content }),
     headers: { 'Content-Type': 'application/json' },
     toastId: TOAST_ID.TRANSLATION,
+    disableToast: true,
   });
   return res.json();
 };
