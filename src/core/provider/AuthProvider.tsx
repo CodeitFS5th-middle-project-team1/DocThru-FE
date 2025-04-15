@@ -93,10 +93,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     handledMessage,
   ]);
 
-  if (!hydrated) {
-    return <div>로딩 중...</div>;
-  }
-
   return (
     <AuthContext.Provider
       value={{ user, setAuth, clearAuth, isLoggedIn, isLoading }}
