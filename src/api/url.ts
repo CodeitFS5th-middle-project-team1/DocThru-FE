@@ -37,13 +37,13 @@ export const customFetch = async (
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
-
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
-  const url = API_URL
-    ? `${API_URL}/${input}`
-    : input.startsWith('/api')
-      ? input
-      : `/api${input}`;
+  const url = input.startsWith('/api') ? input : `/api${input}`;
+  // const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+  // const url = API_URL
+  //   ? `${API_URL}/${input}`
+  //   : input.startsWith('/api')
+  //     ? input
+  //     : `/api${input}`;
 
   const response = await fetch(url, {
     ...options,
