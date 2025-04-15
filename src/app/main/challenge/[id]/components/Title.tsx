@@ -65,10 +65,9 @@ export const Title: React.FC<TitleProps> = ({
           )}
           <div className="flex SB-24-0 justify-between">
             {data?.title}
-            {isSameUser ||
-              (isAdmin && (
-                <CardSelector onDelete={onDelete} onEdit={onModify} />
-              ))}
+            {(isSameUser || isAdmin) && (
+              <CardSelector onDelete={onDelete} onEdit={onModify} />
+            )}
           </div>
           <div className="flex flex-row gap-2">
             <Chip label={data?.documentType} />
