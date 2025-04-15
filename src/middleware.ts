@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { jwtVerify } from 'jose';
+import { decodeJwt } from 'jose';
 import { PATH } from '@/constants';
 
 const publicPaths = ['/', PATH.login, PATH.signup, PATH.challenge];
@@ -9,19 +9,6 @@ interface JwtPayload {
   id: string;
   role: 'ADMIN' | 'USER';
   exp: number;
-}
-
-async function verifyToken(token: string): Promise<JwtPayload | null> {
-  try {
-    console.log('verifyToken token', token);
-    const secret = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET);
-    const { payload } = await jwtVerify<JwtPayload>(token, secret);
-    console.log('verifyToken payload', payload);
-    return payload;
-  } catch (error) {
-    console.error('[JWT Verify Error]', error);
-    return null;
-  }
 }
 
 export async function middleware(request: NextRequest) {
@@ -39,9 +26,12 @@ export async function middleware(request: NextRequest) {
     return redirectWithMessage(request, PATH.login, 'needLogin');
   }
 
-  const decodedToken = await verifyToken(token);
+  let decodedToken: JwtPayload | null = null;
 
-  if (!decodedToken) {
+  try {
+    decodedToken = decodeJwt(token) as JwtPayload;
+  } catch (error) {
+    console.warn('JWT decode 실패:', error);
     return redirectWithMessage(request, PATH.login, 'needLogin');
   }
 

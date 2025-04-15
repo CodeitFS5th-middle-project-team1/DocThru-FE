@@ -12,7 +12,6 @@ const getAccessToken = () => {
 const setAccessToken = (token: string) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('accessToken', token);
-    document.cookie = `accessToken=${token}; path=/; secure; max-age=60;`;
   }
 };
 
