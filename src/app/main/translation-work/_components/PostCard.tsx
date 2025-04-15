@@ -16,6 +16,7 @@ import { useCreateDraft, useGetDraftTranslation } from '@/api/Translation/hook';
 import { useUnloadWarning } from '@/shared/hooks/useUnloadWarning';
 import { useMutation } from '@tanstack/react-query';
 import { createTranslation, DraftRequest } from '@/api/Translation/api';
+import toast from 'react-hot-toast';
 
 export default function PostCard() {
   const [title, setTitle] = useState('');
@@ -36,22 +37,23 @@ export default function PostCard() {
   >({
     mutationFn: (data: DraftRequest) => createTranslation(data, challengeId),
     onSuccess: (data) => {
+      console.log(data);
       setTranslationId(data.id);
       setModal('success');
     },
     onError: (error) => {
       let message = error.message ?? '알 수 없는 이유로 제출하지 못했습니다.';
-    
+
       try {
         const parsed = JSON.parse(error.message); // 👈 핵심
         const rawMessage = parsed.message;
-    
+
         if (typeof rawMessage === 'string') {
           message = rawMessage;
         } else if (typeof rawMessage === 'object' && rawMessage !== null) {
           const fieldErrors = rawMessage.fieldErrors;
           const formErrors = rawMessage.formErrors;
-    
+
           if (fieldErrors?.title?.length > 0) {
             message = fieldErrors.title[0];
           } else if (fieldErrors?.content?.length > 0) {
@@ -63,21 +65,34 @@ export default function PostCard() {
       } catch (e) {
         console.error('❌ 에러 파싱 실패:', e);
       }
-    
+
       console.log('🔥 최종 메시지:', message);
       setErrorMessage(message);
       setModal('error');
-    }
+    },
   });
 
   const { data: draftData, status: draftStatus } =
     useGetDraftTranslation(challengeId);
   const { mutate: createDraftMutation } = useCreateDraft(challengeId);
-  // 로컬 스토리지에서 저장되어 있는 Challenge Id를 불러옵니다.
+
+  const getContentLengthWithTags = (content: string): number => {
+    return content.length;
+  };
+
+  const length = getContentLengthWithTags(content || '');
 
   const onHandleCreate = () => {
-    const data = { title, content }; // { title, content } 객체 생성
-    createTranslationMutation.mutate(data); // data를 전달
+    if (!title.trim()) return toast.error('제목을 입력해 주세요.');
+    if (title.trim().length < 2 || title.trim().length >= 50) {
+      return toast.error('제목은 2자 이상 10자 이하로 입력해 주세요.');
+    }
+    if (!content) return toast.error('본문내용을 입력해 주세요.');
+
+    if (length > 1000) {
+      return toast.error('전체 본문 내용은 1000자 이하로 작성해 주세요.');
+    }
+    createTranslationMutation.mutate({ title, content });
   };
 
   useEffect(() => {
@@ -156,6 +171,7 @@ export default function PostCard() {
         </div>
         <hr />
         <div className="mt-5">
+          <div className="text-custom-gray-300">{length}/1000</div>
           <Editor setContent={setContent} content={content} draftedValue="" />
         </div>
       </div>

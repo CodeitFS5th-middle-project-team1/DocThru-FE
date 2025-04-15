@@ -1,64 +1,74 @@
 import { Chip } from '@/shared/components/chip/chip';
 import { Container } from '@/shared/components/container/Container';
 import { Divider } from '@/shared/components/Divider';
-import { Challenge } from '@/types';
+import { Challenge, Translation } from '@/types';
 import profile from '@images/profile-icon/member.svg';
-import menu from '@images/menu-icon/Meatballs.svg';
 import deadline from '@images/deadLine-icon/small-white.svg';
 import person from '@images/person-icon/small-white.svg';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useAuthStore } from '@/api/auth/AuthStore';
+import { useRouter } from 'next/navigation';
+import { PATH } from '@/constants';
+import {
+  useDeleteChallenge,
+  useDeleteChallengeByAdmin,
+} from '@/api/challenge/ChallengeHooks';
+import { CardSelector } from '@/shared/components/card/CardSelector';
 
 interface TitleProps {
   data: Challenge | undefined;
   isSameUser?: boolean;
   challengeId: string;
+  isUserTranslationPresent?: Translation;
 }
 
 export const Title: React.FC<TitleProps> = ({
   challengeId,
   isSameUser = false,
   data,
+  isUserTranslationPresent,
 }) => {
-  const [openMenu, setOpenMenu] = useState(false);
+  const router = useRouter();
+  const { user } = useAuthStore();
+  const isAdmin = user?.role === 'ADMIN';
+  const { deleteMutation: deleteByUser } = useDeleteChallenge(data?.id || '');
+  const { deleteMutation: deleteByAdmin } = useDeleteChallengeByAdmin();
+  const onModify = () => {
+    router.push(`${PATH.challenge}/${challengeId}/edit`);
+  };
+  const onDelete = (reason: string) => {
+    if (isAdmin) {
+      if (data) {
+        deleteByAdmin.mutate({ id: data.id, reason });
+        router.replace(PATH.challenge);
+      }
+    }
+    if (!isAdmin) {
+      deleteByUser.mutate();
+      router.replace(PATH.challenge);
+    }
+  };
   return (
     <div className="w-full ">
       <div className="w-full flex flex-col gap-6 sm:flex-row justify-center items-center">
         <div className="w-full flex flex-col gap-4">
           {data?.isDeadlineFull && (
             <div className="w-fit flex gap-1 bg-custom-gray-800 rounded-3xl px-4 py-2 text-white items-center M-14-0">
-              <Image src={deadline} alt="deadline" /> 모집이 완료된 상태에요
+              <Image src={deadline} alt="deadline" /> 챌린지가 마감 되었어요
             </div>
           )}
           {data?.isParticipantsFull && (
             <div className="w-fit flex gap-1 bg-custom-gray-200 rounded-3xl px-4 py-2 text-custom-gray-800 items-center M-14-0">
               <Image src={person} alt="person" />
-              챌린지가 마감 되었어요
+              모집이 완료된 상태에요
             </div>
           )}
           <div className="flex SB-24-0 justify-between">
             {data?.title}
-            {isSameUser && (
-              <div className="relative">
-                <div
-                  className="w-6 h-6 cursor-pointer"
-                  onClick={() => setOpenMenu((prev) => !prev)}
-                >
-                  <Image src={menu} alt="menu" />
-                </div>
-                {openMenu && (
-                  <div className="flex flex-col R-16-0 absolute right-0  whitespace-nowrap z-10">
-                    <button className="p-1.5 bg-white rounded-t-lg shadow-md hover: hover:bg-custom-gray-300 transition-colors duration-150 cursor-pointer">
-                      수정하기
-                    </button>
-                    <Divider />
-                    <button className="p-1.5 bg-white rounded-b-lg shadow-md hover: hover:bg-custom-gray-300 transition-colors duration-150 cursor-pointer">
-                      삭제하기
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+            {isSameUser ||
+              (isAdmin && (
+                <CardSelector onDelete={onDelete} onEdit={onModify} />
+              ))}
           </div>
           <div className="flex flex-row gap-2">
             <Chip label={data?.documentType} />
@@ -76,6 +86,7 @@ export const Title: React.FC<TitleProps> = ({
           deadLine={data?.deadline}
           maxParticipants={data?.maxParticipants}
           originUrl={data?.originURL}
+          isUserTranslationPresent={isUserTranslationPresent}
         />
       </div>
 
