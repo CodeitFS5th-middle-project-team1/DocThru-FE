@@ -104,6 +104,9 @@ export const useDeleteTranslation = () => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['translationListAll'] });
         queryClient.invalidateQueries({ queryKey: ['translationList'] });
+        queryClient.invalidateQueries({
+          queryKey: ['challenge'],
+        });
       },
       onError: (error) => {
         // 여기에 원하는 에러 처리 로직 작성
@@ -116,6 +119,7 @@ export const useDeleteTranslation = () => {
 
 export const useGetTranslationsByIds = (
   challengeId: string,
+  challenge: { isDeadlineFull: boolean },
   ids?: string[]
 ) => {
   const queries = useQueries({
@@ -123,7 +127,7 @@ export const useGetTranslationsByIds = (
       ids?.map((id) => ({
         queryKey: ['translation', id],
         queryFn: () => fetchTranslationById(id, challengeId),
-        enabled: !!id,
+        enabled: !!id && !!challenge.isDeadlineFull,
       })) ?? [],
   });
 
