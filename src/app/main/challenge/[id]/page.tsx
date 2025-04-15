@@ -51,7 +51,11 @@ const ChallengeDetail: NextPage = () => {
     : translationList
       ? translationList.translations.map((t: Translation) => t.id)
       : [];
-  const userTranslation = translationListAll?.translations.find(
+
+  const translations =
+    translationListAll?.translations ?? translationList?.translations;
+
+  const userTranslation = translations?.find(
     (translation) => translation.user.id === user?.id
   );
 
