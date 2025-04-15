@@ -19,7 +19,12 @@ export const useGetFeedBackList = (id: string) => {
     TOAST_ID.TRANSLATION,
     {},
     false,
-    { enabled: !!id }
+    {
+      enabled: !!id,
+      staleTime: 1000 * 60 * 5, // 5분 동안 캐시된 데이터 사용
+      refetchOnWindowFocus: false, // 페이지 포커스 시 재요청 방지
+      refetchOnReconnect: false, // 네트워크 재연결 시 재요청 방지
+    }
   );
 };
 
