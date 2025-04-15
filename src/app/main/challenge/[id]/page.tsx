@@ -34,7 +34,8 @@ const ChallengeDetail: NextPage = () => {
     {
       page,
       limit: totalCount,
-    }
+    },
+    { isDeadlineFull: challenge?.isDeadlineFull ?? false }
   );
   const isSameUser = user?.id === challenge?.userId;
   const slideRef = useRef<HTMLDivElement>(null);
