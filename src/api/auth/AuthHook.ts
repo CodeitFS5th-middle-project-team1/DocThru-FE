@@ -23,7 +23,7 @@ export const useLogin = () => {
         if (user.role === 'ADMIN') {
           router.replace(PATH.admin);
         } else {
-          router.replace(PATH.challenge);
+          window.location.replace(PATH.challenge);
         }
       },
       onError: () => {
