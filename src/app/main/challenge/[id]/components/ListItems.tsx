@@ -41,7 +41,7 @@ export const ListItems: React.FC<ListItemsProps> = ({
             <Image src={profile} alt="profile" />
             <div className="flex-col gap-0.5">
               {user.nickname}
-              <div>{user.rank === 'ADMIN' ? '전문가' : '일반'}</div>
+              <div>{user.rank === 'EXPERT' ? '전문가' : '일반'}</div>
             </div>
           </div>
         </div>
