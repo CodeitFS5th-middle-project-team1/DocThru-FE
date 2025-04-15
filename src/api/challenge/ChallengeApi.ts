@@ -15,7 +15,7 @@ export interface FetchChallengeParams {
   orderBy?: string;
 }
 
-interface FetchChallengeResponse {
+export interface FetchChallengeResponse {
   challenges: Challenge[];
   totalCount: number;
 }
