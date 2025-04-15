@@ -102,7 +102,7 @@ const ChallengeDetail: NextPage = () => {
                 ref={index === 0 ? slideRef : null}
                 className={`relative ${isSingleSlide ? 'min-w-full max-w-full' : 'min-w-[95%] max-w-[95%]'} min-h-[340px] shrink-0`}
               >
-                <MostRecommend data={d} />
+                <MostRecommend data={d} slideIndex={slideIndex} />
               </div>
             ))}
         </div>

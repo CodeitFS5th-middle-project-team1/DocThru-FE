@@ -12,8 +12,12 @@ import { useEffect, useRef, useState } from 'react';
 
 interface MostRecommendProps {
   data?: Translation;
+  slideIndex: number;
 }
-export const MostRecommend: React.FC<MostRecommendProps> = ({ data }) => {
+export const MostRecommend: React.FC<MostRecommendProps> = ({
+  data,
+  slideIndex,
+}) => {
   const [isViewAll, setIsViewAll] = useState(false);
   const [contentHeight, setContentHeight] = useState('0px');
   const [isOverflow, setIsOverflow] = useState(false);
@@ -26,6 +30,9 @@ export const MostRecommend: React.FC<MostRecommendProps> = ({ data }) => {
       setContentHeight(isViewAll ? `${fullHeight}px` : '180px');
     }
   }, [isViewAll, data]);
+  useEffect(() => {
+    setIsViewAll(false);
+  }, [slideIndex]);
   return (
     <div className="flex flex-col w-full h-full  mb-6 bg-custom-gray-50 rounded-2xl border-2 border-custrom-gray-100  ">
       <div className="flex gap-1 w-fit px-4 py-2  bg-custom-gray-800 rounded-tl-2xl rounded-br-2xl M-14-0 text-white">
