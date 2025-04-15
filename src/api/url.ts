@@ -12,6 +12,7 @@ const getAccessToken = () => {
 const setAccessToken = (token: string) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('accessToken', token);
+    document.cookie = `accessToken=${token}; path=/; secure; max-age=60;`;
   }
 };
 
@@ -38,7 +39,12 @@ export const customFetch = async (
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const url = input.startsWith('/api') ? input : `/api${input}`;
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+  const url = API_URL
+    ? `${API_URL}/${input}`
+    : input.startsWith('/api')
+      ? input
+      : `/api${input}`;
 
   const response = await fetch(url, {
     ...options,
@@ -109,7 +115,7 @@ export const customFetch = async (
 
     const isAuthRoute = input.includes('/auth'); // 로그인, 회원가입 경로 확인
 
-    if ([401, 419].includes(response.status)) {
+    if ([419].includes(response.status)) {
       // 로그인 경로가 아닌 경우 리다이렉트
       handleAuthError(message, !isAuthRoute, options.toastId);
     } else if (response.status === 403) {
@@ -117,7 +123,7 @@ export const customFetch = async (
         showToast({
           type: 'error',
           message,
-          id: options.toastId ?? TOAST_ID.SERVER,
+          id: TOAST_ID.SERVER,
         });
       }
     } else {
@@ -125,7 +131,7 @@ export const customFetch = async (
         showToast({
           type: 'error',
           message,
-          id: options.toastId ?? TOAST_ID.SERVER,
+          id: TOAST_ID.SERVER,
         });
       }
     }
