@@ -1,40 +1,19 @@
-'use client';
+import ClientLayout from './_components/ClientLayout';
 
-import '@shared/globals.css';
-
-import ToastProvider from '@/core/provider/ToastProvider';
-import Layout from '@/shared/components/layout/Layout';
-import { usePathname } from 'next/navigation';
-import ReactQueryProvider from '@/core/provider/ReactQueryProvider';
-import { AuthProvider } from '@/core/provider/AuthProvider';
-import { Suspense } from 'react';
+export const metadata = {
+  title: '타이틀',
+  description: '설명',
+};
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  const pathname = usePathname();
-  const isLandingPage = pathname === '/';
-  const isAuthPage =
-    pathname.startsWith('/auth') ||
-    pathname.startsWith('/main/translation-work');
-
+}) {
   return (
-    <html lang="kor">
+    <html lang="ko">
       <body>
-        <ToastProvider />
-        <ReactQueryProvider>
-          <Suspense fallback={<div>로딩 중...</div>}>
-            <AuthProvider>
-              {isAuthPage || isLandingPage ? (
-                <>{children}</>
-              ) : (
-                <Layout>{children}</Layout>
-              )}
-            </AuthProvider>
-          </Suspense>
-        </ReactQueryProvider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
