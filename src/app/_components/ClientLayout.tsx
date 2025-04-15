@@ -26,7 +26,7 @@ export default function ClientLayout({
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowLoading(false);
-    }, 6000); // 최소 6초 보장
+    }, 1500);
     return () => clearTimeout(timer);
   }, []);
 
