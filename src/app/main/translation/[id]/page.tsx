@@ -102,7 +102,7 @@ const TranslationDetail: React.FC = () => {
         isSameUser={isSameUser}
         title={translation?.title}
         field={challenge?.field}
-        document={challenge?.documentType}
+        documentProp={challenge?.documentType}
         onDelete={openDelete}
         onModify={openMdify}
       />
