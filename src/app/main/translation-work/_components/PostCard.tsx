@@ -79,8 +79,9 @@ export default function PostCard() {
   const getContentLengthWithTags = (content: string): number => {
     return content.length;
   };
-
-  const length = getContentLengthWithTags(content || '');
+  const strippedContent = content?.replace(/<[^>]*>/g, '');
+  const cleanContent = strippedContent?.replace(/\s+/g, ' ').trim();
+  const length = getContentLengthWithTags(cleanContent || '');
 
   const onHandleCreate = () => {
     if (!title.trim()) return toast.error('제목을 입력해 주세요.');

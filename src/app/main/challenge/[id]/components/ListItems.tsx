@@ -10,7 +10,7 @@ import { PATH } from '@/constants';
 interface ListItemsProps {
   id: string;
   rank: number;
-  user: { nickname: string };
+  user: { nickname: string; rank: string };
   likeCount: number;
   size: number;
   challengeId: string;
@@ -41,7 +41,7 @@ export const ListItems: React.FC<ListItemsProps> = ({
             <Image src={profile} alt="profile" />
             <div className="flex-col gap-0.5">
               {user.nickname}
-              <div>전문가</div>
+              <div>{user.rank === 'ADMIN' ? '전문가' : '일반'}</div>
             </div>
           </div>
         </div>
