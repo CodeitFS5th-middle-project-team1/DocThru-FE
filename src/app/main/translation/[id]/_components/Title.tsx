@@ -3,11 +3,11 @@ import { Divider } from '@/shared/components/Divider';
 import { DocumentType, FieldType } from '@/types';
 import menu from '@images/menu-icon/Meatballs.svg';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface TitleProps {
   title?: string;
-  document?: DocumentType;
+  documentProp?: DocumentType;
   field?: FieldType;
   onModify?: () => void;
   onDelete?: () => void;
@@ -17,7 +17,7 @@ interface TitleProps {
 
 export const Title: React.FC<TitleProps> = ({
   title,
-  document = '블로그',
+  documentProp = '블로그',
   field = 'Next.js',
   onModify,
   onDelete,
@@ -26,11 +26,31 @@ export const Title: React.FC<TitleProps> = ({
 }) => {
   const [openMenu, setOpenMenu] = useState(false);
 
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setOpenMenu(false);
+      }
+    };
+    if (openMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openMenu]);
+
   return (
     <div className="flex flex-col pt-10 gap-4">
       <div className="w-full flex justify-between  SB-24-0">
         <div>{title}</div>
         <div
+          ref={modalRef}
           className="relative cursor-pointer"
           onClick={() => setOpenMenu(!openMenu)}
         >
@@ -55,7 +75,7 @@ export const Title: React.FC<TitleProps> = ({
       </div>
       <div className="flex flex-row gap-2">
         <Chip label={field} />
-        <Chip label={document} />
+        <Chip label={documentProp} />
       </div>
       <Divider />
     </div>

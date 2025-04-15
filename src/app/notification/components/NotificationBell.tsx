@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import BellIcon from '@/shared/Img/bell-icon/bass.svg';
 import {
@@ -13,6 +13,7 @@ import Popup from '@/shared/components/popup/popup';
 export default function NotificationBell({ userId }: { userId: string }) {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const bellRef = useRef<HTMLDivElement>(null);
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
   const handleDelete = async (id: number) => {
@@ -30,8 +31,22 @@ export default function NotificationBell({ userId }: { userId: string }) {
       .catch((err) => console.error('알림 불러오기 실패:', err));
   }, [userId]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (bellRef.current && !bellRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [open]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={bellRef}>
       <Image
         src={BellIcon}
         alt="bell"

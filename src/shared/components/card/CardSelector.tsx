@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import selectorIcon from '@images/menu-icon/Meatballs.svg';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuthStore } from '@/api/auth/AuthStore';
 import SendModal from '../modal/send';
 
@@ -16,6 +16,7 @@ export const CardSelector = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { user } = useAuthStore();
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -30,9 +31,26 @@ export const CardSelector = ({
 
   if (!user) return null;
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
     <>
-      <div className="relative w-6 h-6">
+      <div className="relative w-6 h-6 cursor-pointer" ref={modalRef}>
         <Image
           src={selectorIcon}
           alt="selector Icon"
