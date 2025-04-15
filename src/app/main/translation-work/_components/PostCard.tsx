@@ -85,12 +85,12 @@ export default function PostCard() {
   const onHandleCreate = () => {
     if (!title.trim()) return toast.error('제목을 입력해 주세요.');
     if (title.trim().length < 2 || title.trim().length >= 50) {
-      return toast.error('제목은 2자 이상 10자 이하로 입력해 주세요.');
+      return toast.error('제목은 2자 이상 50자 이하로 입력해 주세요.');
     }
     if (!content) return toast.error('본문내용을 입력해 주세요.');
 
-    if (length > 1000) {
-      return toast.error('전체 본문 내용은 1000자 이하로 작성해 주세요.');
+    if (length > 2000) {
+      return toast.error('전체 본문 내용은 2000자 이하로 작성해 주세요.');
     }
     createTranslationMutation.mutate({ title, content });
   };
@@ -171,7 +171,6 @@ export default function PostCard() {
         </div>
         <hr />
         <div className="mt-5">
-          <div className="text-custom-gray-300">{length}/1000</div>
           <Editor setContent={setContent} content={content} draftedValue="" />
         </div>
       </div>
