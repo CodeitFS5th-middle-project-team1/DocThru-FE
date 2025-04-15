@@ -27,7 +27,7 @@ const ChallengeDetail: NextPage = () => {
     page,
     limit: 5,
   });
-  const totalCount = translationList ? translationList.totalCount : 0;
+  const totalCount = translationList ? translationList.totalCount : 5;
   const { data: translationListAll } = useGetTranslationListAll(
     id,
     totalCount,
@@ -36,7 +36,7 @@ const ChallengeDetail: NextPage = () => {
       limit: totalCount,
     }
   );
-
+  const isSameUser = user?.id === challenge?.userId;
   const slideRef = useRef<HTMLDivElement>(null);
   const [slideWidth, setSlideWidth] = useState(0);
   const totalPage = translationList?.totalCount;
@@ -45,7 +45,6 @@ const ChallengeDetail: NextPage = () => {
   const handleNextPage = () => setPage((page) => Math.min(page + 1, maxPage));
   const handlePrevPage = () => setPage((page) => Math.max(page - 1, 1));
 
-  const isSameUser = user?.id === challenge?.userId;
   const mostRecommendedIds = translationListAll
     ? translationListAll?.translations.map((t: Translation) => t.id)
     : translationList
@@ -56,8 +55,8 @@ const ChallengeDetail: NextPage = () => {
   );
 
   const { data: mostData } = useGetTranslationsByIds(id, mostRecommendedIds);
-  const isSingleSlide = mostData?.length === 1;
 
+  const isSingleSlide = mostData?.length === 1;
   const handleNextSlide = () =>
     setSlideIndex((index) => Math.min(index + 1, mostData.length - 1));
   const handlePrevSlide = () =>
