@@ -40,13 +40,13 @@ const StatusBottom: NextPage<Props> = ({ data }) => {
         <div className="flex justify-end">
           <button
             onClick={handleRejectClick}
-            className="w-38 h-12 mr-3 bg-[#FFE7E7] text-[#F24744] rounded-xl hover:bg-[#f8d3d3]"
+            className="w-38 h-12 mr-3 bg-[#FFE7E7] text-[#F24744] rounded-xl hover:bg-[#f8d3d3] cursor-pointer"
           >
             거절하기
           </button>
           <button
             onClick={handleApproveClick}
-            className="w-38 h-12 bg-custom-gray-800 text-white rounded-xl hover:bg-custom-gray-700"
+            className="w-38 h-12 bg-custom-gray-800 text-white rounded-xl hover:bg-custom-gray-700 cursor-pointer"
           >
             승인하기
           </button>
