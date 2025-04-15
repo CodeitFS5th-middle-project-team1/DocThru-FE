@@ -1,4 +1,3 @@
-'use client';
 import Image from 'next/image';
 import selectorIcon from '@images/menu-icon/Meatballs.svg';
 import { useEffect, useRef, useState } from 'react';
