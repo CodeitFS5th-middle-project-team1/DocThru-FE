@@ -47,6 +47,7 @@ export const Container = ({
             category={ButtonCategory.VIEW_ORIGINAL}
             size="text-center py-2"
             href={originUrl}
+            target="_blank"
           >
             원문 보기
           </Button>
