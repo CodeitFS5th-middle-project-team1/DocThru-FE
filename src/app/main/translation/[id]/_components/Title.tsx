@@ -36,21 +36,20 @@ export const Title: React.FC<TitleProps> = ({
         >
           {(isAdmin || isSameUser) && <Image src={menu} alt="menu" />}
           {openMenu && (
-            <div className="flex flex-col R-16-0 absolute right-0  whitespace-nowrap z-10">
-              <button
-                className="p-2 bg-white rounded-t-lg shadow-md hover: hover:bg-custom-gray-300 transition-colors duration-150 cursor-pointer"
+            <ul className="absolute  right-0 top-7 text-nowrap bg-white border border-custom-gray-300 rounded-xl z-10 text-sm">
+              <li
                 onClick={onModify}
+                className="py-3 px-11 text-custom-gray-500 border-b-1 border-custom-gray-300 cursor-pointer "
               >
                 수정하기
-              </button>
-              <Divider />
-              <button
-                className="p-2 bg-white rounded-b-lg shadow-md hover: hover:bg-custom-gray-300 transition-colors duration-150 cursor-pointer"
+              </li>
+              <li
                 onClick={onDelete}
+                className="py-3 px-11 text-custom-gray-500  cursor-pointer "
               >
                 삭제하기
-              </button>
-            </div>
+              </li>
+            </ul>
           )}
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { NextPage } from 'next';
 import { Title } from './components/Title';
 import { Participation } from './components/Participation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useGetChallenge } from '@/api/challenge/ChallengeHooks';
 import {
@@ -13,7 +13,6 @@ import {
 } from '@/api/Translation/hook';
 import { useAuthStore } from '@/api/auth/AuthStore';
 import { MostRecommend } from './components/MostRecommend';
-import { Translation } from '@/types';
 import next from '@images/arrow-icon/next-arrow/small-arrow.svg';
 import Image from 'next/image';
 
@@ -46,20 +45,28 @@ const ChallengeDetail: NextPage = () => {
   const handleNextPage = () => setPage((page) => Math.min(page + 1, maxPage));
   const handlePrevPage = () => setPage((page) => Math.max(page - 1, 1));
 
-  const mostRecommendedIds = translationListAll
-    ? translationListAll?.translations.map((t: Translation) => t.id)
-    : translationList
-      ? translationList.translations.map((t: Translation) => t.id)
-      : [];
-
   const translations =
     translationListAll?.translations ?? translationList?.translations;
+
+  const mostRecommendedIds = useMemo(() => {
+    if (!translations?.length) return [];
+
+    const maxLikeCount = Math.max(...translations.map((t) => t.likeCount ?? 0));
+
+    return translations
+      .filter((t) => t.likeCount === maxLikeCount)
+      .map((t) => t.id);
+  }, [translations]);
 
   const userTranslation = translations?.find(
     (translation) => translation.user.id === user?.id
   );
 
-  const { data: mostData } = useGetTranslationsByIds(id, mostRecommendedIds);
+  const { data: mostData } = useGetTranslationsByIds(
+    id,
+    { isDeadlineFull: challenge?.isDeadlineFull ?? false },
+    mostRecommendedIds
+  );
 
   const isSingleSlide = mostData?.length === 1;
   const handleNextSlide = () =>
