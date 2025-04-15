@@ -116,6 +116,7 @@ export const useDeleteChallenge = (id: string) => {
   const queryClient = useQueryClient();
 
   const onSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ['challenges'] });
     queryClient.invalidateQueries({ queryKey: ['my-challenge', id] });
   };
 
