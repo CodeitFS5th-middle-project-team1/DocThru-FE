@@ -61,23 +61,50 @@ https://doc-thru-fe.vercel.app/
 
 ![화면 기록 2025-04-16 오후 6 58 19](https://github.com/user-attachments/assets/aac0b836-405e-4836-b15c-7bca6a24da01)
 
-
-### 챌린지 상세 페이지
-
-
 ### 나의 챌린지
 ![화면 기록 2025-04-16 오후 7 03 01](https://github.com/user-attachments/assets/d40f5732-e868-4818-96ca-df8f2fdf195f)
 
-
 ### 알림
 
-### 번역물 작성
-
-### 번역물 상세
-
-### 피드백
+![화면 기록 2025-04-16 오후 9 34 43](https://github.com/user-attachments/assets/af2dab2f-72d5-4635-9e43-1cdbc982607e)
 
 ### 관리자
+챌린지 관리, 챌린지 목록
+![화면 기록 2025-04-16 오후 9 36 19](https://github.com/user-attachments/assets/c60e4ea4-2670-413c-9ee7-b05f0994e438)
+
+챌린지 승인
+![화면 기록 2025-04-16 오후 9 38 48](https://github.com/user-attachments/assets/57f18788-9955-4557-99db-941db00335b3)
+
+챌린지 거절
+![화면 기록 2025-04-16 오후 9 41 27](https://github.com/user-attachments/assets/7d500212-4b5a-4983-b986-67a2fcdea9bd)
+
+챌린지 삭제
+![화면 기록 2025-04-16 오후 9 50 22](https://github.com/user-attachments/assets/a0d32638-69c1-48c6-82b7-7abdd3fbade2)
+
+### 챌린지 상세
+라이브 중인 챌린지
+![image](https://github.com/user-attachments/assets/c249eb82-4352-4e00-98aa-a448165369ae)
+
+모집 인원이 마감된 챌린지
+![image](https://github.com/user-attachments/assets/50980303-b35d-4ab6-8539-f7ff915d35ce)
+
+시간이 마감된 챌린지
+![화면 기록 2025-04-16 오후 9 54 41](https://github.com/user-attachments/assets/bc67ce61-a198-4aa0-a14c-59a03565ffb6)
+
+### 번역물 작성
+- 임시저장
+- 최종제출
+
+![화면 기록 2025-04-16 오후 9 57 13](https://github.com/user-attachments/assets/956f0c09-1a8f-4970-8a3d-ae36e6817b62)
+
+### 번역물 상세
+![화면 기록 2025-04-16 오후 10 00 10](https://github.com/user-attachments/assets/6c61c67e-0247-4f7d-a98f-210334ed76e1)
+
+### 피드백
+![화면 기록 2025-04-16 오후 10 01 33](https://github.com/user-attachments/assets/344d3162-a07b-4ed1-a3b6-6740ff628417)
+
+### 좋아요
+![화면 기록 2025-04-16 오후 10 03 49](https://github.com/user-attachments/assets/bf2cce6b-076f-4605-9c58-c04b2544ff9c)
 
 ## 주요 트러블 슈팅
 
