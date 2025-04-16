@@ -106,6 +106,326 @@ https://doc-thru-fe.vercel.app/
 ### 좋아요
 ![화면 기록 2025-04-16 오후 10 03 49](https://github.com/user-attachments/assets/bf2cce6b-076f-4605-9c58-c04b2544ff9c)
 
+## 프로젝트 구조
+
+<details>
+<summary>파일 트리 보기</summary>
+
+```
+📦src
+ ┣ 📂api
+ ┃ ┣ 📂Translation
+ ┃ ┃ ┣ 📜api.ts
+ ┃ ┃ ┗ 📜hook.ts
+ ┃ ┣ 📂admin
+ ┃ ┃ ┗ 📜admin.ts
+ ┃ ┣ 📂auth
+ ┃ ┃ ┣ 📜AuthApi.ts
+ ┃ ┃ ┣ 📜AuthHook.ts
+ ┃ ┃ ┗ 📜AuthStore.ts
+ ┃ ┣ 📂challenge
+ ┃ ┃ ┣ 📜ChallengeApi.ts
+ ┃ ┃ ┗ 📜ChallengeHooks.ts
+ ┃ ┣ 📂feedback
+ ┃ ┃ ┣ 📜api.ts
+ ┃ ┃ ┗ 📜hook.ts
+ ┃ ┣ 📂like
+ ┃ ┃ ┣ 📜api.ts
+ ┃ ┃ ┗ 📜hook.ts
+ ┃ ┣ 📂notification
+ ┃ ┃ ┗ 📜notification.api.ts
+ ┃ ┗ 📜url.ts
+ ┣ 📂app
+ ┃ ┣ 📂_components
+ ┃ ┃ ┗ 📜ClientLayout.tsx
+ ┃ ┣ 📂admin
+ ┃ ┃ ┣ 📂challenges
+ ┃ ┃ ┃ ┣ 📂[id]
+ ┃ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜cardDetail.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜nav.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜status.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜statusBottom.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┗ 📜ChallengeTable.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┗ 📜layout.tsx
+ ┃ ┣ 📂auth
+ ┃ ┃ ┣ 📂login
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂signup
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┗ 📜layout.tsx
+ ┃ ┣ 📂main
+ ┃ ┃ ┣ 📂challenge
+ ┃ ┃ ┃ ┣ 📂[id]
+ ┃ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ListItems.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜MostRecommend.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Participation.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Title.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂edit
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂_components
+ ┃ ┃ ┃ ┃ ┣ 📜ChallengeHead.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ChallengeMain.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜Pagination.tsx
+ ┃ ┃ ┃ ┣ 📂new
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂my-challenge
+ ┃ ┃ ┃ ┣ 📂[id]
+ ┃ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜cardDetail.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜status.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜ChallengeTable.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜MyChallengeHead.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜MyChallengeMain.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜Pagination.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂privacy-policy
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂translation
+ ┃ ┃ ┃ ┗ 📂[id]
+ ┃ ┃ ┃ ┃ ┣ 📂_components
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Author.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Content.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜FeedBack.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Title.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜modal.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┗ 📂translation-work
+ ┃ ┃ ┃ ┣ 📂[id]
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂_components
+ ┃ ┃ ┃ ┃ ┣ 📜Editor.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜PatchCard.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜PatchMain.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜PostCard.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜PostMain.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📂notification
+ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┣ 📜NotificationBell.tsx
+ ┃ ┃ ┃ ┗ 📜ProfileCard.tsx
+ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📜layout.tsx
+ ┃ ┣ 📜loading.tsx
+ ┃ ┗ 📜page.tsx
+ ┣ 📂core
+ ┃ ┗ 📂provider
+ ┃ ┃ ┣ 📜AuthProvider.tsx
+ ┃ ┃ ┣ 📜ReactQueryProvider.tsx
+ ┃ ┃ ┗ 📜ToastProvider.tsx
+ ┣ 📂lib
+ ┃ ┣ 📂api
+ ┃ ┃ ┗ 📜admin.ts
+ ┃ ┗ 📜utill.ts
+ ┣ 📂shared
+ ┃ ┣ 📂Img
+ ┃ ┃ ┣ 📂arrow-icon
+ ┃ ┃ ┃ ┣ 📂circle
+ ┃ ┃ ┃ ┃ ┣ 📜down.svg
+ ┃ ┃ ┃ ┃ ┗ 📜up.svg
+ ┃ ┃ ┃ ┣ 📂next-arrow
+ ┃ ┃ ┃ ┃ ┣ 📜big-arrow.svg
+ ┃ ┃ ┃ ┃ ┗ 📜small-arrow.svg
+ ┃ ┃ ┃ ┣ 📂no-stick
+ ┃ ┃ ┃ ┃ ┣ 📜black.svg
+ ┃ ┃ ┃ ┃ ┣ 📜gray.svg
+ ┃ ┃ ┃ ┃ ┣ 📜icon_arrow_left.svg
+ ┃ ┃ ┃ ┃ ┗ 📜icon_arrow_right.svg
+ ┃ ┃ ┃ ┣ 📂normal
+ ┃ ┃ ┃ ┃ ┣ 📜down.svg
+ ┃ ┃ ┃ ┃ ┣ 📜link_click.svg
+ ┃ ┃ ┃ ┃ ┗ 📜right.svg
+ ┃ ┃ ┃ ┗ 📂toggle
+ ┃ ┃ ┃ ┃ ┣ 📜down.svg
+ ┃ ┃ ┃ ┃ ┗ 📜up.svg
+ ┃ ┃ ┣ 📂bell-icon
+ ┃ ┃ ┃ ┣ 📜bass.svg
+ ┃ ┃ ┃ ┗ 📜noti.svg
+ ┃ ┃ ┣ 📂check-icon
+ ┃ ┃ ┃ ┣ 📜check.svg
+ ┃ ┃ ┃ ┣ 📜roundCheck.svg
+ ┃ ┃ ┃ ┗ 📜uncheck.svg
+ ┃ ┃ ┣ 📂close-icon
+ ┃ ┃ ┃ ┗ 📜close.svg
+ ┃ ┃ ┣ 📂deadLine-icon
+ ┃ ┃ ┃ ┣ 📜big.svg
+ ┃ ┃ ┃ ┣ 📜small-white.svg
+ ┃ ┃ ┃ ┗ 📜small.svg
+ ┃ ┃ ┣ 📂editor-icon
+ ┃ ┃ ┃ ┣ 📜alignment_center.svg
+ ┃ ┃ ┃ ┣ 📜alignment_left.svg
+ ┃ ┃ ┃ ┣ 📜alignment_right.svg
+ ┃ ┃ ┃ ┣ 📜bold.svg
+ ┃ ┃ ┃ ┣ 📜bullet.svg
+ ┃ ┃ ┃ ┣ 📜coloring.svg
+ ┃ ┃ ┃ ┣ 📜italic.svg
+ ┃ ┃ ┃ ┣ 📜numbering.svg
+ ┃ ┃ ┃ ┗ 📜underline.svg
+ ┃ ┃ ┣ 📂feedback-icon
+ ┃ ┃ ┃ ┣ 📜active.svg
+ ┃ ┃ ┃ ┗ 📜inactive.svg
+ ┃ ┃ ┣ 📂filter-icon
+ ┃ ┃ ┃ ┣ 📂normal
+ ┃ ┃ ┃ ┃ ┣ 📜active.svg
+ ┃ ┃ ┃ ┃ ┗ 📜inactive.svg
+ ┃ ┃ ┃ ┣ 📜document.svg
+ ┃ ┃ ┃ ┗ 📜list.svg
+ ┃ ┃ ┣ 📂like-icon
+ ┃ ┃ ┃ ┣ 📜big-active.svg
+ ┃ ┃ ┃ ┣ 📜big-inactive.svg
+ ┃ ┃ ┃ ┣ 📜small-active.svg
+ ┃ ┃ ┃ ┗ 📜small-inactive.svg
+ ┃ ┃ ┣ 📂logo-icon
+ ┃ ┃ ┃ ┣ 📜mainLogo.svg
+ ┃ ┃ ┃ ┗ 📜textLogo.svg
+ ┃ ┃ ┣ 📂math-symbols-icon
+ ┃ ┃ ┃ ┗ 📜plus.svg
+ ┃ ┃ ┣ 📂menu-icon
+ ┃ ┃ ┃ ┗ 📜Meatballs.svg
+ ┃ ┃ ┣ 📂modal-icon
+ ┃ ┃ ┃ ┗ 📜check.svg
+ ┃ ┃ ┣ 📂out-icon
+ ┃ ┃ ┃ ┣ 📂circle
+ ┃ ┃ ┃ ┃ ┣ 📜big-out.svg
+ ┃ ┃ ┃ ┃ ┗ 📜small-out.svg
+ ┃ ┃ ┃ ┗ 📜out.svg
+ ┃ ┃ ┣ 📂person-icon
+ ┃ ┃ ┃ ┣ 📜big.svg
+ ┃ ┃ ┃ ┣ 📜small-white.svg
+ ┃ ┃ ┃ ┗ 📜small.svg
+ ┃ ┃ ┣ 📂profile-icon
+ ┃ ┃ ┃ ┣ 📜admin.svg
+ ┃ ┃ ┃ ┗ 📜member.svg
+ ┃ ┃ ┣ 📂radio-icon
+ ┃ ┃ ┃ ┣ 📜radioOff.svg
+ ┃ ┃ ┃ ┗ 📜radioOn.svg
+ ┃ ┃ ┣ 📂search-icon
+ ┃ ┃ ┃ ┗ 📜ic_search.svg
+ ┃ ┃ ┣ 📂vector-icon
+ ┃ ┃ ┃ ┣ 📜crown-black.svg
+ ┃ ┃ ┃ ┗ 📜crown-gold.svg
+ ┃ ┃ ┣ 📂visibility-icon
+ ┃ ┃ ┃ ┣ 📜visibilityOff.svg
+ ┃ ┃ ┃ ┗ 📜visibilityOn.svg
+ ┃ ┃ ┣ 📜close.svg
+ ┃ ┃ ┣ 📜ic_list.svg
+ ┃ ┃ ┣ 📜ic_out_circle.svg
+ ┃ ┃ ┣ 📜icon_click.svg
+ ┃ ┃ ┣ 📜img_logo .svg
+ ┃ ┃ ┣ 📜logo.svg
+ ┃ ┃ ┣ 📜medal.svg
+ ┃ ┃ ┣ 📜search.svg
+ ┃ ┃ ┣ 📜send_icon.svg
+ ┃ ┃ ┣ 📜send_icon2.svg
+ ┃ ┃ ┗ 📜thumbnail.svg
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📂button
+ ┃ ┃ ┃ ┗ 📜Button.tsx
+ ┃ ┃ ┣ 📂card
+ ┃ ┃ ┃ ┣ 📜Card.tsx
+ ┃ ┃ ┃ ┣ 📜CardSelector.tsx
+ ┃ ┃ ┃ ┗ 📜CardSkeleton.tsx
+ ┃ ┃ ┣ 📂chip
+ ┃ ┃ ┃ ┣ 📜ChipCardStatus.tsx
+ ┃ ┃ ┃ ┗ 📜chip.tsx
+ ┃ ┃ ┣ 📂container
+ ┃ ┃ ┃ ┗ 📜Container.tsx
+ ┃ ┃ ┣ 📂dropdown
+ ┃ ┃ ┃ ┣ 📜DropDown.tsx
+ ┃ ┃ ┃ ┣ 📜Filter.tsx
+ ┃ ┃ ┃ ┣ 📜ProfileDropdown.tsx
+ ┃ ┃ ┃ ┣ 📜Sort.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂form
+ ┃ ┃ ┃ ┣ 📜AuthForm.tsx
+ ┃ ┃ ┃ ┗ 📜ChallengeForm.tsx
+ ┃ ┃ ┣ 📂input
+ ┃ ┃ ┃ ┣ 📜date.tsx
+ ┃ ┃ ┃ ┣ 📜email.tsx
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┣ 📜password.tsx
+ ┃ ┃ ┃ ┣ 📜search.tsx
+ ┃ ┃ ┃ ┗ 📜text.tsx
+ ┃ ┃ ┣ 📂layout
+ ┃ ┃ ┃ ┣ 📜Footer.tsx
+ ┃ ┃ ┃ ┣ 📜Header.tsx
+ ┃ ┃ ┃ ┣ 📜Layout.tsx
+ ┃ ┃ ┃ ┗ 📜core.ts
+ ┃ ┃ ┣ 📂modal
+ ┃ ┃ ┃ ┣ 📜confirm.tsx
+ ┃ ┃ ┃ ┣ 📜confirmCancel.tsx
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┣ 📜modalBase.tsx
+ ┃ ┃ ┃ ┣ 📜navigate.tsx
+ ┃ ┃ ┃ ┗ 📜send.tsx
+ ┃ ┃ ┣ 📂popup
+ ┃ ┃ ┃ ┗ 📜popup.tsx
+ ┃ ┃ ┣ 📂tab
+ ┃ ┃ ┃ ┣ 📜Tab.tsx
+ ┃ ┃ ┃ ┗ 📜TabGroup.tsx
+ ┃ ┃ ┣ 📜AnimateLoad.tsx
+ ┃ ┃ ┣ 📜CheckBox.tsx
+ ┃ ┃ ┣ 📜Divider.tsx
+ ┃ ┃ ┣ 📜OriginView.tsx
+ ┃ ┃ ┣ 📜RadioBtn.tsx
+ ┃ ┃ ┣ 📜Reply.tsx
+ ┃ ┃ ┗ 📜TextBox.tsx
+ ┃ ┣ 📂fonts
+ ┃ ┃ ┣ 📂Quantico
+ ┃ ┃ ┃ ┣ 📜Quantico-Bold.woff2
+ ┃ ┃ ┃ ┣ 📜Quantico-BoldItalic.woff2
+ ┃ ┃ ┃ ┣ 📜Quantico-Italic.woff2
+ ┃ ┃ ┃ ┗ 📜Quantico-Regular.woff2
+ ┃ ┃ ┣ 📜NotoSerifKR.woff2
+ ┃ ┃ ┗ 📜PretendardVariable.woff2
+ ┃ ┣ 📂hooks
+ ┃ ┃ ┣ 📜useMediaQuery.ts
+ ┃ ┃ ┣ 📜useToastMutation.ts
+ ┃ ┃ ┣ 📜useToastQuery.ts
+ ┃ ┃ ┗ 📜useUnloadWarning.ts
+ ┃ ┗ 📜globals.css
+ ┣ 📂stories
+ ┃ ┣ 📜Button.stories.ts
+ ┃ ┣ 📜Card.stories.ts
+ ┃ ┣ 📜Chip.stories.ts
+ ┃ ┣ 📜ChipCardStatus.stories.ts
+ ┃ ┣ 📜Confirm.stories.ts
+ ┃ ┣ 📜ConfirmCancel.stories.ts
+ ┃ ┣ 📜Container.stories.ts
+ ┃ ┣ 📜DropDown.stories.ts
+ ┃ ┣ 📜Filter.stories.ts
+ ┃ ┣ 📜Header.stories.ts
+ ┃ ┣ 📜InputDate.stories.ts
+ ┃ ┣ 📜InputEmail.stories.ts
+ ┃ ┣ 📜InputPwd.stories.ts
+ ┃ ┣ 📜InputPwdConfirm.stories.ts
+ ┃ ┣ 📜InputSearch.stories.ts
+ ┃ ┣ 📜InputText.stories.ts
+ ┃ ┣ 📜Navigate.stories.ts
+ ┃ ┣ 📜Reply.stories.ts
+ ┃ ┣ 📜SendModal.stories.ts
+ ┃ ┣ 📜Sort.stories.ts
+ ┃ ┣ 📜Tab.stories.ts
+ ┃ ┣ 📜TextBox.stories.ts
+ ┃ ┗ 📜popup.stories.ts
+ ┣ 📜constants.ts
+ ┣ 📜middleware.ts
+ ┗ 📜types.ts
+```
+</details>
+
 ## 주요 트러블 슈팅
 
 ## 회고
