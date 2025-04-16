@@ -37,14 +37,37 @@ https://doc-thru-fe.vercel.app/
 
 ## 주요 기능 소개
 ### 랜딩 페이지
+![화면 기록 2025-04-16 오후 6 45 18](https://github.com/user-attachments/assets/a9804cb8-2726-44a6-8c86-c8113fae3074)
+
+### 로그인
+![화면 기록 2025-04-16 오후 6 48 09](https://github.com/user-attachments/assets/77985abd-f176-47b2-ad1d-20429ab49c04)
+
+### 회원가입
+![image](https://github.com/user-attachments/assets/dcf85430-bf9b-4a36-8eb5-777566d6412d)
+
+### 비회원 라우팅
+- 비회원은 챌린지 목록(메인화면)만 접근이 가능함.
+  
+![화면 기록 2025-04-16 오후 6 50 42](https://github.com/user-attachments/assets/3587156a-f94f-4e7b-a9fd-8f2a263c425e)
 
 ### 챌린지 목록 조회
+- 필터링
+- 검색
+- 페이지네이션
+
+![화면 기록 2025-04-16 오후 6 51 52](https://github.com/user-attachments/assets/6ed9e1b6-9957-41b1-a41c-275d90933b68)
 
 ### 챌린지 생성 및 수정
 
+![화면 기록 2025-04-16 오후 6 58 19](https://github.com/user-attachments/assets/aac0b836-405e-4836-b15c-7bca6a24da01)
+
+
 ### 챌린지 상세 페이지
 
+
 ### 나의 챌린지
+![화면 기록 2025-04-16 오후 7 03 01](https://github.com/user-attachments/assets/d40f5732-e868-4818-96ca-df8f2fdf195f)
+
 
 ### 알림
 
